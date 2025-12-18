@@ -1,22 +1,24 @@
 const data = {
   nome: "Jonathan Guilherme",
   empresa: "CEO da Empresa",
-  foto: "https://i.imgur.com/xxxxx.jpg",
-  whatsapp: "5588997842847",
-  email: "studiojonathanguillherme@gmail.com",
+  foto: "https://imgur.com/a/gonRd4P",
+  whatsapp: "8855997842847",
+  email: "studiojonathanguilherme@gmail.com",
   site: "https://www.instagram.com/jonathanguilhermejg",
-  pix: "00975762397",
+  pix: "88997842847",
 
   cardapio: {
-    estabelecimento: "Restaurante Exemplo",
-    imagem: "https://i.imgur.com/yyyyy.jpg",
+    estabelecimento: "Tag Motion",
+    imagem: "https://imgur.com/a/TWv5pWt",
     itens: [
-      { nome: "Pizza Calabresa", preco: "R$ 35" },
-      { nome: "Pizza Frango", preco: "R$ 38" }
+      { nome: "Tag Cartão de Visita 100,00", preco: "" },
+      { nome: "Tag Avaliações Google  80,00", preco: "" },
+      { nome: "Tag Cardápio  200,00", preco: "" },
+      { nome: "Tag Premium (todos) 250,00", preco: "" }
     ]
   },
 
   avaliacoes: {
-    google: "https://share.google/xxxxx"
+    google: "https://share.google/AKdTLk9mxa31j6CY8"
   }
 };
