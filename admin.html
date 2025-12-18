@@ -1,27 +1,85 @@
-<script>
-function gerar(){
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Tag Motion — Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
 
-  const nome = document.getElementById('nome').value;
-  const empresa = document.getElementById('empresa').value;
-  const foto = document.getElementById('foto').value;
-  const whatsapp = document.getElementById('whatsapp').value;
-  const email = document.getElementById('email').value;
-  const site = document.getElementById('site').value;
-  const pix = document.getElementById('pix').value;
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
 
-  const estabelecimento = document.getElementById('estabelecimento').value;
-  const imagem = document.getElementById('imagem').value;
-  const google = document.getElementById('google').value;
+  <div class="bg-white w-full max-w-md rounded-2xl shadow-xl p-6 space-y-6">
 
-  const itens = document.getElementById('itens').value
-    .split('\n')
-    .filter(l => l.trim())
-    .map(l => {
-      const [n,p] = l.split('-');
-      return `{ nome: "${n.trim()}", preco: "${(p||'').trim()}" }`;
-    }).join(',\n      ');
+    <h1 class="text-xl font-bold text-center">🔐 Tag Motion — Admin</h1>
 
-  const js = `const data = {
+    <!-- CARTÃO -->
+    <div class="space-y-3">
+      <h2 class="font-semibold">📇 Cartão de Visita</h2>
+      <input id="nome" class="w-full p-2 border rounded" placeholder="Nome">
+      <input id="empresa" class="w-full p-2 border rounded" placeholder="Empresa / Cargo">
+      <input id="foto" class="w-full p-2 border rounded" placeholder="URL da Foto">
+      <input id="whatsapp" class="w-full p-2 border rounded" placeholder="WhatsApp">
+      <input id="email" class="w-full p-2 border rounded" placeholder="E-mail">
+      <input id="site" class="w-full p-2 border rounded" placeholder="Site / Instagram">
+      <input id="pix" class="w-full p-2 border rounded" placeholder="PIX">
+    </div>
+
+    <!-- CARDÁPIO -->
+    <div class="space-y-3">
+      <h2 class="font-semibold">🍕 Cardápio</h2>
+      <input id="estabelecimento" class="w-full p-2 border rounded" placeholder="Nome do estabelecimento">
+      <input id="imagem" class="w-full p-2 border rounded" placeholder="URL da imagem do cardápio">
+      <textarea id="itens" class="w-full p-2 border rounded" rows="4"
+        placeholder="Produto - Preço (1 por linha)"></textarea>
+    </div>
+
+    <!-- AVALIAÇÕES -->
+    <div class="space-y-3">
+      <h2 class="font-semibold">⭐ Avaliações</h2>
+      <input id="google" class="w-full p-2 border rounded" placeholder="Link Google Avaliações">
+    </div>
+
+    <!-- BOTÃO -->
+    <button
+      onclick="gerar()"
+      class="w-full bg-indigo-600 text-white py-3 rounded-xl font-semibold">
+      GERAR DATA.JS
+    </button>
+
+    <!-- RESULTADO -->
+    <textarea
+      id="resultado"
+      class="w-full p-3 border rounded font-mono text-sm"
+      rows="10"
+      placeholder="O data.js gerado aparecerá aqui"></textarea>
+
+  </div>
+
+  <script>
+    function gerar(){
+
+      const nome = document.getElementById('nome').value;
+      const empresa = document.getElementById('empresa').value;
+      const foto = document.getElementById('foto').value;
+      const whatsapp = document.getElementById('whatsapp').value;
+      const email = document.getElementById('email').value;
+      const site = document.getElementById('site').value;
+      const pix = document.getElementById('pix').value;
+
+      const estabelecimento = document.getElementById('estabelecimento').value;
+      const imagem = document.getElementById('imagem').value;
+      const google = document.getElementById('google').value;
+
+      const itens = document.getElementById('itens').value
+        .split('\n')
+        .filter(l => l.trim())
+        .map(l => {
+          const [n,p] = l.split('-');
+          return `{ nome: "${n.trim()}", preco: "${(p||'').trim()}" }`;
+        }).join(',\n      ');
+
+      const js = `const data = {
   nome: "${nome}",
   empresa: "${empresa}",
   foto: "${foto}",
@@ -43,17 +101,9 @@ function gerar(){
   }
 };`;
 
-  document.getElementById('resultado').value = js;
-}
-</script>
-<button
-  onclick="gerar()"
-  style="width:100%; padding:14px; margin-top:20px; background:#4f46e5; color:#fff; border:none; border-radius:10px; font-size:16px;">
-  GERAR DATA.JS
-</button>
+      document.getElementById('resultado').value = js;
+    }
+  </script>
 
-<textarea
-  id="resultado"
-  placeholder="O arquivo data.js gerado aparecerá aqui"
-  style="width:100%; height:260px; margin-top:16px; padding:12px; font-family: monospace;">
-</textarea>
+</body>
+</html>
