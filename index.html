@@ -1,74 +1,110 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<title>Tag Motion</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="data.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Tag Motion</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="data.js" defer></script>
 </head>
+
 <body class="bg-gray-100 min-h-screen flex items-center justify-center">
 
+  <div class="bg-white max-w-md w-full rounded-2xl shadow-xl overflow-hidden">
 
-<div class="bg-white max-w-md w-full rounded-2xl shadow-xl overflow-hidden">
+    <!-- MENU -->
+    <div class="flex border-b text-center font-semibold">
+      <button class="flex-1 py-3" onclick="show('cartao')">📇 Cartão</button>
+      <button class="flex-1 py-3" onclick="show('cardapio')">🍕 Cardápio</button>
+      <button class="flex-1 py-3" onclick="show('avaliacoes')">⭐ Avaliações</button>
+    </div>
 
+    <!-- CARTÃO -->
+    <div id="cartao" class="p-6 text-center">
+      <img id="foto" class="w-28 h-28 rounded-full mx-auto mb-4 object-cover">
+      <h1 id="nome" class="text-2xl font-bold"></h1>
+      <p id="empresa" class="text-gray-500 mb-4"></p>
 
-<div class="flex border-b text-center font-semibold">
-<button class="flex-1 py-3" onclick="show('cartao')">📇 Cartão</button>
-<button class="flex-1 py-3" onclick="show('cardapio')">🍕 Cardápio</button>
-<button class="flex-1 py-3" onclick="show('avaliacoes')">⭐ Avaliações</button>
-</div>
+      <a id="whatsapp" class="block bg-green-500 text-white py-3 rounded-xl mb-3">WhatsApp</a>
+      <a id="email" class="block bg-blue-500 text-white py-3 rounded-xl mb-3">Email</a>
+      <a id="site" class="block bg-indigo-600 text-white py-3 rounded-xl mb-3">Site</a>
 
+      <button id="pix" class="block w-full bg-purple-500 text-white py-3 rounded-xl">
+        Copiar PIX
+      </button>
+    </div>
 
-<div id="cartao" class="p-6 text-center">
-<img id="foto" class="w-28 h-28 rounded-full mx-auto mb-4 object-cover">
-<h1 id="nome" class="text-2xl font-bold"></h1>
-<p id="empresa" class="text-gray-500 mb-4"></p>
-<a id="whatsapp" class="block bg-green-500 text-white py-3 rounded-xl mb-3">WhatsApp</a>
-<a id="email" class="block bg-blue-500 text-white py-3 rounded-xl mb-3">Email</a>
-<a id="site" class="block bg-indigo-600 text-white py-3 rounded-xl mb-3">Site</a>
-<button id="pix" class="block w-full bg-purple-500 text-white py-3 rounded-xl">Copiar PIX</button>
-</div>
+    <!-- CARDÁPIO -->
+    <div id="cardapio" class="p-6 hidden"></div>
 
+    <!-- AVALIAÇÕES -->
+    <div id="avaliacoes" class="p-6 hidden"></div>
 
-<div id="cardapio" class="p-6 hidden"></div>
-<div id="avaliacoes" class="p-6 hidden"></div>
+  </div>
 
+  <!-- SCRIPT FINAL -->
+  <script>
+    function show(id){
+      ['cartao','cardapio','avaliacoes'].forEach(s =>
+        document.getElementById(s).classList.add('hidden')
+      );
+      document.getElementById(id).classList.remove('hidden');
+    }
 
-</div>
+    document.addEventListener('DOMContentLoaded', () => {
 
+      if (typeof data === 'undefined') {
+        alert('Erro: data.js não carregou');
+        return;
+      }
 
-<script>
-function show(id){
-['cartao','cardapio','avaliacoes'].forEach(s=>document.getElementById(s).classList.add('hidden'));
-document.getElementById(id).classList.remove('hidden');
-}
+      // CARTÃO
+      document.getElementById('foto').src = data.foto || '';
+      document.getElementById('nome').innerText = data.nome || '';
+      document.getElementById('empresa').innerText = data.empresa || '';
 
+      if (data.whatsapp)
+        document.getElementById('whatsapp').href = 'https://wa.me/' + data.whatsapp;
 
-// CARTÃO
-document.getElementById('foto').src = data.foto;
-document.getElementById('nome').innerText = data.nome;
-document.getElementById('empresa').innerText = data.empresa;
-document.getElementById('whatsapp').href = 'https://wa.me/' + data.whatsapp;
-document.getElementById('email').href = 'mailto:' + data.email;
-document.getElementById('site').href = data.site;
-document.getElementById('pix').onclick = ()=>navigator.clipboard.writeText(data.pix);
+      if (data.email)
+        document.getElementById('email').href = 'mailto:' + data.email;
 
+      if (data.site)
+        document.getElementById('site').href = data.site;
 
-// CARDÁPIO
-if(data.cardapio){
-const c = document.getElementById('cardapio');
-c.innerHTML = `<img src="${data.cardapio.imagem}" class="rounded-xl mb-4"><h2 class="font-bold text-xl mb-2">${data.cardapio.estabelecimento}</h2>`;
-data.cardapio.itens.forEach(i=>{
-c.innerHTML += `<div class="flex justify-between border-b py-2"><span>${i.nome}</span><strong>${i.preco}</strong></div>`;
-});
-}
+      if (data.pix)
+        document.getElementById('pix').onclick = () => {
+          navigator.clipboard.writeText(data.pix);
+          alert('PIX copiado!');
+        };
 
+      // CARDÁPIO
+      if (data.cardapio) {
+        const c = document.getElementById('cardapio');
 
-// AVALIAÇÕES
-if(data.avaliacoes){
-document.getElementById('avaliacoes').innerHTML = `<a href="${data.avaliacoes.google}" target="_blank" class="block bg-yellow-400 text-black py-4 rounded-xl text-center">Ver Avaliações no Google</a>`;
-}
-</script>
-</body>
-</html>
+        if (data.cardapio.imagem) {
+          c.innerHTML = `<img src="${data.cardapio.imagem}" class="rounded-xl mb-4">`;
+        }
+
+        if (data.cardapio.estabelecimento) {
+          c.innerHTML += `<h2 class="font-bold text-xl mb-2">${data.cardapio.estabelecimento}</h2>`;
+        }
+
+        if (Array.isArray(data.cardapio.itens)) {
+          data.cardapio.itens.forEach(i => {
+            c.innerHTML += `
+              <div class="flex justify-between border-b py-2">
+                <span>${i.nome}</span>
+                <strong>${i.preco}</strong>
+              </div>
+            `;
+          });
+        }
+      }
+
+      // AVALIAÇÕES
+      if (data.avaliacoes && data.avaliacoes.google) {
+        document.getElementById('avaliacoes').innerHTML = `
+          <a href="${data.avaliacoes.google}" target="_blank"
+             class="block bg-yellow-400 text-black py-4 rounded-xl text-center font-semibold">
