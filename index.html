@@ -120,7 +120,24 @@
       // 🔥 MOSTRAR CARTÃO AO ABRIR
       show('cartao');
 
-    });
+    }); <div id="wifiModal"
+  class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50">
+
+  <div class="bg-white rounded-2xl p-6 w-80 text-center">
+    <h2 class="text-lg font-bold mb-4">📶 Wi-Fi</h2>
+
+    <img id="wifiQR" class="mx-auto mb-4 w-48 h-48">
+
+    <p id="wifiNome" class="text-sm text-gray-600 mb-4"></p>
+
+    <button onclick="closeWifi()"
+      class="w-full bg-gray-800 text-white py-2 rounded-xl">
+      Fechar
+    </button>
+  </div>
+
+</div>
+
   </script>
 
 </body>
