@@ -1,24 +1,33 @@
 const data = {
   nome: "Jonathan Guilherme",
-  empresa: "CEO da Empresa",
-  foto: "https://imgur.com/a/gonRd4P",
-  whatsapp: "8855997842847",
+  empresa: "CEO da Tag Motion",
+
+  // ⚠️ USE LINK DIRETO DA IMAGEM (.jpg ou .png)
+  foto: "https://i.imgur.com/SEU_ARQUIVO.jpg",
+
+  whatsapp: "5588997842847",
   email: "studiojonathanguilherme@gmail.com",
   site: "https://www.instagram.com/jonathanguilhermejg",
+
   pix: "88997842847",
- wifi: {
+
+  wifi: {
     ssid: "MinhaRedeWiFi",
     senha: "12345678",
     tipo: "WPA"
   },
+
   cardapio: {
     estabelecimento: "Tag Motion",
-    imagem: "https://imgur.com/a/TWv5pWt",
+
+    // ⚠️ LINK DIRETO DA IMAGEM
+    imagem: "https://i.imgur.com/SEU_CARDAPIO.jpg",
+
     itens: [
-      { nome: "Tag Cartão de Visita 100,00", preco: "" },
-      { nome: "Tag Avaliações Google  80,00", preco: "" },
-      { nome: "Tag Cardápio  200,00", preco: "" },
-      { nome: "Tag Premium (todos) 250,00", preco: "" }
+      { nome: "Tag Cartão de Visita", preco: "R$ 100,00" },
+      { nome: "Tag Avaliações Google", preco: "R$ 80,00" },
+      { nome: "Tag Cardápio", preco: "R$ 200,00" },
+      { nome: "Tag Premium (todos)", preco: "R$ 250,00" }
     ]
   },
 
