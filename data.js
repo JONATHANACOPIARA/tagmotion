@@ -6,7 +6,11 @@ const data = {
   email: "studiojonathanguilherme@gmail.com",
   site: "https://www.instagram.com/jonathanguilhermejg",
   pix: "88997842847",
-
+ wifi: {
+    ssid: "MinhaRedeWiFi",
+    senha: "12345678",
+    tipo: "WPA"
+  },
   cardapio: {
     estabelecimento: "Tag Motion",
     imagem: "https://imgur.com/a/TWv5pWt",
