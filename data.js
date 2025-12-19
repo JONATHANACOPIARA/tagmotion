@@ -1,4 +1,4 @@
-const data = {
+window.data = {
   nome: "Jonathan Guilherme Oliveira",
   empresa: "CEO da Empresa",
   foto: "https://i.imgur.com/e1g5ycm.jpeg",
