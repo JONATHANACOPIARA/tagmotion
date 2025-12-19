@@ -16,6 +16,6 @@ const data = {
   },
 
   avaliacoes: {
-    google: "https://search.google.com/local/writereview?placeid=0x7a2d395922ac393:0x8b3a904bfe9f33b0"
+    google: "https://g.page/r/CbAzn_5LkDqLEBM/review"
   }
 };
