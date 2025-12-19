@@ -28,16 +28,25 @@
       <h1 id="nome" class="text-2xl font-bold"></h1>
       <p id="empresa" class="text-gray-500 mb-4"></p>
 
-      <a id="whatsapp" class="block bg-green-500 text-white py-3 rounded-xl mb-3">WhatsApp</a>
-      <a id="email" class="block bg-blue-500 text-white py-3 rounded-xl mb-3">Email</a>
-      <a id="site" class="block bg-indigo-600 text-white py-3 rounded-xl mb-3">Site</a>
+      <a id="whatsapp" class="block bg-green-500 text-white py-3 rounded-xl mb-3">
+        WhatsApp
+      </a>
 
-      <button id="pix" class="block w-full bg-purple-500 text-white py-3 rounded-xl mb-3">
+      <a id="email" class="block bg-blue-500 text-white py-3 rounded-xl mb-3">
+        Email
+      </a>
+
+      <a id="site" class="block bg-indigo-600 text-white py-3 rounded-xl mb-3">
+        Site
+      </a>
+
+      <button id="pix"
+        class="block w-full bg-purple-500 text-white py-3 rounded-xl mb-3">
         Copiar PIX
       </button>
 
       <button id="wifiBtn"
-        class="block w-full bg-gray-800 text-white py-3 rounded-xl">
+        class="block w-full bg-gray-800 text-white py-3 rounded-xl hidden">
         📶 Conectar ao Wi-Fi
       </button>
 
@@ -78,8 +87,16 @@
       document.getElementById(id).classList.remove('hidden');
     }
 
+    function openWifi(){
+      const modal = document.getElementById('wifiModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
     function closeWifi(){
-      document.getElementById('wifiModal').classList.add('hidden');
+      const modal = document.getElementById('wifiModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -90,41 +107,45 @@
       }
 
       // CARTÃO
-      document.getElementById('foto').src = data.foto || '';
-      document.getElementById('nome').innerText = data.nome || '';
-      document.getElementById('empresa').innerText = data.empresa || '';
+      foto.src = data.foto || '';
+      nome.innerText = data.nome || '';
+      empresa.innerText = data.empresa || '';
 
       if (data.whatsapp)
-        document.getElementById('whatsapp').href = 'https://wa.me/' + data.whatsapp;
+        whatsapp.href = 'https://wa.me/' + data.whatsapp;
 
       if (data.email)
-        document.getElementById('email').href = 'mailto:' + data.email;
+        email.href = 'mailto:' + data.email;
 
       if (data.site)
-        document.getElementById('site').href = data.site;
+        site.href = data.site;
 
       if (data.pix)
-        document.getElementById('pix').onclick = () => {
+        pix.onclick = () => {
           navigator.clipboard.writeText(data.pix);
           alert('PIX copiado!');
         };
 
-      // WI-FI
-      if (data.wifi) {
-        const wifiString = `WIFI:T:${data.wifi.tipo};S:${data.wifi.ssid};P:${data.wifi.senha};;`;
-        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(wifiString)}`;
+      // WI-FI COM QR CODE
+      if (data.wifi && data.wifi.ssid) {
 
-        document.getElementById('wifiBtn').onclick = () => {
-          document.getElementById('wifiQR').src = qrUrl;
-          document.getElementById('wifiNome').innerText = data.wifi.ssid;
-          document.getElementById('wifiModal').classList.remove('hidden');
-          document.getElementById('wifiModal').classList.add('flex');
-        };
+        wifiBtn.classList.remove('hidden');
+
+        const textoWifi =
+          `WIFI:T:${data.wifi.tipo};S:${data.wifi.ssid};P:${data.wifi.senha};;`;
+
+        const qrUrl =
+          `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(textoWifi)}`;
+
+        wifiQR.src = qrUrl;
+        wifiNome.innerText = `Rede: ${data.wifi.ssid}`;
+
+        wifiBtn.onclick = openWifi;
       }
 
       // CARDÁPIO
       if (data.cardapio) {
-        const c = document.getElementById('cardapio');
+        const c = cardapio;
         c.innerHTML = '';
 
         if (data.cardapio.imagem)
@@ -146,8 +167,8 @@
       }
 
       // AVALIAÇÕES
-      if (data.avaliacoes && data.avaliacoes.google) {
-        document.getElementById('avaliacoes').innerHTML = `
+      if (data.avaliacoes?.google) {
+        avaliacoes.innerHTML = `
           <a href="${data.avaliacoes.google}" target="_blank"
             class="block bg-yellow-400 text-black py-4 rounded-xl text-center font-semibold">
             Ver Avaliações no Google
