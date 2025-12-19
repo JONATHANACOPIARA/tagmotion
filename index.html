@@ -9,49 +9,60 @@
   <script src="data.js" defer></script>
 </head>
 
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
 
   <div class="bg-white max-w-md w-full rounded-2xl shadow-xl overflow-hidden">
 
     <!-- MENU -->
-    <div class="flex border-b text-center font-semibold">
+    <div class="flex border-b text-center font-semibold text-sm">
       <button class="flex-1 py-3" onclick="show('cartao')">📇 Cartão</button>
       <button class="flex-1 py-3" onclick="show('cardapio')">🍕 Cardápio</button>
       <button class="flex-1 py-3" onclick="show('avaliacoes')">⭐ Avaliações</button>
     </div>
 
     <!-- CARTÃO -->
-    <div id="cartao" class="p-6 text-center">
+    <div id="cartao" class="p-6 text-center space-y-4">
 
-      <img id="foto" class="w-28 h-28 rounded-full mx-auto mb-4 object-cover">
+      <img id="foto"
+        class="w-28 h-28 rounded-full mx-auto object-cover shadow">
 
-      <h1 id="nome" class="text-2xl font-bold"></h1>
-      <p id="empresa" class="text-gray-500 mb-4"></p>
+      <div>
+        <h1 id="nome" class="text-2xl font-bold"></h1>
+        <p id="empresa" class="text-gray-500"></p>
+      </div>
 
-      <a id="whatsapp" class="block bg-green-500 text-white py-3 rounded-xl mb-3">
-        WhatsApp
-      </a>
+      <div class="space-y-3">
+        <a id="whatsapp"
+          class="block bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl transition">
+          WhatsApp
+        </a>
 
-      <a id="email" class="block bg-blue-500 text-white py-3 rounded-xl mb-3">
-        Email
-      </a>
+        <a id="email"
+          class="block bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-xl transition">
+          Email
+        </a>
 
-      <a id="site" class="block bg-indigo-600 text-white py-3 rounded-xl mb-3">
-        Site
-      </a>
+        <a id="site"
+          class="block bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl transition">
+          Site
+        </a>
+      </div>
 
-      <button id="pix"
-        class="block w-full bg-purple-500 text-white py-3 rounded-xl mb-3">
-        Copiar PIX
-      </button>
+      <!-- PIX -->
+      <div class="pt-4 border-t">
+        <button id="pix"
+          class="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-xl font-semibold transition">
+          💜 Copiar PIX
+        </button>
 
-      <button id="pixQRBtn"
-        class="block w-full bg-purple-600 text-white py-3 rounded-xl mb-3 hidden">
-        💰 Pagar com PIX
-      </button>
+        <p class="text-xs text-gray-400 mt-2">
+          Cole no app do seu banco para pagar
+        </p>
+      </div>
 
+      <!-- WIFI -->
       <button id="wifiBtn"
-        class="block w-full bg-gray-800 text-white py-3 rounded-xl hidden">
+        class="w-full bg-gray-800 hover:bg-black text-white py-3 rounded-xl transition hidden">
         📶 Conectar ao Wi-Fi
       </button>
 
@@ -83,26 +94,6 @@
     </div>
   </div>
 
-  <!-- MODAL PIX -->
-  <div id="pixModal"
-    class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50">
-
-    <div class="bg-white rounded-2xl p-6 w-80 text-center">
-      <h2 class="text-lg font-bold mb-4">💰 Pagar com PIX</h2>
-
-      <img id="pixQR" class="mx-auto mb-4 w-48 h-48">
-
-      <p class="text-sm text-gray-600 mb-4">
-        Escaneie o QR Code para pagar
-      </p>
-
-      <button onclick="closePix()"
-        class="w-full bg-purple-600 text-white py-2 rounded-xl">
-        Fechar
-      </button>
-    </div>
-  </div>
-
   <!-- SCRIPT -->
   <script>
     function show(id){
@@ -113,27 +104,13 @@
     }
 
     function openWifi(){
-      const modal = document.getElementById('wifiModal');
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
+      wifiModal.classList.remove('hidden');
+      wifiModal.classList.add('flex');
     }
 
     function closeWifi(){
-      const modal = document.getElementById('wifiModal');
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-    }
-
-    function openPix(){
-      const modal = document.getElementById('pixModal');
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-    }
-
-    function closePix(){
-      const modal = document.getElementById('pixModal');
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
+      wifiModal.classList.add('hidden');
+      wifiModal.classList.remove('flex');
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -148,84 +125,59 @@
       nome.innerText = data.nome || '';
       empresa.innerText = data.empresa || '';
 
-      if (data.whatsapp)
-        whatsapp.href = 'https://wa.me/' + data.whatsapp;
+      if (data.whatsapp) whatsapp.href = 'https://wa.me/' + data.whatsapp;
+      if (data.email) email.href = 'mailto:' + data.email;
+      if (data.site) site.href = data.site;
 
-      if (data.email)
-        email.href = 'mailto:' + data.email;
-
-      if (data.site)
-        site.href = data.site;
-
+      // PIX (SEM QR)
       if (data.pix) {
         pix.onclick = () => {
           navigator.clipboard.writeText(data.pix);
-          alert('PIX copiado!');
+          pix.innerText = '✅ PIX Copiado!';
+          setTimeout(() => pix.innerText = '💜 Copiar PIX', 2000);
         };
-
-        pixQRBtn.classList.remove('hidden');
-
-        const pixQrUrl =
-          `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(data.pix)}`;
-
-        pixQR.src = pixQrUrl;
-        pixQRBtn.onclick = openPix;
       }
 
-      // WI-FI
+      // WI-FI COM QR
       if (data.wifi && data.wifi.ssid) {
-
         wifiBtn.classList.remove('hidden');
 
-        const textoWifi =
+        const wifiString =
           `WIFI:T:${data.wifi.tipo};S:${data.wifi.ssid};P:${data.wifi.senha};;`;
 
-        const qrUrl =
-          `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(textoWifi)}`;
+        wifiQR.src =
+          `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(wifiString)}`;
 
-        wifiQR.src = qrUrl;
         wifiNome.innerText = `Rede: ${data.wifi.ssid}`;
-
         wifiBtn.onclick = openWifi;
       }
 
       // CARDÁPIO
       if (data.cardapio) {
-        const c = cardapio;
-        c.innerHTML = '';
+        cardapio.innerHTML = '';
 
         if (data.cardapio.imagem)
-          c.innerHTML += `<img src="${data.cardapio.imagem}" class="rounded-xl mb-4">`;
+          cardapio.innerHTML += `<img src="${data.cardapio.imagem}" class="rounded-xl mb-4">`;
 
         if (data.cardapio.estabelecimento)
-          c.innerHTML += `<h2 class="font-bold text-xl mb-2">${data.cardapio.estabelecimento}</h2>`;
+          cardapio.innerHTML += `<h2 class="font-bold text-xl mb-3">${data.cardapio.estabelecimento}</h2>`;
 
-        if (Array.isArray(data.cardapio.itens)) {
-          data.cardapio.itens.forEach(i => {
-            c.innerHTML += `
-              <div class="flex justify-between border-b py-2">
-                <span>${i.nome}</span>
-                <strong>${i.preco}</strong>
-              </div>
-            `;
-          });
-        }
+        data.cardapio.itens?.forEach(i => {
+          cardapio.innerHTML += `
+            <div class="flex justify-between border-b py-2 text-sm">
+              <span>${i.nome}</span>
+              <strong>${i.preco}</strong>
+            </div>`;
+        });
       }
 
       // AVALIAÇÕES
-      const areaAvaliacoes = document.getElementById('avaliacoes');
-
-      if (
-        data.avaliacoes &&
-        typeof data.avaliacoes.google === 'string' &&
-        data.avaliacoes.google.startsWith('http')
-      ) {
-        areaAvaliacoes.innerHTML = `
-          <a href="${data.avaliacoes.google}" target="_blank" rel="noopener"
-            class="block bg-yellow-400 text-black py-4 rounded-xl text-center font-semibold">
+      if (data.avaliacoes?.google) {
+        avaliacoes.innerHTML = `
+          <a href="${data.avaliacoes.google}" target="_blank"
+            class="block bg-yellow-400 hover:bg-yellow-500 text-black py-4 rounded-xl text-center font-semibold transition">
             ⭐ Avaliar no Google
-          </a>
-        `;
+          </a>`;
       }
 
       show('cartao');
