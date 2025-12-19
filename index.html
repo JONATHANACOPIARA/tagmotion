@@ -5,78 +5,83 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tag Motion</title>
 
-  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- 🚨 CAMINHO OFICIAL PARA GITHUB PAGES -->
-  <!-- NÃO ALTERAR SEM NECESSIDADE -->
+  <!-- CAMINHO OFICIAL -->
   <script src="/tagmotion/data.js" defer></script>
 </head>
 
 <body class="bg-neutral-100 min-h-screen flex items-center justify-center p-4">
 
-  <!-- CARD PRINCIPAL -->
   <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden">
 
     <!-- MENU -->
-    <div class="flex text-center text-sm font-medium bg-neutral-50 border-b">
-      <button class="flex-1 py-3 hover:bg-neutral-100" onclick="showTab('cartao')">Cartão</button>
-      <button class="flex-1 py-3 hover:bg-neutral-100" onclick="showTab('cardapio')">Cardápio</button>
+    <div class="flex text-center text-xs font-semibold bg-neutral-50 border-b uppercase tracking-wide">
+      <button class="flex-1 py-3 hover:bg-neutral-100" onclick="showTab('cartao')">Contato</button>
+      <button class="flex-1 py-3 hover:bg-neutral-100" onclick="showTab('cardapio')">Serviços</button>
       <button class="flex-1 py-3 hover:bg-neutral-100" onclick="showTab('avaliacoes')">Avaliações</button>
     </div>
 
-    <!-- ================= CARTÃO ================= -->
+    <!-- CARTÃO -->
     <div id="cartao" class="p-6 space-y-6 text-center">
 
       <img id="foto" class="w-28 h-28 rounded-full mx-auto object-cover shadow-lg">
 
       <div>
         <h1 id="nome" class="text-2xl font-bold text-neutral-900"></h1>
-        <p id="empresa" class="text-neutral-500"></p>
+        <p id="empresa" class="text-neutral-500 text-sm"></p>
       </div>
 
-      <div class="space-y-3">
-        <a id="whatsapp" class="block bg-green-500 hover:bg-green-600 text-white py-3 rounded-2xl font-semibold">
-          Falar no WhatsApp
+      <!-- CTA PRINCIPAL -->
+      <a id="whatsapp"
+        class="block bg-green-500 hover:bg-green-600 text-white py-4 rounded-2xl font-semibold text-lg transition">
+        💬 Falar agora no WhatsApp
+      </a>
+
+      <!-- AÇÕES SECUNDÁRIAS -->
+      <div class="grid grid-cols-2 gap-3">
+        <a id="email"
+          class="block bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-xl font-semibold text-sm transition">
+          ✉️ E-mail
         </a>
 
-        <a id="email" class="block bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-2xl font-semibold">
-          Enviar E-mail
-        </a>
-
-        <a id="site" class="block bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-2xl font-semibold">
-          Visitar Site
+        <a id="site"
+          class="block bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl font-semibold text-sm transition">
+          🌐 Site
         </a>
       </div>
 
       <!-- PIX -->
       <div class="pt-5 border-t space-y-2">
-        <button id="pix" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-2xl font-semibold">
+        <button id="pix"
+          class="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-2xl font-semibold transition">
           Copiar chave PIX
         </button>
-        <p class="text-xs text-neutral-400">Pagamento via aplicativo do banco</p>
+        <p class="text-xs text-neutral-400">
+          Pagamento rápido e seguro pelo app do banco
+        </p>
       </div>
 
       <!-- WIFI -->
       <button id="wifiBtn"
-        class="w-full bg-neutral-900 hover:bg-black text-white py-3 rounded-2xl font-semibold hidden">
-        Conectar ao Wi-Fi
+        class="w-full bg-neutral-900 hover:bg-black text-white py-3 rounded-2xl font-semibold transition hidden">
+        📶 Conectar ao Wi-Fi
       </button>
 
     </div>
 
-    <!-- ================= CARDÁPIO ================= -->
+    <!-- CARDÁPIO -->
     <div id="cardapio" class="p-6 hidden"></div>
 
-    <!-- ================= AVALIAÇÕES ================= -->
+    <!-- AVALIAÇÕES -->
     <div id="avaliacoes" class="p-6 hidden"></div>
 
   </div>
 
-  <!-- ================= MODAL WIFI ================= -->
+  <!-- MODAL WIFI -->
   <div id="wifiModal" class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50">
     <div class="bg-white rounded-3xl p-6 w-80 text-center space-y-4">
-      <h2 class="text-lg font-bold">Wi-Fi</h2>
+      <h2 class="text-lg font-bold">Conexão Wi-Fi</h2>
       <img id="wifiQR" class="mx-auto w-48 h-48">
       <p id="wifiNome" class="text-sm text-neutral-500"></p>
       <button onclick="closeWifi()" class="w-full bg-neutral-900 text-white py-2 rounded-xl">
@@ -85,9 +90,7 @@
     </div>
   </div>
 
-  <!-- ================= SCRIPT ================= -->
   <script>
-    /* ---------- CONTROLE DE ABAS ---------- */
     function showTab(id) {
       ['cartao', 'cardapio', 'avaliacoes'].forEach(tab =>
         document.getElementById(tab).classList.add('hidden')
@@ -95,7 +98,6 @@
       document.getElementById(id).classList.remove('hidden');
     }
 
-    /* ---------- WIFI MODAL ---------- */
     function openWifi() {
       wifiModal.classList.remove('hidden');
       wifiModal.classList.add('flex');
@@ -106,15 +108,13 @@
       wifiModal.classList.remove('flex');
     }
 
-    /* ---------- CARREGAMENTO ---------- */
     document.addEventListener('DOMContentLoaded', () => {
 
       if (!window.data) {
-        alert('Erro ao carregar data.js');
+        alert('Erro ao carregar dados');
         return;
       }
 
-      // ELEMENTOS
       const foto = document.getElementById('foto');
       const nome = document.getElementById('nome');
       const empresa = document.getElementById('empresa');
@@ -128,7 +128,6 @@
       const cardapio = document.getElementById('cardapio');
       const avaliacoes = document.getElementById('avaliacoes');
 
-      // DADOS BÁSICOS
       foto.src = data.foto || '';
       nome.textContent = data.nome || '';
       empresa.textContent = data.empresa || '';
@@ -137,7 +136,6 @@
       if (data.email) email.href = 'mailto:' + data.email;
       if (data.site) site.href = data.site;
 
-      // PIX (COPIAR)
       if (data.pix) {
         pix.onclick = () => {
           navigator.clipboard.writeText(data.pix);
@@ -146,17 +144,15 @@
         };
       }
 
-      // WIFI
       if (data.wifi?.ssid) {
         wifiBtn.classList.remove('hidden');
         const wifiText = `WIFI:T:${data.wifi.tipo};S:${data.wifi.ssid};P:${data.wifi.senha};;`;
         wifiQR.src =
           `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(wifiText)}`;
-        wifiNome.textContent = data.wifi.ssid;
+        wifiNome.textContent = `Rede: ${data.wifi.ssid}`;
         wifiBtn.onclick = openWifi;
       }
 
-      // CARDÁPIO
       if (data.cardapio) {
         cardapio.innerHTML = '';
         if (data.cardapio.imagem)
@@ -174,12 +170,11 @@
         });
       }
 
-      // AVALIAÇÕES
       if (data.avaliacoes?.google) {
         avaliacoes.innerHTML = `
           <a href="${data.avaliacoes.google}" target="_blank"
-            class="block bg-yellow-400 hover:bg-yellow-500 text-black py-4 rounded-2xl text-center font-semibold">
-            Avaliar no Google
+            class="block bg-yellow-400 hover:bg-yellow-500 text-black py-4 rounded-2xl text-center font-semibold transition">
+            ⭐ Avaliar no Google
           </a>`;
       }
 
