@@ -6,7 +6,8 @@
   <title>Tag Motion</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="data.js" defer></script>
+  <!-- 🔴 CORREÇÃO CRÍTICA AQUI -->
+  <script src="./data.js" defer></script>
 </head>
 
 <body class="bg-neutral-100 min-h-screen flex items-center justify-center p-4">
@@ -23,8 +24,7 @@
     <!-- CARTÃO -->
     <div id="cartao" class="p-6 space-y-6 text-center">
 
-      <img id="foto"
-        class="w-28 h-28 rounded-full mx-auto object-cover shadow-lg">
+      <img id="foto" class="w-28 h-28 rounded-full mx-auto object-cover shadow-lg">
 
       <div>
         <h1 id="nome" class="text-2xl font-bold text-neutral-900"></h1>
@@ -32,25 +32,21 @@
       </div>
 
       <div class="space-y-3">
-        <a id="whatsapp"
-          class="block bg-green-500 hover:bg-green-600 text-white py-3 rounded-2xl font-semibold transition">
+        <a id="whatsapp" class="block bg-green-500 hover:bg-green-600 text-white py-3 rounded-2xl font-semibold transition">
           Falar no WhatsApp
         </a>
 
-        <a id="email"
-          class="block bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-2xl font-semibold transition">
+        <a id="email" class="block bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-2xl font-semibold transition">
           Enviar E-mail
         </a>
 
-        <a id="site"
-          class="block bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-2xl font-semibold transition">
+        <a id="site" class="block bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-2xl font-semibold transition">
           Visitar Site
         </a>
       </div>
 
       <div class="pt-5 border-t space-y-2">
-        <button id="pix"
-          class="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-2xl font-semibold transition">
+        <button id="pix" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-2xl font-semibold transition">
           Copiar chave PIX
         </button>
         <p class="text-xs text-neutral-400">
@@ -71,15 +67,12 @@
   </div>
 
   <!-- MODAL WI-FI -->
-  <div id="wifiModal"
-    class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50">
-
+  <div id="wifiModal" class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50">
     <div class="bg-white rounded-3xl p-6 w-80 text-center space-y-4">
       <h2 class="text-lg font-bold">Wi-Fi</h2>
       <img id="wifiQR" class="mx-auto w-48 h-48">
       <p id="wifiNome" class="text-sm text-neutral-500"></p>
-      <button onclick="closeWifi()"
-        class="w-full bg-neutral-900 text-white py-2 rounded-xl">
+      <button onclick="closeWifi()" class="w-full bg-neutral-900 text-white py-2 rounded-xl">
         Fechar
       </button>
     </div>
@@ -94,85 +87,4 @@
     }
 
     function openWifi(){
-      document.getElementById('wifiModal').classList.remove('hidden');
-      document.getElementById('wifiModal').classList.add('flex');
-    }
-
-    function closeWifi(){
-      document.getElementById('wifiModal').classList.add('hidden');
-      document.getElementById('wifiModal').classList.remove('flex');
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-
-      if (!window.data) {
-        alert('Erro ao carregar data.js');
-        return;
-      }
-
-      const foto = document.getElementById('foto');
-      const nome = document.getElementById('nome');
-      const empresa = document.getElementById('empresa');
-      const whatsapp = document.getElementById('whatsapp');
-      const email = document.getElementById('email');
-      const site = document.getElementById('site');
-      const pix = document.getElementById('pix');
-      const wifiBtn = document.getElementById('wifiBtn');
-      const wifiQR = document.getElementById('wifiQR');
-      const wifiNome = document.getElementById('wifiNome');
-      const cardapio = document.getElementById('cardapio');
-      const avaliacoes = document.getElementById('avaliacoes');
-
-      foto.src = data.foto || '';
-      nome.innerText = data.nome || '';
-      empresa.innerText = data.empresa || '';
-
-      if (data.whatsapp) whatsapp.href = 'https://wa.me/' + data.whatsapp;
-      if (data.email) email.href = 'mailto:' + data.email;
-      if (data.site) site.href = data.site;
-
-      if (data.pix) {
-        pix.onclick = () => {
-          navigator.clipboard.writeText(data.pix);
-          pix.innerText = 'PIX copiado ✔';
-          setTimeout(() => pix.innerText = 'Copiar chave PIX', 2000);
-        };
-      }
-
-      if (data.wifi?.ssid) {
-        wifiBtn.classList.remove('hidden');
-        const txt = `WIFI:T:${data.wifi.tipo};S:${data.wifi.ssid};P:${data.wifi.senha};;`;
-        wifiQR.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(txt)}`;
-        wifiNome.innerText = data.wifi.ssid;
-        wifiBtn.onclick = openWifi;
-      }
-
-      if (data.cardapio) {
-        cardapio.innerHTML = '';
-        if (data.cardapio.imagem)
-          cardapio.innerHTML += `<img src="${data.cardapio.imagem}" class="rounded-2xl mb-4">`;
-        if (data.cardapio.estabelecimento)
-          cardapio.innerHTML += `<h2 class="font-bold text-xl mb-3">${data.cardapio.estabelecimento}</h2>`;
-        data.cardapio.itens?.forEach(i => {
-          cardapio.innerHTML += `
-            <div class="flex justify-between py-2 border-b text-sm">
-              <span>${i.nome}</span>
-              <strong>${i.preco}</strong>
-            </div>`;
-        });
-      }
-
-      if (data.avaliacoes?.google) {
-        avaliacoes.innerHTML = `
-          <a href="${data.avaliacoes.google}" target="_blank"
-            class="block bg-yellow-400 hover:bg-yellow-500 text-black py-4 rounded-2xl text-center font-semibold transition">
-            Avaliar no Google
-          </a>`;
-      }
-
-      show('cartao');
-    });
-  </script>
-
-</body>
-</html>
+      wifiModal.classList.remove('hidden');
