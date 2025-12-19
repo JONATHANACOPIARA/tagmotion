@@ -9,61 +9,65 @@
   <script src="data.js" defer></script>
 </head>
 
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+<body class="bg-neutral-100 min-h-screen flex items-center justify-center p-4">
 
-  <div class="bg-white max-w-md w-full rounded-2xl shadow-xl overflow-hidden">
+  <div class="bg-white max-w-md w-full rounded-3xl shadow-2xl overflow-hidden">
 
     <!-- MENU -->
-    <div class="flex border-b text-center font-semibold text-sm">
-      <button class="flex-1 py-3" onclick="show('cartao')">📇 Cartão</button>
-      <button class="flex-1 py-3" onclick="show('cardapio')">🍕 Cardápio</button>
-      <button class="flex-1 py-3" onclick="show('avaliacoes')">⭐ Avaliações</button>
+    <div class="flex text-center text-sm font-medium bg-neutral-50 border-b">
+      <button class="flex-1 py-3 hover:bg-neutral-100" onclick="show('cartao')">Cartão</button>
+      <button class="flex-1 py-3 hover:bg-neutral-100" onclick="show('cardapio')">Cardápio</button>
+      <button class="flex-1 py-3 hover:bg-neutral-100" onclick="show('avaliacoes')">Avaliações</button>
     </div>
 
     <!-- CARTÃO -->
-    <div id="cartao" class="p-6 text-center space-y-4">
+    <div id="cartao" class="p-6 space-y-6 text-center">
 
+      <!-- FOTO -->
       <img id="foto"
-        class="w-28 h-28 rounded-full mx-auto object-cover shadow">
+        class="w-28 h-28 rounded-full mx-auto object-cover shadow-lg">
 
+      <!-- IDENTIDADE -->
       <div>
-        <h1 id="nome" class="text-2xl font-bold"></h1>
-        <p id="empresa" class="text-gray-500"></p>
+        <h1 id="nome" class="text-2xl font-bold text-neutral-900"></h1>
+        <p id="empresa" class="text-neutral-500"></p>
       </div>
 
+      <!-- AÇÕES -->
       <div class="space-y-3">
+
         <a id="whatsapp"
-          class="block bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl transition">
-          WhatsApp
+          class="block bg-green-500 hover:bg-green-600 text-white py-3 rounded-2xl font-semibold transition">
+          Falar no WhatsApp
         </a>
 
         <a id="email"
-          class="block bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-xl transition">
-          Email
+          class="block bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-2xl font-semibold transition">
+          Enviar E-mail
         </a>
 
         <a id="site"
-          class="block bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl transition">
-          Site
+          class="block bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-2xl font-semibold transition">
+          Visitar Site
         </a>
+
       </div>
 
       <!-- PIX -->
-      <div class="pt-4 border-t">
+      <div class="pt-5 border-t space-y-2">
         <button id="pix"
-          class="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-xl font-semibold transition">
-          💜 Copiar PIX
+          class="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-2xl font-semibold transition">
+          Copiar chave PIX
         </button>
-
-        <p class="text-xs text-gray-400 mt-2">
-          Cole no app do seu banco para pagar
+        <p class="text-xs text-neutral-400">
+          Pagamento rápido via app do banco
         </p>
       </div>
 
       <!-- WIFI -->
       <button id="wifiBtn"
-        class="w-full bg-gray-800 hover:bg-black text-white py-3 rounded-xl transition hidden">
-        📶 Conectar ao Wi-Fi
+        class="w-full bg-neutral-900 hover:bg-black text-white py-3 rounded-2xl font-semibold transition hidden">
+        Conectar ao Wi-Fi
       </button>
 
     </div>
@@ -78,17 +82,17 @@
 
   <!-- MODAL WI-FI -->
   <div id="wifiModal"
-    class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50">
+    class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50">
 
-    <div class="bg-white rounded-2xl p-6 w-80 text-center">
-      <h2 class="text-lg font-bold mb-4">📶 Wi-Fi</h2>
+    <div class="bg-white rounded-3xl p-6 w-80 text-center space-y-4">
+      <h2 class="text-lg font-bold">Wi-Fi</h2>
 
-      <img id="wifiQR" class="mx-auto mb-4 w-48 h-48">
+      <img id="wifiQR" class="mx-auto w-48 h-48">
 
-      <p id="wifiNome" class="text-sm text-gray-600 mb-4"></p>
+      <p id="wifiNome" class="text-sm text-neutral-500"></p>
 
       <button onclick="closeWifi()"
-        class="w-full bg-gray-800 text-white py-2 rounded-xl">
+        class="w-full bg-neutral-900 text-white py-2 rounded-xl">
         Fechar
       </button>
     </div>
@@ -115,12 +119,11 @@
 
     document.addEventListener('DOMContentLoaded', () => {
 
-      if (typeof data === 'undefined') {
-        alert('Erro: data.js não carregou');
+      if (!window.data) {
+        alert('Erro ao carregar dados');
         return;
       }
 
-      // CARTÃO
       foto.src = data.foto || '';
       nome.innerText = data.nome || '';
       empresa.innerText = data.empresa || '';
@@ -129,54 +132,46 @@
       if (data.email) email.href = 'mailto:' + data.email;
       if (data.site) site.href = data.site;
 
-      // PIX (SEM QR)
       if (data.pix) {
         pix.onclick = () => {
           navigator.clipboard.writeText(data.pix);
-          pix.innerText = '✅ PIX Copiado!';
-          setTimeout(() => pix.innerText = '💜 Copiar PIX', 2000);
+          pix.innerText = 'PIX copiado ✔';
+          setTimeout(() => pix.innerText = 'Copiar chave PIX', 2000);
         };
       }
 
-      // WI-FI COM QR
-      if (data.wifi && data.wifi.ssid) {
+      if (data.wifi?.ssid) {
         wifiBtn.classList.remove('hidden');
 
-        const wifiString =
-          `WIFI:T:${data.wifi.tipo};S:${data.wifi.ssid};P:${data.wifi.senha};;`;
-
-        wifiQR.src =
-          `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(wifiString)}`;
-
-        wifiNome.innerText = `Rede: ${data.wifi.ssid}`;
+        const txt = `WIFI:T:${data.wifi.tipo};S:${data.wifi.ssid};P:${data.wifi.senha};;`;
+        wifiQR.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(txt)}`;
+        wifiNome.innerText = data.wifi.ssid;
         wifiBtn.onclick = openWifi;
       }
 
-      // CARDÁPIO
       if (data.cardapio) {
         cardapio.innerHTML = '';
 
         if (data.cardapio.imagem)
-          cardapio.innerHTML += `<img src="${data.cardapio.imagem}" class="rounded-xl mb-4">`;
+          cardapio.innerHTML += `<img src="${data.cardapio.imagem}" class="rounded-2xl mb-4">`;
 
         if (data.cardapio.estabelecimento)
           cardapio.innerHTML += `<h2 class="font-bold text-xl mb-3">${data.cardapio.estabelecimento}</h2>`;
 
         data.cardapio.itens?.forEach(i => {
           cardapio.innerHTML += `
-            <div class="flex justify-between border-b py-2 text-sm">
+            <div class="flex justify-between py-2 border-b text-sm">
               <span>${i.nome}</span>
               <strong>${i.preco}</strong>
             </div>`;
         });
       }
 
-      // AVALIAÇÕES
       if (data.avaliacoes?.google) {
         avaliacoes.innerHTML = `
           <a href="${data.avaliacoes.google}" target="_blank"
-            class="block bg-yellow-400 hover:bg-yellow-500 text-black py-4 rounded-xl text-center font-semibold transition">
-            ⭐ Avaliar no Google
+            class="block bg-yellow-400 hover:bg-yellow-500 text-black py-4 rounded-2xl text-center font-semibold transition">
+            Avaliar no Google
           </a>`;
       }
 
