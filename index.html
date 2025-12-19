@@ -2,24 +2,23 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width">
   <title>Tag Motion</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- CAMINHO OFICIAL -->
-  <script src="/tagmotion/data.js" defer></script>
+  <!-- ✅ CAMINHO RELATIVO SEGURO -->
+  <script src="./data.js?v=1.0.0" defer></script>
 </head>
 
 <body class="bg-neutral-100 min-h-screen flex items-center justify-center p-4">
 
-  <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden">
+  <div class="bg-white max-w-md w-full rounded-3xl shadow-2xl overflow-hidden">
 
     <!-- MENU -->
-    <div class="flex text-center text-xs font-semibold bg-neutral-50 border-b uppercase tracking-wide">
-      <button class="flex-1 py-3 hover:bg-neutral-100" onclick="showTab('cartao')">Contato</button>
-      <button class="flex-1 py-3 hover:bg-neutral-100" onclick="showTab('cardapio')">Serviços</button>
-      <button class="flex-1 py-3 hover:bg-neutral-100" onclick="showTab('avaliacoes')">Avaliações</button>
+    <div class="flex text-center text-sm font-medium bg-neutral-50 border-b">
+      <button class="flex-1 py-3 hover:bg-neutral-100" onclick="show('cartao')">Cartão</button>
+      <button class="flex-1 py-3 hover:bg-neutral-100" onclick="show('cardapio')">Cardápio</button>
+      <button class="flex-1 py-3 hover:bg-neutral-100" onclick="show('avaliacoes')">Avaliações</button>
     </div>
 
     <!-- CARTÃO -->
@@ -29,59 +28,47 @@
 
       <div>
         <h1 id="nome" class="text-2xl font-bold text-neutral-900"></h1>
-        <p id="empresa" class="text-neutral-500 text-sm"></p>
+        <p id="empresa" class="text-neutral-500"></p>
       </div>
 
-      <!-- CTA PRINCIPAL -->
-      <a id="whatsapp"
-        class="block bg-green-500 hover:bg-green-600 text-white py-4 rounded-2xl font-semibold text-lg transition">
-        💬 Falar agora no WhatsApp
-      </a>
-
-      <!-- AÇÕES SECUNDÁRIAS -->
-      <div class="grid grid-cols-2 gap-3">
-        <a id="email"
-          class="block bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-xl font-semibold text-sm transition">
-          ✉️ E-mail
+      <div class="space-y-3">
+        <a id="whatsapp" class="block bg-green-500 text-white py-3 rounded-2xl font-semibold">
+          Falar no WhatsApp
         </a>
 
-        <a id="site"
-          class="block bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl font-semibold text-sm transition">
-          🌐 Site
+        <a id="email" class="block bg-blue-500 text-white py-3 rounded-2xl font-semibold">
+          Enviar E-mail
+        </a>
+
+        <a id="site" class="block bg-indigo-600 text-white py-3 rounded-2xl font-semibold">
+          Visitar Site
         </a>
       </div>
 
-      <!-- PIX -->
       <div class="pt-5 border-t space-y-2">
-        <button id="pix"
-          class="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-2xl font-semibold transition">
+        <button id="pix" class="w-full bg-purple-600 text-white py-3 rounded-2xl font-semibold">
           Copiar chave PIX
         </button>
-        <p class="text-xs text-neutral-400">
-          Pagamento rápido e seguro pelo app do banco
-        </p>
+        <p class="text-xs text-neutral-400">Pagamento via app do banco</p>
       </div>
 
-      <!-- WIFI -->
       <button id="wifiBtn"
-        class="w-full bg-neutral-900 hover:bg-black text-white py-3 rounded-2xl font-semibold transition hidden">
-        📶 Conectar ao Wi-Fi
+        class="w-full bg-neutral-900 text-white py-3 rounded-2xl font-semibold hidden">
+        Conectar ao Wi-Fi
       </button>
 
     </div>
 
-    <!-- CARDÁPIO -->
     <div id="cardapio" class="p-6 hidden"></div>
-
-    <!-- AVALIAÇÕES -->
     <div id="avaliacoes" class="p-6 hidden"></div>
 
   </div>
 
-  <!-- MODAL WIFI -->
-  <div id="wifiModal" class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50">
+  <!-- MODAL WI-FI -->
+  <div id="wifiModal"
+    class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50">
     <div class="bg-white rounded-3xl p-6 w-80 text-center space-y-4">
-      <h2 class="text-lg font-bold">Conexão Wi-Fi</h2>
+      <h2 class="text-lg font-bold">Wi-Fi</h2>
       <img id="wifiQR" class="mx-auto w-48 h-48">
       <p id="wifiNome" class="text-sm text-neutral-500"></p>
       <button onclick="closeWifi()" class="w-full bg-neutral-900 text-white py-2 rounded-xl">
@@ -91,19 +78,19 @@
   </div>
 
   <script>
-    function showTab(id) {
-      ['cartao', 'cardapio', 'avaliacoes'].forEach(tab =>
-        document.getElementById(tab).classList.add('hidden')
+    function show(id){
+      ['cartao','cardapio','avaliacoes'].forEach(s =>
+        document.getElementById(s).classList.add('hidden')
       );
       document.getElementById(id).classList.remove('hidden');
     }
 
-    function openWifi() {
+    function openWifi(){
       wifiModal.classList.remove('hidden');
       wifiModal.classList.add('flex');
     }
 
-    function closeWifi() {
+    function closeWifi(){
       wifiModal.classList.add('hidden');
       wifiModal.classList.remove('flex');
     }
@@ -114,19 +101,6 @@
         alert('Erro ao carregar dados');
         return;
       }
-
-      const foto = document.getElementById('foto');
-      const nome = document.getElementById('nome');
-      const empresa = document.getElementById('empresa');
-      const whatsapp = document.getElementById('whatsapp');
-      const email = document.getElementById('email');
-      const site = document.getElementById('site');
-      const pix = document.getElementById('pix');
-      const wifiBtn = document.getElementById('wifiBtn');
-      const wifiQR = document.getElementById('wifiQR');
-      const wifiNome = document.getElementById('wifiNome');
-      const cardapio = document.getElementById('cardapio');
-      const avaliacoes = document.getElementById('avaliacoes');
 
       foto.src = data.foto || '';
       nome.textContent = data.nome || '';
@@ -146,10 +120,10 @@
 
       if (data.wifi?.ssid) {
         wifiBtn.classList.remove('hidden');
-        const wifiText = `WIFI:T:${data.wifi.tipo};S:${data.wifi.ssid};P:${data.wifi.senha};;`;
+        const txt = `WIFI:T:${data.wifi.tipo};S:${data.wifi.ssid};P:${data.wifi.senha};;`;
         wifiQR.src =
-          `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(wifiText)}`;
-        wifiNome.textContent = `Rede: ${data.wifi.ssid}`;
+          `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(txt)}`;
+        wifiNome.textContent = data.wifi.ssid;
         wifiBtn.onclick = openWifi;
       }
 
@@ -157,15 +131,13 @@
         cardapio.innerHTML = '';
         if (data.cardapio.imagem)
           cardapio.innerHTML += `<img src="${data.cardapio.imagem}" class="rounded-2xl mb-4">`;
-
         if (data.cardapio.estabelecimento)
           cardapio.innerHTML += `<h2 class="font-bold text-xl mb-3">${data.cardapio.estabelecimento}</h2>`;
-
-        data.cardapio.itens?.forEach(item => {
+        data.cardapio.itens?.forEach(i => {
           cardapio.innerHTML += `
             <div class="flex justify-between py-2 border-b text-sm">
-              <span>${item.nome}</span>
-              <strong>${item.preco}</strong>
+              <span>${i.nome}</span>
+              <strong>${i.preco}</strong>
             </div>`;
         });
       }
@@ -173,12 +145,12 @@
       if (data.avaliacoes?.google) {
         avaliacoes.innerHTML = `
           <a href="${data.avaliacoes.google}" target="_blank"
-            class="block bg-yellow-400 hover:bg-yellow-500 text-black py-4 rounded-2xl text-center font-semibold transition">
-            ⭐ Avaliar no Google
+            class="block bg-yellow-400 text-black py-4 rounded-2xl text-center font-semibold">
+            Avaliar no Google
           </a>`;
       }
 
-      showTab('cartao');
+      show('cartao');
     });
   </script>
 
