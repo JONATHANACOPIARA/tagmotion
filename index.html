@@ -45,6 +45,11 @@
         Copiar PIX
       </button>
 
+      <button id="pixQRBtn"
+        class="block w-full bg-purple-600 text-white py-3 rounded-xl mb-3 hidden">
+        💰 Pagar com PIX
+      </button>
+
       <button id="wifiBtn"
         class="block w-full bg-gray-800 text-white py-3 rounded-xl hidden">
         📶 Conectar ao Wi-Fi
@@ -78,6 +83,26 @@
     </div>
   </div>
 
+  <!-- MODAL PIX -->
+  <div id="pixModal"
+    class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50">
+
+    <div class="bg-white rounded-2xl p-6 w-80 text-center">
+      <h2 class="text-lg font-bold mb-4">💰 Pagar com PIX</h2>
+
+      <img id="pixQR" class="mx-auto mb-4 w-48 h-48">
+
+      <p class="text-sm text-gray-600 mb-4">
+        Escaneie o QR Code para pagar
+      </p>
+
+      <button onclick="closePix()"
+        class="w-full bg-purple-600 text-white py-2 rounded-xl">
+        Fechar
+      </button>
+    </div>
+  </div>
+
   <!-- SCRIPT -->
   <script>
     function show(id){
@@ -95,6 +120,18 @@
 
     function closeWifi(){
       const modal = document.getElementById('wifiModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function openPix(){
+      const modal = document.getElementById('pixModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closePix(){
+      const modal = document.getElementById('pixModal');
       modal.classList.add('hidden');
       modal.classList.remove('flex');
     }
@@ -120,13 +157,22 @@
       if (data.site)
         site.href = data.site;
 
-      if (data.pix)
+      if (data.pix) {
         pix.onclick = () => {
           navigator.clipboard.writeText(data.pix);
           alert('PIX copiado!');
         };
 
-      // WI-FI COM QR CODE
+        pixQRBtn.classList.remove('hidden');
+
+        const pixQrUrl =
+          `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(data.pix)}`;
+
+        pixQR.src = pixQrUrl;
+        pixQRBtn.onclick = openPix;
+      }
+
+      // WI-FI
       if (data.wifi && data.wifi.ssid) {
 
         wifiBtn.classList.remove('hidden');
@@ -167,11 +213,17 @@
       }
 
       // AVALIAÇÕES
-      if (data.avaliacoes?.google) {
-        avaliacoes.innerHTML = `
-          <a href="${data.avaliacoes.google}" target="_blank"
+      const areaAvaliacoes = document.getElementById('avaliacoes');
+
+      if (
+        data.avaliacoes &&
+        typeof data.avaliacoes.google === 'string' &&
+        data.avaliacoes.google.startsWith('http')
+      ) {
+        areaAvaliacoes.innerHTML = `
+          <a href="${data.avaliacoes.google}" target="_blank" rel="noopener"
             class="block bg-yellow-400 text-black py-4 rounded-xl text-center font-semibold">
-            Ver Avaliações no Google
+            ⭐ Avaliar no Google
           </a>
         `;
       }
