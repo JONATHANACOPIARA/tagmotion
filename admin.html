@@ -2,82 +2,69 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Tag Motion — Painel Admin</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel Admin - Tag Motion</title>
+  <meta name="viewport" content="width=device-width">
 
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-neutral-100 min-h-screen flex items-center justify-center p-4">
+<body class="bg-neutral-100 min-h-screen p-6">
 
-  <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl p-6 space-y-6">
+  <div class="max-w-3xl mx-auto bg-white rounded-3xl shadow-xl p-6 space-y-6">
 
-    <h1 class="text-2xl font-bold text-center">🔐 Tag Motion — Painel Admin</h1>
-    <p class="text-center text-sm text-neutral-500">
-      Preencha os dados abaixo e gere o <strong>data.js</strong>
-    </p>
+    <h1 class="text-2xl font-bold text-center">Painel Admin – Tag Motion NFC</h1>
 
-    <!-- ================= CARTÃO ================= -->
-    <section class="space-y-3">
-      <h2 class="font-semibold text-lg">📇 Cartão de Visita</h2>
+    <!-- DADOS PRINCIPAIS -->
+    <div class="grid md:grid-cols-2 gap-4">
+      <input id="nome" class="input" placeholder="Nome">
+      <input id="empresa" class="input" placeholder="Empresa">
+      <input id="foto" class="input md:col-span-2" placeholder="Link da foto (imagem direta)">
+      <input id="whatsapp" class="input" placeholder="WhatsApp (5588...)">
+      <input id="email" class="input" placeholder="E-mail">
+      <input id="site" class="input md:col-span-2" placeholder="Site / Instagram">
+    </div>
 
-      <input id="nome" class="w-full p-3 border rounded-xl" placeholder="Nome">
-      <input id="empresa" class="w-full p-3 border rounded-xl" placeholder="Empresa / Cargo">
-      <input id="foto" class="w-full p-3 border rounded-xl" placeholder="URL da foto (imagem direta)">
-      <input id="whatsapp" class="w-full p-3 border rounded-xl" placeholder="WhatsApp (somente números)">
-      <input id="email" class="w-full p-3 border rounded-xl" placeholder="E-mail">
-      <input id="site" class="w-full p-3 border rounded-xl" placeholder="Site ou Instagram">
-    </section>
+    <!-- PIX -->
+    <div class="border-t pt-4 space-y-2">
+      <h2 class="font-semibold">PIX</h2>
+      <input id="pix" class="input" placeholder="Chave PIX">
+    </div>
 
-    <!-- ================= PIX ================= -->
-    <section class="space-y-3">
-      <h2 class="font-semibold text-lg">💜 PIX</h2>
-      <input id="pix" class="w-full p-3 border rounded-xl" placeholder="Chave PIX">
-    </section>
-
-    <!-- ================= WIFI ================= -->
-    <section class="space-y-3">
-      <h2 class="font-semibold text-lg">📶 Wi-Fi</h2>
-      <input id="wifi_ssid" class="w-full p-3 border rounded-xl" placeholder="Nome da rede (SSID)">
-      <input id="wifi_senha" class="w-full p-3 border rounded-xl" placeholder="Senha do Wi-Fi">
-      <select id="wifi_tipo" class="w-full p-3 border rounded-xl">
-        <option value="WPA">WPA / WPA2</option>
+    <!-- WIFI -->
+    <div class="border-t pt-4 space-y-2">
+      <h2 class="font-semibold">Wi-Fi</h2>
+      <input id="wifi_ssid" class="input" placeholder="Nome da rede (SSID)">
+      <input id="wifi_senha" class="input" placeholder="Senha">
+      <select id="wifi_tipo" class="input">
+        <option value="WPA">WPA/WPA2</option>
         <option value="WEP">WEP</option>
         <option value="nopass">Sem senha</option>
       </select>
-    </section>
+    </div>
 
-    <!-- ================= CARDÁPIO ================= -->
-    <section class="space-y-3">
-      <h2 class="font-semibold text-lg">🍕 Cardápio / Serviços</h2>
-      <input id="estabelecimento" class="w-full p-3 border rounded-xl" placeholder="Nome do estabelecimento">
-      <input id="imagem" class="w-full p-3 border rounded-xl" placeholder="URL da imagem do cardápio">
+    <!-- CARDÁPIO -->
+    <div class="border-t pt-4 space-y-2">
+      <h2 class="font-semibold">Cardápio</h2>
+      <input id="cardapio_nome" class="input" placeholder="Nome do estabelecimento">
+      <input id="cardapio_img" class="input" placeholder="Link da imagem do cardápio">
 
-      <textarea id="itens" rows="5"
-        class="w-full p-3 border rounded-xl"
-        placeholder="Item - Preço (1 por linha)&#10;Ex: Pizza Grande - R$ 45,00"></textarea>
-    </section>
+      <textarea id="cardapio_itens" class="input h-32"
+        placeholder="Itens do cardápio (um por linha)
+Ex:
+Produto 1 - R$ 10
+Produto 2 - R$ 20"></textarea>
+    </div>
 
-    <!-- ================= AVALIAÇÕES ================= -->
-    <section class="space-y-3">
-      <h2 class="font-semibold text-lg">⭐ Avaliações Google</h2>
-      <input id="google" class="w-full p-3 border rounded-xl"
-        placeholder="Link direto para avaliar no Google">
-    </section>
+    <!-- AVALIAÇÕES -->
+    <div class="border-t pt-4 space-y-2">
+      <h2 class="font-semibold">Avaliações Google</h2>
+      <input id="avaliacoes" class="input" placeholder="Link direto para avaliar no Google">
+    </div>
 
-    <!-- ================= AÇÕES ================= -->
+    <!-- BOTÃO -->
     <button onclick="gerar()"
-      class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-4 rounded-2xl font-semibold text-lg">
+      class="w-full bg-black text-white py-3 rounded-2xl font-semibold">
       Gerar data.js
-    </button>
-
-    <textarea id="resultado" rows="12"
-      class="w-full p-4 border rounded-xl font-mono text-sm"
-      placeholder="O conteúdo do data.js aparecerá aqui"></textarea>
-
-    <button onclick="copiar()"
-      class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-semibold">
-      Copiar data.js
     </button>
 
   </div>
@@ -85,50 +72,61 @@
   <script>
     function gerar() {
 
-      const itens = document.getElementById('itens').value
+      const itens = document.getElementById('cardapio_itens').value
         .split('\n')
-        .filter(l => l.trim())
+        .filter(l => l.trim() !== '')
         .map(l => {
           const [nome, preco] = l.split('-');
-          return `{ nome: "${nome.trim()}", preco: "${(preco || '').trim()}" }`;
-        }).join(',\n        ');
+          return { nome: nome?.trim(), preco: preco?.trim() || '' };
+        });
 
-      const js = `window.data = {
-  nome: "${nome.value}",
-  empresa: "${empresa.value}",
-  foto: "${foto.value}",
-  whatsapp: "${whatsapp.value}",
-  email: "${email.value}",
-  site: "${site.value}",
-  pix: "${pix.value}",
+      const data = {
+        nome: nome.value,
+        empresa: empresa.value,
+        foto: foto.value,
 
-  wifi: {
-    ssid: "${wifi_ssid.value}",
-    senha: "${wifi_senha.value}",
-    tipo: "${wifi_tipo.value}"
-  },
+        whatsapp: whatsapp.value,
+        email: email.value,
+        site: site.value,
 
-  cardapio: {
-    estabelecimento: "${estabelecimento.value}",
-    imagem: "${imagem.value}",
-    itens: [
-        ${itens}
-    ]
-  },
+        pix: pix.value,
 
-  avaliacoes: {
-    google: "${google.value}"
-  }
-};`;
+        wifi: wifi_ssid.value ? {
+          tipo: wifi_tipo.value,
+          ssid: wifi_ssid.value,
+          senha: wifi_senha.value
+        } : null,
 
-      resultado.value = js;
-    }
+        cardapio: {
+          estabelecimento: cardapio_nome.value,
+          imagem: cardapio_img.value,
+          itens: itens
+        },
 
-    function copiar() {
-      navigator.clipboard.writeText(resultado.value);
-      alert('data.js copiado com sucesso!');
+        avaliacoes: {
+          google: avaliacoes.value
+        }
+      };
+
+      const conteudo =
+`const data = ${JSON.stringify(data, null, 2)};`;
+
+      const blob = new Blob([conteudo], { type: 'application/javascript' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'data.js';
+      a.click();
     }
   </script>
+
+  <style>
+    .input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #ddd;
+    }
+  </style>
 
 </body>
 </html>
