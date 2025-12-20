@@ -6,7 +6,7 @@
   <title>Tag Motion</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="/tagmotion/data.js"></script>
+  <script src="/tagmotion/data.js?v=3"></script>
 </head>
 
 <body class="bg-neutral-100 min-h-screen flex items-center justify-center p-4">
@@ -23,7 +23,8 @@
     <!-- CARTÃO -->
     <div id="cartao" class="p-6 space-y-6 text-center">
 
-      <img id="foto" class="w-28 h-28 rounded-full mx-auto object-cover shadow-lg">
+      <img id="foto"
+        class="w-28 h-28 rounded-full mx-auto object-cover shadow-lg hidden">
 
       <div>
         <h1 id="nome" class="text-2xl font-bold"></h1>
@@ -40,12 +41,13 @@
         </a>
 
         <a id="site" class="block bg-indigo-600 text-white py-3 rounded-2xl font-semibold">
-          Site
+          Link
         </a>
       </div>
 
       <div class="pt-4 border-t">
-        <button id="pix" class="w-full bg-purple-600 text-white py-3 rounded-2xl font-semibold">
+        <button id="pix"
+          class="w-full bg-purple-600 text-white py-3 rounded-2xl font-semibold">
           Copiar PIX
         </button>
       </div>
@@ -72,7 +74,8 @@
       <h2 class="font-bold text-lg">Wi-Fi</h2>
       <img id="wifiQR" class="mx-auto w-48 h-48">
       <p id="wifiNome" class="text-sm text-neutral-500"></p>
-      <button onclick="closeWifi()" class="w-full bg-neutral-900 text-white py-2 rounded-xl">
+      <button onclick="closeWifi()"
+        class="w-full bg-neutral-900 text-white py-2 rounded-xl">
         Fechar
       </button>
     </div>
@@ -96,11 +99,15 @@
       wifiModal.classList.remove('flex');
     }
 
-    /* ====== DADOS ====== */
+    /* ========= DADOS ========= */
 
-    foto.src = data.foto || '';
     nome.textContent = data.nome || '';
     empresa.textContent = data.empresa || '';
+
+    if (data.foto) {
+      foto.src = data.foto;
+      foto.classList.remove('hidden');
+    }
 
     whatsapp.href = 'https://wa.me/' + data.whatsapp;
     email.href = 'mailto:' + data.email;
@@ -125,14 +132,19 @@
     /* CARDÁPIO */
     if (data.cardapio) {
       if (data.cardapio.imagem) {
-        cardapio.innerHTML += `<img src="${data.cardapio.imagem}" class="rounded-2xl">`;
+        cardapio.innerHTML += `
+          <img src="${data.cardapio.imagem}"
+               class="rounded-2xl shadow">
+        `;
       }
 
       if (data.cardapio.estabelecimento) {
-        cardapio.innerHTML += `<h2 class="font-bold text-xl">${data.cardapio.estabelecimento}</h2>`;
+        cardapio.innerHTML += `
+          <h2 class="font-bold text-xl">${data.cardapio.estabelecimento}</h2>
+        `;
       }
 
-      data.cardapio.itens.forEach(i => {
+      data.cardapio.itens?.forEach(i => {
         cardapio.innerHTML += `
           <div class="flex justify-between border-b py-2 text-sm">
             <span>${i.nome}</span>
