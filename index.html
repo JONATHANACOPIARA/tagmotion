@@ -13,29 +13,69 @@
 
   <div class="bg-white max-w-md w-full rounded-3xl shadow-2xl overflow-hidden">
 
+    <!-- MENU -->
     <div class="flex text-center text-sm font-medium bg-neutral-50 border-b">
       <button class="flex-1 py-3" onclick="show('cartao')">Cartão</button>
       <button class="flex-1 py-3" onclick="show('cardapio')">Cardápio</button>
       <button class="flex-1 py-3" onclick="show('avaliacoes')">Avaliações</button>
     </div>
 
+    <!-- CARTÃO -->
     <div id="cartao" class="p-6 space-y-6 text-center">
+
       <img id="foto" class="w-28 h-28 rounded-full mx-auto object-cover shadow-lg">
 
-      <h1 id="nome" class="text-2xl font-bold"></h1>
-      <p id="empresa" class="text-neutral-500"></p>
+      <div>
+        <h1 id="nome" class="text-2xl font-bold"></h1>
+        <p id="empresa" class="text-neutral-500"></p>
+      </div>
 
-      <a id="whatsapp" class="block bg-green-500 text-white py-3 rounded-2xl font-semibold">WhatsApp</a>
-      <a id="email" class="block bg-blue-500 text-white py-3 rounded-2xl font-semibold">Email</a>
-      <a id="site" class="block bg-indigo-600 text-white py-3 rounded-2xl font-semibold">Site</a>
+      <div class="space-y-3">
+        <a id="whatsapp" class="block bg-green-500 text-white py-3 rounded-2xl font-semibold">
+          WhatsApp
+        </a>
 
-      <button id="pix" class="w-full bg-purple-600 text-white py-3 rounded-2xl font-semibold">
-        Copiar PIX
+        <a id="email" class="block bg-blue-500 text-white py-3 rounded-2xl font-semibold">
+          Email
+        </a>
+
+        <a id="site" class="block bg-indigo-600 text-white py-3 rounded-2xl font-semibold">
+          Site
+        </a>
+      </div>
+
+      <div class="pt-4 border-t">
+        <button id="pix" class="w-full bg-purple-600 text-white py-3 rounded-2xl font-semibold">
+          Copiar PIX
+        </button>
+      </div>
+
+      <button id="wifiBtn"
+        class="w-full bg-neutral-900 text-white py-3 rounded-2xl font-semibold hidden">
+        Conectar ao Wi-Fi
       </button>
+
     </div>
 
-    <div id="cardapio" class="p-6 hidden"></div>
+    <!-- CARDÁPIO -->
+    <div id="cardapio" class="p-6 hidden space-y-4"></div>
+
+    <!-- AVALIAÇÕES -->
     <div id="avaliacoes" class="p-6 hidden"></div>
+
+  </div>
+
+  <!-- MODAL WIFI -->
+  <div id="wifiModal"
+    class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-3xl p-6 w-80 text-center space-y-4">
+      <h2 class="font-bold text-lg">Wi-Fi</h2>
+      <img id="wifiQR" class="mx-auto w-48 h-48">
+      <p id="wifiNome" class="text-sm text-neutral-500"></p>
+      <button onclick="closeWifi()" class="w-full bg-neutral-900 text-white py-2 rounded-xl">
+        Fechar
+      </button>
+    </div>
   </div>
 
   <script>
@@ -46,19 +86,71 @@
       document.getElementById(id).classList.remove('hidden');
     }
 
-    // 🔥 USO DIRETO DO data.js
-    document.getElementById('foto').src = data.foto || '';
-    document.getElementById('nome').innerText = data.nome || '';
-    document.getElementById('empresa').innerText = data.empresa || '';
+    function openWifi(){
+      wifiModal.classList.remove('hidden');
+      wifiModal.classList.add('flex');
+    }
 
-    document.getElementById('whatsapp').href = 'https://wa.me/' + data.whatsapp;
-    document.getElementById('email').href = 'mailto:' + data.email;
-    document.getElementById('site').href = data.site;
+    function closeWifi(){
+      wifiModal.classList.add('hidden');
+      wifiModal.classList.remove('flex');
+    }
 
-    document.getElementById('pix').onclick = () => {
+    /* ====== DADOS ====== */
+
+    foto.src = data.foto || '';
+    nome.textContent = data.nome || '';
+    empresa.textContent = data.empresa || '';
+
+    whatsapp.href = 'https://wa.me/' + data.whatsapp;
+    email.href = 'mailto:' + data.email;
+    site.href = data.site;
+
+    pix.onclick = () => {
       navigator.clipboard.writeText(data.pix);
-      alert('PIX copiado!');
+      pix.textContent = 'PIX copiado ✔';
+      setTimeout(() => pix.textContent = 'Copiar PIX', 2000);
     };
+
+    /* WIFI */
+    if (data.wifi?.ssid) {
+      wifiBtn.classList.remove('hidden');
+      const txt = `WIFI:T:${data.wifi.tipo};S:${data.wifi.ssid};P:${data.wifi.senha};;`;
+      wifiQR.src =
+        `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(txt)}`;
+      wifiNome.textContent = data.wifi.ssid;
+      wifiBtn.onclick = openWifi;
+    }
+
+    /* CARDÁPIO */
+    if (data.cardapio) {
+      if (data.cardapio.imagem) {
+        cardapio.innerHTML += `<img src="${data.cardapio.imagem}" class="rounded-2xl">`;
+      }
+
+      if (data.cardapio.estabelecimento) {
+        cardapio.innerHTML += `<h2 class="font-bold text-xl">${data.cardapio.estabelecimento}</h2>`;
+      }
+
+      data.cardapio.itens.forEach(i => {
+        cardapio.innerHTML += `
+          <div class="flex justify-between border-b py-2 text-sm">
+            <span>${i.nome}</span>
+            <strong>${i.preco}</strong>
+          </div>
+        `;
+      });
+    }
+
+    /* AVALIAÇÕES */
+    if (data.avaliacoes?.google) {
+      avaliacoes.innerHTML = `
+        <a href="${data.avaliacoes.google}" target="_blank"
+          class="block bg-yellow-400 text-black py-4 rounded-2xl text-center font-semibold">
+          Avaliar no Google
+        </a>
+      `;
+    }
 
     show('cartao');
   </script>
