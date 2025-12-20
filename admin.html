@@ -4,33 +4,32 @@
   <meta charset="UTF-8">
   <title>Tag Motion — Painel Admin</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-neutral-100 min-h-screen flex items-center justify-center p-4">
 
-  <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl p-6 space-y-6">
+  <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl p-6 space-y-6">
 
-    <h1 class="text-2xl font-bold text-center">🔐 Tag Motion — Admin</h1>
+    <h1 class="text-xl font-bold text-center">🔐 Tag Motion — Admin</h1>
 
     <!-- CARTÃO -->
     <div class="space-y-3">
       <h2 class="font-semibold">📇 Cartão</h2>
       <input id="nome" class="input" placeholder="Nome">
       <input id="empresa" class="input" placeholder="Empresa / Cargo">
-      <input id="foto" class="input" placeholder="URL da foto (direta)">
-      <input id="whatsapp" class="input" placeholder="WhatsApp (ex: 5588999999999)">
+      <input id="foto" class="input" placeholder="URL da Foto (direto .jpg/.png)">
+      <input id="whatsapp" class="input" placeholder="WhatsApp (somente números)">
       <input id="email" class="input" placeholder="E-mail">
-      <input id="site" class="input" placeholder="Site / Instagram">
+      <input id="site" class="input" placeholder="Site ou Instagram (https://...)">
       <input id="pix" class="input" placeholder="Chave PIX">
     </div>
 
-    <!-- WI-FI -->
+    <!-- WIFI -->
     <div class="space-y-3">
       <h2 class="font-semibold">📶 Wi-Fi</h2>
       <input id="wifi_ssid" class="input" placeholder="Nome da rede">
-      <input id="wifi_senha" class="input" placeholder="Senha">
+      <input id="wifi_senha" class="input" placeholder="Senha do Wi-Fi">
       <select id="wifi_tipo" class="input">
         <option value="WPA">WPA/WPA2</option>
         <option value="WEP">WEP</option>
@@ -43,13 +42,13 @@
       <h2 class="font-semibold">🍕 Cardápio</h2>
       <input id="estabelecimento" class="input" placeholder="Nome do estabelecimento">
       <input id="imagem" class="input" placeholder="URL da imagem do cardápio">
-      <textarea id="itens" class="input" rows="4"
-        placeholder="Produto - Preço (um por linha)"></textarea>
+      <textarea id="itens" rows="4" class="input"
+        placeholder="Produto - Preço (1 por linha)"></textarea>
     </div>
 
     <!-- AVALIAÇÕES -->
     <div class="space-y-3">
-      <h2 class="font-semibold">⭐ Avaliações</h2>
+      <h2 class="font-semibold">⭐ Avaliações Google</h2>
       <input id="google" class="input" placeholder="Link direto para avaliar no Google">
     </div>
 
@@ -59,26 +58,28 @@
       Gerar data.js
     </button>
 
+    <p class="text-xs text-neutral-500 text-center">
+      O arquivo será baixado automaticamente
+    </p>
+
   </div>
 
   <script>
-    function gerarData() {
+    function gerarData(){
 
       const itens = document.getElementById('itens').value
         .split('\n')
         .filter(l => l.trim())
         .map(l => {
-          const [n, p] = l.split('-');
-          return {
-            nome: n.trim(),
-            preco: (p || '').trim()
-          };
+          const [n,p] = l.split('-');
+          return { nome: n.trim(), preco: (p||'').trim() };
         });
 
       const data = {
         nome: nome.value,
         empresa: empresa.value,
         foto: foto.value,
+
         whatsapp: whatsapp.value,
         email: email.value,
         site: site.value,
@@ -90,15 +91,15 @@
           tipo: wifi_tipo.value
         } : null,
 
-        cardapio: {
+        cardapio: estabelecimento.value ? {
           estabelecimento: estabelecimento.value,
           imagem: imagem.value,
           itens: itens
-        },
+        } : null,
 
-        avaliacoes: {
+        avaliacoes: google.value ? {
           google: google.value
-        }
+        } : null
       };
 
       const conteudo =
@@ -113,11 +114,11 @@
   </script>
 
   <style>
-    .input {
-      width: 100%;
-      padding: 12px;
-      border-radius: 14px;
-      border: 1px solid #ddd;
+    .input{
+      width:100%;
+      padding:12px;
+      border-radius:14px;
+      border:1px solid #ddd;
     }
   </style>
 
