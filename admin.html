@@ -2,125 +2,115 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Tag Motion — Painel Admin</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerador Tag Motion</title>
+  <meta name="viewport" content="width=device-width">
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-neutral-100 min-h-screen flex items-center justify-center p-4">
+<body class="bg-neutral-100 min-h-screen flex items-center justify-center p-6">
 
-  <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl p-6 space-y-6">
+  <div class="bg-white w-full max-w-xl rounded-3xl shadow-xl p-6 space-y-4">
+    <h1 class="text-2xl font-bold text-center">Gerador de Página NFC</h1>
 
-    <h1 class="text-xl font-bold text-center">🔐 Tag Motion — Admin</h1>
+    <input id="nome" class="input" placeholder="Nome">
+    <input id="empresa" class="input" placeholder="Empresa">
+    <input id="foto" class="input" placeholder="URL da foto">
 
-    <!-- CARTÃO -->
-    <div class="space-y-3">
-      <h2 class="font-semibold">📇 Cartão</h2>
-      <input id="nome" class="input" placeholder="Nome">
-      <input id="empresa" class="input" placeholder="Empresa / Cargo">
-      <input id="foto" class="input" placeholder="URL da Foto (direto .jpg/.png)">
-      <input id="whatsapp" class="input" placeholder="WhatsApp (somente números)">
-      <input id="email" class="input" placeholder="E-mail">
-      <input id="site" class="input" placeholder="Site ou Instagram (https://...)">
-      <input id="pix" class="input" placeholder="Chave PIX">
-    </div>
+    <input id="whatsapp" class="input" placeholder="WhatsApp (somente números)">
+    <input id="email" class="input" placeholder="E-mail">
+    <input id="site" class="input" placeholder="Site / Instagram">
 
-    <!-- WIFI -->
-    <div class="space-y-3">
-      <h2 class="font-semibold">📶 Wi-Fi</h2>
-      <input id="wifi_ssid" class="input" placeholder="Nome da rede">
-      <input id="wifi_senha" class="input" placeholder="Senha do Wi-Fi">
-      <select id="wifi_tipo" class="input">
-        <option value="WPA">WPA/WPA2</option>
-        <option value="WEP">WEP</option>
-        <option value="nopass">Sem senha</option>
-      </select>
-    </div>
+    <input id="pix" class="input" placeholder="Chave PIX">
 
-    <!-- CARDÁPIO -->
-    <div class="space-y-3">
-      <h2 class="font-semibold">🍕 Cardápio</h2>
-      <input id="estabelecimento" class="input" placeholder="Nome do estabelecimento">
-      <input id="imagem" class="input" placeholder="URL da imagem do cardápio">
-      <textarea id="itens" rows="4" class="input"
-        placeholder="Produto - Preço (1 por linha)"></textarea>
-    </div>
+    <hr>
+    <h2 class="font-semibold">Wi-Fi</h2>
+    <input id="wifi_ssid" class="input" placeholder="Nome da rede">
+    <input id="wifi_senha" class="input" placeholder="Senha">
 
-    <!-- AVALIAÇÕES -->
-    <div class="space-y-3">
-      <h2 class="font-semibold">⭐ Avaliações Google</h2>
-      <input id="google" class="input" placeholder="Link direto para avaliar no Google">
-    </div>
+    <hr>
+    <h2 class="font-semibold">Google Avaliações</h2>
+    <input id="google" class="input" placeholder="Link direto para avaliar">
 
-    <!-- BOTÃO -->
-    <button onclick="gerarData()"
+    <button onclick="gerar()"
       class="w-full bg-black text-white py-3 rounded-2xl font-semibold">
-      Gerar data.js
+      Gerar página da Tag
     </button>
-
-    <p class="text-xs text-neutral-500 text-center">
-      O arquivo será baixado automaticamente
-    </p>
-
   </div>
 
-  <script>
-    function gerarData(){
+<script>
+function gerar(){
+  const d = {
+    nome: nome.value,
+    empresa: empresa.value,
+    foto: foto.value,
+    whatsapp: whatsapp.value,
+    email: email.value,
+    site: site.value,
+    pix: pix.value,
+    wifi: {
+      ssid: wifi_ssid.value,
+      senha: wifi_senha.value
+    },
+    google: google.value
+  };
 
-      const itens = document.getElementById('itens').value
-        .split('\n')
-        .filter(l => l.trim())
-        .map(l => {
-          const [n,p] = l.split('-');
-          return { nome: n.trim(), preco: (p||'').trim() };
-        });
+  const html = `
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>${d.empresa}</title>
+<meta name="viewport" content="width=device-width">
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
 
-      const data = {
-        nome: nome.value,
-        empresa: empresa.value,
-        foto: foto.value,
+<body class="bg-neutral-100 min-h-screen flex items-center justify-center p-4">
+<div class="bg-white max-w-md w-full rounded-3xl shadow-2xl overflow-hidden p-6 text-center space-y-5">
 
-        whatsapp: whatsapp.value,
-        email: email.value,
-        site: site.value,
-        pix: pix.value,
+<img src="${d.foto}" class="w-28 h-28 rounded-full mx-auto object-cover shadow">
 
-        wifi: wifi_ssid.value ? {
-          ssid: wifi_ssid.value,
-          senha: wifi_senha.value,
-          tipo: wifi_tipo.value
-        } : null,
+<h1 class="text-2xl font-bold">${d.nome}</h1>
+<p class="text-neutral-500">${d.empresa}</p>
 
-        cardapio: estabelecimento.value ? {
-          estabelecimento: estabelecimento.value,
-          imagem: imagem.value,
-          itens: itens
-        } : null,
+<a href="https://wa.me/${d.whatsapp}" class="block bg-green-500 text-white py-3 rounded-2xl font-semibold">WhatsApp</a>
+<a href="mailto:${d.email}" class="block bg-blue-500 text-white py-3 rounded-2xl font-semibold">E-mail</a>
+<a href="${d.site}" target="_blank" class="block bg-indigo-600 text-white py-3 rounded-2xl font-semibold">Site</a>
 
-        avaliacoes: google.value ? {
-          google: google.value
-        } : null
-      };
+<button onclick="navigator.clipboard.writeText('${d.pix}')" class="w-full bg-purple-600 text-white py-3 rounded-2xl font-semibold">
+Copiar PIX
+</button>
 
-      const conteudo =
-`const data = ${JSON.stringify(data, null, 2)};`;
+${d.wifi.ssid ? `
+<button onclick="alert('Wi-Fi: ${d.wifi.ssid}\\nSenha: ${d.wifi.senha}')" class="w-full bg-neutral-900 text-white py-3 rounded-2xl font-semibold">
+Wi-Fi
+</button>` : ''}
 
-      const blob = new Blob([conteudo], { type: 'application/javascript' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'data.js';
-      a.click();
-    }
-  </script>
+${d.google ? `
+<a href="${d.google}" target="_blank" class="block bg-yellow-400 text-black py-3 rounded-2xl font-semibold">
+Avaliar no Google
+</a>` : ''}
 
-  <style>
-    .input{
-      width:100%;
-      padding:12px;
-      border-radius:14px;
-      border:1px solid #ddd;
-    }
-  </style>
+</div>
+</body>
+</html>
+`;
+
+  const blob = new Blob([html], {type:'text/html'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'index.html';
+  a.click();
+}
+</script>
+
+<style>
+.input{
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  border:1px solid #ddd;
+}
+</style>
 
 </body>
 </html>
