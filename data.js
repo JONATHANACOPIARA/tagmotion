@@ -1,4 +1,4 @@
-const data = {
+      {const data = {
   "nome": "Jonathan Guilherme",
   "empresa": "CEO da Empresa",
   "foto": "https://i.imgur.com/e1g5ycm.jpeg",
@@ -24,6 +24,19 @@ const data = {
         "preco": "R$ 70,00"
       },
       {
+        "nome": "Spot Comercial Padrão",
+        "preco": "R$ 50,00"
+      },
+      {
+        "nome": "Spot Comercial Padrão",
+        "preco": "R$ 50,00"
+      }
+    ]
+  },
+  "avaliacoes": {
+    "google": "https://g.page/r/CbAzn_5LkDqLEBM/review"
+  }
+};
         "nome": "Spot Comercial Padrão",
         "preco": "R$ 50,00"
       },
