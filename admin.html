@@ -2,38 +2,34 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Painel Admin - Tag Motion</title>
-  <meta name="viewport" content="width=device-width">
+  <title>Tag Motion — Painel Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-neutral-100 min-h-screen p-6">
+<body class="bg-neutral-100 min-h-screen flex items-center justify-center p-4">
 
-  <div class="max-w-3xl mx-auto bg-white rounded-3xl shadow-xl p-6 space-y-6">
+  <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl p-6 space-y-6">
 
-    <h1 class="text-2xl font-bold text-center">Painel Admin – Tag Motion NFC</h1>
+    <h1 class="text-2xl font-bold text-center">🔐 Tag Motion — Admin</h1>
 
-    <!-- DADOS PRINCIPAIS -->
-    <div class="grid md:grid-cols-2 gap-4">
+    <!-- CARTÃO -->
+    <div class="space-y-3">
+      <h2 class="font-semibold">📇 Cartão</h2>
       <input id="nome" class="input" placeholder="Nome">
-      <input id="empresa" class="input" placeholder="Empresa">
-      <input id="foto" class="input md:col-span-2" placeholder="Link da foto (imagem direta)">
-      <input id="whatsapp" class="input" placeholder="WhatsApp (5588...)">
+      <input id="empresa" class="input" placeholder="Empresa / Cargo">
+      <input id="foto" class="input" placeholder="URL da foto (direta)">
+      <input id="whatsapp" class="input" placeholder="WhatsApp (ex: 5588999999999)">
       <input id="email" class="input" placeholder="E-mail">
-      <input id="site" class="input md:col-span-2" placeholder="Site / Instagram">
-    </div>
-
-    <!-- PIX -->
-    <div class="border-t pt-4 space-y-2">
-      <h2 class="font-semibold">PIX</h2>
+      <input id="site" class="input" placeholder="Site / Instagram">
       <input id="pix" class="input" placeholder="Chave PIX">
     </div>
 
-    <!-- WIFI -->
-    <div class="border-t pt-4 space-y-2">
-      <h2 class="font-semibold">Wi-Fi</h2>
-      <input id="wifi_ssid" class="input" placeholder="Nome da rede (SSID)">
+    <!-- WI-FI -->
+    <div class="space-y-3">
+      <h2 class="font-semibold">📶 Wi-Fi</h2>
+      <input id="wifi_ssid" class="input" placeholder="Nome da rede">
       <input id="wifi_senha" class="input" placeholder="Senha">
       <select id="wifi_tipo" class="input">
         <option value="WPA">WPA/WPA2</option>
@@ -43,26 +39,22 @@
     </div>
 
     <!-- CARDÁPIO -->
-    <div class="border-t pt-4 space-y-2">
-      <h2 class="font-semibold">Cardápio</h2>
-      <input id="cardapio_nome" class="input" placeholder="Nome do estabelecimento">
-      <input id="cardapio_img" class="input" placeholder="Link da imagem do cardápio">
-
-      <textarea id="cardapio_itens" class="input h-32"
-        placeholder="Itens do cardápio (um por linha)
-Ex:
-Produto 1 - R$ 10
-Produto 2 - R$ 20"></textarea>
+    <div class="space-y-3">
+      <h2 class="font-semibold">🍕 Cardápio</h2>
+      <input id="estabelecimento" class="input" placeholder="Nome do estabelecimento">
+      <input id="imagem" class="input" placeholder="URL da imagem do cardápio">
+      <textarea id="itens" class="input" rows="4"
+        placeholder="Produto - Preço (um por linha)"></textarea>
     </div>
 
     <!-- AVALIAÇÕES -->
-    <div class="border-t pt-4 space-y-2">
-      <h2 class="font-semibold">Avaliações Google</h2>
-      <input id="avaliacoes" class="input" placeholder="Link direto para avaliar no Google">
+    <div class="space-y-3">
+      <h2 class="font-semibold">⭐ Avaliações</h2>
+      <input id="google" class="input" placeholder="Link direto para avaliar no Google">
     </div>
 
     <!-- BOTÃO -->
-    <button onclick="gerar()"
+    <button onclick="gerarData()"
       class="w-full bg-black text-white py-3 rounded-2xl font-semibold">
       Gerar data.js
     </button>
@@ -70,41 +62,42 @@ Produto 2 - R$ 20"></textarea>
   </div>
 
   <script>
-    function gerar() {
+    function gerarData() {
 
-      const itens = document.getElementById('cardapio_itens').value
+      const itens = document.getElementById('itens').value
         .split('\n')
-        .filter(l => l.trim() !== '')
+        .filter(l => l.trim())
         .map(l => {
-          const [nome, preco] = l.split('-');
-          return { nome: nome?.trim(), preco: preco?.trim() || '' };
+          const [n, p] = l.split('-');
+          return {
+            nome: n.trim(),
+            preco: (p || '').trim()
+          };
         });
 
       const data = {
         nome: nome.value,
         empresa: empresa.value,
         foto: foto.value,
-
         whatsapp: whatsapp.value,
         email: email.value,
         site: site.value,
-
         pix: pix.value,
 
         wifi: wifi_ssid.value ? {
-          tipo: wifi_tipo.value,
           ssid: wifi_ssid.value,
-          senha: wifi_senha.value
+          senha: wifi_senha.value,
+          tipo: wifi_tipo.value
         } : null,
 
         cardapio: {
-          estabelecimento: cardapio_nome.value,
-          imagem: cardapio_img.value,
+          estabelecimento: estabelecimento.value,
+          imagem: imagem.value,
           itens: itens
         },
 
         avaliacoes: {
-          google: avaliacoes.value
+          google: google.value
         }
       };
 
@@ -123,7 +116,7 @@ Produto 2 - R$ 20"></textarea>
     .input {
       width: 100%;
       padding: 12px;
-      border-radius: 12px;
+      border-radius: 14px;
       border: 1px solid #ddd;
     }
   </style>
