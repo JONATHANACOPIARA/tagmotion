@@ -3,135 +3,124 @@
 <head>
 <meta charset="UTF-8">
 <title>Tag Motion • Gerador</title>
-<meta name="viewport" content="width=device-width">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-neutral-100 p-4 flex justify-center">
+<body class="bg-neutral-100 min-h-screen flex items-center justify-center p-4">
 
-<div class="bg-white w-full max-w-xl rounded-3xl shadow-xl p-6 space-y-6">
+<div class="bg-white w-full max-w-md rounded-3xl shadow-xl p-6 space-y-4">
 
-<h1 class="text-2xl font-bold text-center">Gerador de Página NFC</h1>
+<h1 class="text-xl font-bold text-center">🔧 Gerador de Tag NFC</h1>
 
-<!-- CARTÃO -->
-<section class="space-y-3">
-<h2 class="font-semibold">📇 Cartão</h2>
 <input id="nome" class="input" placeholder="Nome">
-<input id="empresa" class="input" placeholder="Empresa / Cargo">
-<input id="foto" class="input" placeholder="Link da foto">
+<input id="empresa" class="input" placeholder="Empresa">
+<input id="foto" class="input" placeholder="URL da Foto">
+
 <input id="whatsapp" class="input" placeholder="WhatsApp (5588...)">
-<input id="email" class="input" placeholder="E-mail">
-<input id="site" class="input" placeholder="Instagram ou site">
+<input id="email" class="input" placeholder="Email">
+<input id="site" class="input" placeholder="Site / Instagram">
 <input id="pix" class="input" placeholder="Chave PIX">
-</section>
 
-<!-- WIFI -->
-<section class="space-y-3">
-<h2 class="font-semibold">📶 Wi-Fi</h2>
-<input id="wifi_ssid" class="input" placeholder="Nome da rede">
-<input id="wifi_senha" class="input" placeholder="Senha">
-<select id="wifi_tipo" class="input">
-<option value="WPA">WPA/WPA2</option>
-<option value="WEP">WEP</option>
-<option value="">Aberta</option>
-</select>
-</section>
+<hr>
 
-<!-- CARDÁPIO -->
-<section class="space-y-3">
-<h2 class="font-semibold">🍕 Cardápio</h2>
-<input id="cardapio_nome" class="input" placeholder="Nome do cardápio">
-<input id="cardapio_img" class="input" placeholder="Imagem do cardápio">
-<textarea id="cardapio_itens" class="input h-24"
+<h2 class="font-semibold">📶 Wi-Fi (opcional)</h2>
+<input id="wifiNome" class="input" placeholder="Nome do Wi-Fi">
+<input id="wifiSenha" class="input" placeholder="Senha do Wi-Fi">
+
+<hr>
+
+<h2 class="font-semibold">🍕 Cardápio (opcional)</h2>
+<input id="cardapioNome" class="input" placeholder="Nome do Cardápio">
+<input id="cardapioImg" class="input" placeholder="URL da imagem">
+<textarea id="cardapioItens" class="input" rows="4"
 placeholder="Produto - Preço (1 por linha)"></textarea>
-</section>
 
-<!-- AVALIAÇÕES -->
-<section class="space-y-3">
+<hr>
+
 <h2 class="font-semibold">⭐ Avaliações Google</h2>
-<input id="avaliacoes" class="input" placeholder="Link direto para avaliar">
-</section>
+<input id="google" class="input" placeholder="Link direto para avaliar">
 
-<!-- GALERIA -->
-<section class="space-y-3">
-<h2 class="font-semibold">🖼️ Galeria</h2>
-<textarea id="galeria" class="input h-24"
-placeholder="Links das imagens (1 por linha)"></textarea>
-</section>
-
-<button onclick="gerar()"
-class="w-full bg-black text-white py-4 rounded-2xl font-bold">
-GERAR index.html
+<button onclick="gerarTag()"
+class="w-full bg-black text-white py-3 rounded-2xl font-bold mt-4">
+GERAR TAG (baixar index.html)
 </button>
+
+<p class="text-xs text-center text-gray-400">
+Ao clicar, o arquivo será baixado automaticamente
+</p>
 
 </div>
 
 <script>
-function gerar(){
+function gerarTag(){
 
-const itens = cardapio_itens.value.split('\n')
-.filter(l=>l.trim())
+const itens = document.getElementById('cardapioItens').value
+.split('\n').filter(l=>l.trim())
 .map(l=>{
 const p=l.split('-');
-return `<div class="flex justify-between border-b py-2">
-<span>${p[0]}</span><strong>${p[1]||''}</strong></div>`;
+return `<div class="flex justify-between border-b py-2"><span>${p[0]}</span><strong>${p[1]||''}</strong></div>`;
 }).join('');
 
-const galeriaImgs = galeria.value.split('\n')
-.filter(i=>i.trim())
-.map(i=>`<img src="${i}" class="rounded-xl">`)
-.join('');
-
-const html = `<!DOCTYPE html>
+const html = `
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>${nome.value}</title>
 <meta name="viewport" content="width=device-width">
+<title>Tag NFC</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-neutral-100 flex justify-center p-4">
+<body class="bg-gray-100 flex justify-center p-4">
 
-<div class="bg-white max-w-md w-full rounded-3xl shadow-xl p-6 space-y-6 text-center">
+<div class="bg-white max-w-md w-full rounded-3xl shadow-xl overflow-hidden">
 
-<img src="${foto.value}" class="w-28 h-28 mx-auto rounded-full object-cover">
+<div class="flex border-b text-center font-semibold">
+<button class="flex-1 py-3" onclick="show('c')">Cartão</button>
+<button class="flex-1 py-3" onclick="show('m')">Cardápio</button>
+<button class="flex-1 py-3" onclick="show('a')">Avaliações</button>
+</div>
 
+<div id="c" class="p-6 text-center">
+<img src="${foto.value}" class="w-28 h-28 mx-auto rounded-full mb-4 object-cover">
 <h1 class="text-2xl font-bold">${nome.value}</h1>
-<p class="text-neutral-500">${empresa.value}</p>
+<p class="text-gray-500 mb-4">${empresa.value}</p>
 
-<a href="https://wa.me/${whatsapp.value}" class="btn bg-green-500">WhatsApp</a>
-<a href="mailto:${email.value}" class="btn bg-blue-500">Email</a>
-<a href="${site.value}" class="btn bg-indigo-600">Site</a>
+<a href="https://wa.me/${whatsapp.value}" class="block bg-green-500 text-white py-3 rounded-xl mb-2">WhatsApp</a>
+<a href="mailto:${email.value}" class="block bg-blue-500 text-white py-3 rounded-xl mb-2">Email</a>
+<a href="${site.value}" target="_blank" class="block bg-indigo-600 text-white py-3 rounded-xl mb-2">Site</a>
 
-<button onclick="navigator.clipboard.writeText('${pix.value}')" class="btn bg-purple-600">
+<button onclick="navigator.clipboard.writeText('${pix.value}')" class="block w-full bg-purple-500 text-white py-3 rounded-xl">
 Copiar PIX
 </button>
+</div>
 
-${wifi_ssid.value ? `
-<button onclick="alert('Rede: ${wifi_ssid.value}\\nSenha: ${wifi_senha.value}')" class="btn bg-black">
-Wi-Fi
-</button>`:''}
+<div id="m" class="p-6 hidden">
+<img src="${cardapioImg.value}" class="rounded-xl mb-4">
+<h2 class="font-bold text-xl mb-3">${cardapioNome.value}</h2>
+${itens}
+</div>
 
-${cardapio_nome.value ? `
-<h2 class="text-xl font-bold">${cardapio_nome.value}</h2>
-<img src="${cardapio_img.value}" class="rounded-xl">
-${itens}`:''}
-
-${avaliacoes.value ? `
-<a href="${avaliacoes.value}" target="_blank" class="btn bg-yellow-400 text-black">
+<div id="a" class="p-6 hidden">
+<a href="${google.value}" target="_blank"
+class="block bg-yellow-400 py-4 rounded-xl text-center font-bold">
 Avaliar no Google
-</a>`:''}
-
-${galeriaImgs}
+</a>
+</div>
 
 </div>
 
-<style>
-.btn{display:block;color:white;padding:12px;border-radius:16px;font-weight:600}
-</style>
+<script>
+function show(id){
+['c','m','a'].forEach(x=>document.getElementById(x).classList.add('hidden'));
+document.getElementById(id).classList.remove('hidden');
+}
+show('c');
+</script>
 
 </body>
-</html>`;
+</html>
+`;
 
 const blob = new Blob([html], {type:'text/html'});
 const a = document.createElement('a');
@@ -142,7 +131,12 @@ a.click();
 </script>
 
 <style>
-.input{width:100%;padding:12px;border-radius:14px;border:1px solid #ddd}
+.input{
+width:100%;
+padding:12px;
+border-radius:12px;
+border:1px solid #ddd;
+}
 </style>
 
 </body>
