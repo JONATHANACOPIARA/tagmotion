@@ -1,115 +1,121 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Gerador Tag Motion</title>
-  <meta name="viewport" content="width=device-width">
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-
-<body class="bg-neutral-100 min-h-screen flex items-center justify-center p-6">
-
-  <div class="bg-white w-full max-w-xl rounded-3xl shadow-xl p-6 space-y-4">
-    <h1 class="text-2xl font-bold text-center">Gerador de Página NFC</h1>
-
-    <input id="nome" class="input" placeholder="Nome">
-    <input id="empresa" class="input" placeholder="Empresa">
-    <input id="foto" class="input" placeholder="URL da foto">
-
-    <input id="whatsapp" class="input" placeholder="WhatsApp (somente números)">
-    <input id="email" class="input" placeholder="E-mail">
-    <input id="site" class="input" placeholder="Site / Instagram">
-
-    <input id="pix" class="input" placeholder="Chave PIX">
-
-    <hr>
-    <h2 class="font-semibold">Wi-Fi</h2>
-    <input id="wifi_ssid" class="input" placeholder="Nome da rede">
-    <input id="wifi_senha" class="input" placeholder="Senha">
-
-    <hr>
-    <h2 class="font-semibold">Google Avaliações</h2>
-    <input id="google" class="input" placeholder="Link direto para avaliar">
-
-    <button onclick="gerar()"
-      class="w-full bg-black text-white py-3 rounded-2xl font-semibold">
-      Gerar página da Tag
-    </button>
-  </div>
-
-<script>
-function gerar(){
-  const d = {
-    nome: nome.value,
-    empresa: empresa.value,
-    foto: foto.value,
-    whatsapp: whatsapp.value,
-    email: email.value,
-    site: site.value,
-    pix: pix.value,
-    wifi: {
-      ssid: wifi_ssid.value,
-      senha: wifi_senha.value
-    },
-    google: google.value
-  };
-
-  const html = `
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
 <meta charset="UTF-8">
-<title>${d.empresa}</title>
 <meta name="viewport" content="width=device-width">
+<title>Tag Motion — Gerador</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-neutral-100 min-h-screen flex items-center justify-center p-4">
-<div class="bg-white max-w-md w-full rounded-3xl shadow-2xl overflow-hidden p-6 text-center space-y-5">
 
-<img src="${d.foto}" class="w-28 h-28 rounded-full mx-auto object-cover shadow">
+<div class="bg-white max-w-md w-full rounded-3xl shadow-2xl p-6 space-y-4">
 
-<h1 class="text-2xl font-bold">${d.nome}</h1>
-<p class="text-neutral-500">${d.empresa}</p>
+<h1 class="text-xl font-bold text-center">Tag Motion — Gerador</h1>
 
-<a href="https://wa.me/${d.whatsapp}" class="block bg-green-500 text-white py-3 rounded-2xl font-semibold">WhatsApp</a>
-<a href="mailto:${d.email}" class="block bg-blue-500 text-white py-3 rounded-2xl font-semibold">E-mail</a>
-<a href="${d.site}" target="_blank" class="block bg-indigo-600 text-white py-3 rounded-2xl font-semibold">Site</a>
+<input id="nome" class="input" placeholder="Nome">
+<input id="empresa" class="input" placeholder="Empresa / Cargo">
+<input id="foto" class="input" placeholder="URL da foto">
 
-<button onclick="navigator.clipboard.writeText('${d.pix}')" class="w-full bg-purple-600 text-white py-3 rounded-2xl font-semibold">
-Copiar PIX
+<input id="whatsapp" class="input" placeholder="WhatsApp (5588...)">
+<input id="email" class="input" placeholder="E-mail">
+<input id="site" class="input" placeholder="Instagram ou Site">
+
+<input id="pix" class="input" placeholder="Chave PIX">
+
+<hr>
+
+<h2 class="font-semibold">Cardápio (opcional)</h2>
+<input id="cardapioNome" class="input" placeholder="Nome do cardápio">
+<textarea id="cardapioItens" class="input" rows="4" placeholder="Produto - Preço (1 por linha)"></textarea>
+
+<hr>
+
+<h2 class="font-semibold">Avaliações Google</h2>
+<input id="avaliacoes" class="input" placeholder="Link direto de avaliação">
+
+<hr>
+
+<h2 class="font-semibold">Galeria de Fotos</h2>
+<textarea id="galeria" class="input" rows="4" placeholder="Cole os links das imagens (1 por linha)"></textarea>
+
+<button onclick="gerar()" class="w-full bg-black text-white py-3 rounded-2xl font-semibold">
+GERAR PÁGINA DA TAG
 </button>
 
-${d.wifi.ssid ? `
-<button onclick="alert('Wi-Fi: ${d.wifi.ssid}\\nSenha: ${d.wifi.senha}')" class="w-full bg-neutral-900 text-white py-3 rounded-2xl font-semibold">
-Wi-Fi
-</button>` : ''}
+</div>
 
-${d.google ? `
-<a href="${d.google}" target="_blank" class="block bg-yellow-400 text-black py-3 rounded-2xl font-semibold">
-Avaliar no Google
-</a>` : ''}
+<script>
+function gerar(){
+
+const itens = cardapioItens.value.split('\n').filter(l=>l).map(l=>{
+const p=l.split('-');
+return {nome:p[0],preco:p[1]||''};
+});
+
+const galeriaImgs = galeria.value.split('\n').filter(l=>l);
+
+const html = `
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>${nome.value}</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-neutral-100 flex justify-center p-4">
+
+<div class="bg-white max-w-md w-full rounded-3xl shadow-xl overflow-hidden">
+
+<div class="p-6 text-center space-y-4">
+<img src="${foto.value}" class="w-28 h-28 rounded-full mx-auto object-cover">
+<h1 class="text-xl font-bold">${nome.value}</h1>
+<p class="text-neutral-500">${empresa.value}</p>
+
+<a href="https://wa.me/${whatsapp.value}" class="btn bg-green-500">WhatsApp</a>
+<a href="mailto:${email.value}" class="btn bg-blue-500">Email</a>
+<a href="${site.value}" class="btn bg-indigo-600">Instagram / Site</a>
+
+<button onclick="navigator.clipboard.writeText('${pix.value}')" class="btn bg-purple-600">Copiar PIX</button>
+</div>
+
+${itens.length?`
+<div class="p-6">
+<h2 class="font-bold mb-2">${cardapioNome.value}</h2>
+${itens.map(i=>`<div class="flex justify-between border-b py-2"><span>${i.nome}</span><strong>${i.preco}</strong></div>`).join('')}
+</div>`:''}
+
+${galeriaImgs.length?`
+<div class="p-6 grid grid-cols-2 gap-2">
+${galeriaImgs.map(i=>`<img src="${i}" class="rounded-xl">`).join('')}
+</div>`:''}
+
+${avaliacoes.value?`
+<div class="p-6">
+<a href="${avaliacoes.value}" target="_blank" class="btn bg-yellow-400 text-black">Avaliar no Google</a>
+</div>`:''}
 
 </div>
+
+<style>
+.btn{display:block;padding:14px;border-radius:16px;color:#fff;font-weight:600;text-align:center;margin-bottom:10px}
+</style>
+
 </body>
 </html>
 `;
 
-  const blob = new Blob([html], {type:'text/html'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'index.html';
-  a.click();
+const blob = new Blob([html], {type:'text/html'});
+const a = document.createElement('a');
+a.href = URL.createObjectURL(blob);
+a.download = 'index.html';
+a.click();
 }
 </script>
 
 <style>
-.input{
-  width:100%;
-  padding:12px;
-  border-radius:12px;
-  border:1px solid #ddd;
-}
+.input{width:100%;padding:12px;border-radius:12px;border:1px solid #ddd}
 </style>
 
 </body>
