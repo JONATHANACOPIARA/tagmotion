@@ -10,6 +10,12 @@
 
 <body class="bg-neutral-100 min-h-screen flex items-center justify-center p-4">
 
+  <!-- LOADING -->
+  <div id="loading" class="text-center text-neutral-600">
+    Carregando informações…
+  </div>
+
+  <!-- APP -->
   <div id="app"
     class="bg-white max-w-md w-full rounded-3xl shadow-2xl overflow-hidden hidden">
 
@@ -46,23 +52,13 @@
         class="w-full bg-purple-600 text-white py-3 rounded-2xl font-semibold">
         Copiar PIX
       </button>
-
-      <button id="wifiBtn"
-        class="w-full bg-neutral-900 text-white py-3 rounded-2xl font-semibold hidden">
-        Conectar Wi-Fi
-      </button>
     </div>
 
     <div id="cardapio" class="p-6 hidden"></div>
     <div id="avaliacoes" class="p-6 hidden"></div>
+
   </div>
 
-  <!-- LOADING -->
-  <div id="loading" class="text-center text-neutral-600">
-    Carregando informações…
-  </div>
-
-  <!-- SCRIPT -->
   <script>
     function show(id){
       ['cartao','cardapio','avaliacoes'].forEach(s =>
@@ -73,22 +69,24 @@
 
     function carregarData() {
       const script = document.createElement('script');
-      script.src = './data.js?' + Date.now();
+
+      // 🔥 CAMINHO ABSOLUTO CORRETO DO GITHUB PAGES
+      script.src = '/tagmotion/data.js?v=' + Date.now();
+
       script.onload = iniciar;
-      script.onerror = erro;
+      script.onerror = () => {
+        document.getElementById('loading').innerText =
+          'Erro ao carregar dados da Tag';
+      };
+
       document.head.appendChild(script);
     }
 
-    function erro() {
-      document.getElementById('loading').innerText =
-        'Erro ao carregar dados da Tag';
-    }
-
     function iniciar() {
-      if (!window.data) return erro();
+      if (!window.data) return;
 
-      document.getElementById('loading').classList.add('hidden');
-      document.getElementById('app').classList.remove('hidden');
+      loading.classList.add('hidden');
+      app.classList.remove('hidden');
 
       foto.src = data.foto || '';
       nome.textContent = data.nome || '';
@@ -106,9 +104,9 @@
         };
       }
 
-      if (data.cardapio) {
+      if (data.cardapio?.itens) {
         cardapio.innerHTML = '';
-        data.cardapio.itens?.forEach(i => {
+        data.cardapio.itens.forEach(i => {
           cardapio.innerHTML += `
             <div class="flex justify-between py-2 border-b">
               <span>${i.nome}</span>
