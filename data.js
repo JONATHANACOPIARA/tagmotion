@@ -1,30 +1,39 @@
 const data = {
-  nome: "Empresa Teste",
-  empresa: "Tag Motion NFC",
-  foto: "https://via.placeholder.com/300",
-
-  whatsapp: "5588999999999",
-  email: "contato@empresa.com",
-  site: "https://google.com",
-
-  pix: "123e4567-e89b-12d3-a456-426614174000",
-
-  wifi: {
-    tipo: "WPA",
-    ssid: "WiFi Empresa",
-    senha: "12345678"
+  "nome": "Jonathan Guilherme",
+  "empresa": "CEO da Empresa",
+  "foto": "https://i.imgur.com/e1g5ycm.jpeg",
+  "whatsapp": "5588997842847",
+  "email": "studiojonathanguilherme@gmail.com",
+  "site": "https://www.instagram.com/jonathanguilhermejg",
+  "pix": "88997842847",
+  "wifi": {
+    "ssid": "brisa-1768521",
+    "senha": "q79ugxxy",
+    "tipo": "WPA"
   },
-
-  cardapio: {
-    estabelecimento: "Cardápio",
-    imagem: "",
-    itens: [
-      { nome: "Produto 1", preco: "R$ 10,00" },
-      { nome: "Produto 2", preco: "R$ 20,00" }
+  "cardapio": {
+    "estabelecimento": "Studio JG",
+    "imagem": "https://i.imgur.com/umvNas6.jpeg ",
+    "itens": [
+      {
+        "nome": "Spot Comercial Padrão",
+        "preco": "R$ 50,00"
+      },
+      {
+        "nome": "Spot Comercial Produzido",
+        "preco": "R$ 70,00"
+      },
+      {
+        "nome": "Spot Comercial Padrão",
+        "preco": "R$ 50,00"
+      },
+      {
+        "nome": "Spot Comercial Padrão",
+        "preco": "R$ 50,00"
+      }
     ]
   },
-
-  avaliacoes: {
-    google: "https://g.page/r/CbAzn_5LkDqLEBM/review"
+  "avaliacoes": {
+    "google": "https://g.page/r/CbAzn_5LkDqLEBM/review"
   }
 };
