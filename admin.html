@@ -36,7 +36,7 @@
 <hr>
 
 <h2 class="font-bold">Google Avaliações</h2>
-<input id="google" class="input" placeholder="Link de avaliação Google">
+<input id="google" class="input" placeholder="Link Google">
 
 <hr>
 
@@ -53,14 +53,16 @@ GERAR index.html
 <script>
 function gerar() {
 
-const galeria = document.getElementById("galeria").value
-  .split(",")
-  .map(url => url.trim())
-  .filter(Boolean)
-  .map(url => `<img src="${url}" class="rounded-xl mb-2">`)
-  .join("");
+  const v = id => document.getElementById(id).value || "";
 
-const html = `
+  const galeriaHTML = v("galeria")
+    .split(",")
+    .map(url => url.trim())
+    .filter(Boolean)
+    .map(url => `<img src="${url}" class="rounded-xl mb-2">`)
+    .join("");
+
+  const html = `
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -74,35 +76,31 @@ const html = `
 
 <div class="bg-white max-w-md w-full rounded-3xl shadow-2xl p-6 space-y-4 text-center">
 
-<img src="${foto.value}" class="w-28 h-28 rounded-full mx-auto">
+<img src="${v("foto")}" class="w-28 h-28 rounded-full mx-auto">
 
-<h1 class="text-xl font-bold">${nome.value}</h1>
-<p class="text-neutral-500">${empresa.value}</p>
+<h1 class="text-xl font-bold">${v("nome")}</h1>
+<p class="text-neutral-500">${v("empresa")}</p>
 
-<a href="https://wa.me/${whatsapp.value}" class="btn bg-green-500">WhatsApp</a>
-<a href="mailto:${email.value}" class="btn bg-blue-500">E-mail</a>
-<a href="${site.value}" class="btn bg-indigo-600">Site</a>
+${v("whatsapp") ? `<a href="https://wa.me/${v("whatsapp")}" class="btn bg-green-500">WhatsApp</a>` : ""}
+${v("email") ? `<a href="mailto:${v("email")}" class="btn bg-blue-500">E-mail</a>` : ""}
+${v("site") ? `<a href="${v("site")}" class="btn bg-indigo-600">Site</a>` : ""}
 
-<button onclick="navigator.clipboard.writeText('${pix.value}')" class="btn bg-purple-600">
-Copiar PIX
-</button>
+${v("pix") ? `<button onclick="navigator.clipboard.writeText('${v("pix")}')" class="btn bg-purple-600">Copiar PIX</button>` : ""}
 
+${v("ssid") ? `
 <hr>
-
 <h2 class="font-bold">Wi-Fi</h2>
-<p>${ssid.value}</p>
-<p>${senha.value}</p>
+<p>${v("ssid")}</p>
+<p>${v("senha")}</p>` : ""}
 
+${v("google") ? `
 <hr>
-
-<a href="${google.value}" target="_blank"
+<a href="${v("google")}" target="_blank"
 class="btn bg-yellow-400 text-black">
 Avaliar no Google
-</a>
+</a>` : ""}
 
-<hr>
-
-<div>${galeria}</div>
+${galeriaHTML ? `<hr>${galeriaHTML}` : ""}
 
 </div>
 
@@ -121,11 +119,11 @@ font-weight:600;
 </html>
 `;
 
-const blob = new Blob([html], { type: "text/html" });
-const a = document.createElement("a");
-a.href = URL.createObjectURL(blob);
-a.download = "index.html";
-a.click();
+  const blob = new Blob([html], { type: "text/html" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "index.html";
+  a.click();
 }
 </script>
 
