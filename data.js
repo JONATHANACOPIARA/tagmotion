@@ -1,25 +1,23 @@
 const data = {
   "nome": "Jonathan Guilherme Oliveira",
-  "empresa": "",
-  "foto": "",
-  "whatsapp": "",
-  "email": "criativaaudiovisual@gmail.com",
-  "site": "",
-  "pix": "",
+  "empresa": "Studio JG",
+  "foto": "https://i.imgur.com/e1g5ycm.jpeg",
+  "whatsapp": "5588997842847",
+  "email": "studiojonathanguilherme@gmail.com",
+  "site": "https://www.instagram.com/jonathanguilhermejg",
+  "pix": "88997842847",
   "wifi": {
-    "ssid": "",
-    "senha": "",
+    "ssid": "brisa-1768521",
+    "senha": "q79ugxxy",
     "tipo": "WPA"
   },
-  "cardapio": {
-    "estabelecimento": "",
-    "imagem": "",
-    "itens": []
+  "avaliacoes": {
+    "google": "https://g.page/r/CbAzn_5LkDqLEBM/review"
   },
   "galeria": [
-    "https://i.imgur.com/7noZxtR.png"
-  ],
-  "avaliacoes": {
-    "google": " https://g.page/r/CbAzn_5LkDqLEBM/review"
-  }
+    {
+      "img": "https://i.imgur.com/umvNas6.jpeg",
+      "texto": ""
+    }
+  ]
 };
