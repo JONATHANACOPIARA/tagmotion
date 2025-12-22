@@ -9,12 +9,12 @@
 
 <body class="bg-neutral-100 min-h-screen flex items-center justify-center p-4">
 
-<div class="bg-white max-w-lg w-full rounded-2xl shadow-xl p-6 space-y-5">
+<div class="bg-white max-w-lg w-full rounded-2xl shadow-xl p-6 space-y-4">
 
 <h1 class="text-xl font-bold text-center">Gerador de Tag NFC</h1>
 
 <input id="nome" class="input" placeholder="Nome / Empresa">
-<input id="foto" class="input" placeholder="URL da foto (imgur, etc)">
+<input id="foto" class="input" placeholder="URL da foto">
 <input id="whatsapp" class="input" placeholder="WhatsApp (5588...)">
 <input id="site" class="input" placeholder="Site ou Instagram">
 <input id="pix" class="input" placeholder="Chave PIX">
@@ -28,19 +28,19 @@
 <hr>
 
 <h2 class="font-semibold">Avaliações Google</h2>
-<input id="google" class="input" placeholder="Link direto para avaliar">
+<input id="google" class="input" placeholder="Link direto para avaliação">
 
 <hr>
 
-<h2 class="font-semibold">Cardápio (1 por linha)</h2>
+<h2 class="font-semibold">Cardápio</h2>
 <textarea id="cardapio" class="input" rows="4"
 placeholder="Produto - R$ 10,00"></textarea>
 
 <hr>
 
-<h2 class="font-semibold">Galeria (URLs das imagens)</h2>
+<h2 class="font-semibold">Galeria (1 link por linha)</h2>
 <textarea id="galeria" class="input" rows="3"
-placeholder="https://imagem1.jpg"></textarea>
+placeholder="https://imagem.jpg"></textarea>
 
 <button onclick="gerar()"
 class="w-full bg-black text-white py-3 rounded-xl font-bold">
@@ -52,7 +52,7 @@ GERAR index.html
 <script>
 function gerar(){
 
-const nome = nomeEl.value = document.getElementById('nome').value;
+const nome = document.getElementById('nome').value;
 const foto = document.getElementById('foto').value;
 const whatsapp = document.getElementById('whatsapp').value;
 const site = document.getElementById('site').value;
@@ -61,14 +61,22 @@ const ssid = document.getElementById('ssid').value;
 const senha = document.getElementById('senha').value;
 const google = document.getElementById('google').value;
 
-const cardapio = document.getElementById('cardapio').value.split('\n')
-.map(l => `<div class="flex justify-between border-b py-2">
-<span>${l.split('-')[0] || ''}</span>
-<strong>${l.split('-')[1] || ''}</strong>
-</div>`).join('');
+const cardapio = document.getElementById('cardapio').value
+.split('\n')
+.filter(l => l.trim())
+.map(l => {
+  const p = l.split('-');
+  return `<div class="flex justify-between border-b py-2">
+    <span>${p[0] || ''}</span>
+    <strong>${p[1] || ''}</strong>
+  </div>`;
+}).join('');
 
-const galeria = document.getElementById('galeria').value.split('\n')
-.map(i => `<img src="${i}" class="rounded-xl">`).join('');
+const galeria = document.getElementById('galeria').value
+.split('\n')
+.filter(i => i.trim())
+.map(i => `<img src="${i}" class="rounded-xl">`)
+.join('');
 
 const html = `
 <!DOCTYPE html>
@@ -131,7 +139,7 @@ margin-bottom:10px;
 </html>
 `;
 
-const blob = new Blob([html], {type:'text/html'});
+const blob = new Blob([html], { type: 'text/html' });
 const a = document.createElement('a');
 a.href = URL.createObjectURL(blob);
 a.download = 'index.html';
@@ -143,8 +151,8 @@ a.click();
 .input{
 width:100%;
 padding:12px;
-border:1px solid #ddd;
 border-radius:12px;
+border:1px solid #ddd;
 }
 </style>
 
