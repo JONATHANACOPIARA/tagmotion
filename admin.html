@@ -1,140 +1,113 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>Gerador de Tag NFC</title>
-<meta name="viewport" content="width=device-width">
-<script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <title>Gerador de Tag NFC</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-neutral-100 p-6">
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
 
-<h1 class="text-2xl font-bold text-center mb-6">Gerador de Tag NFC</h1>
+  <div class="bg-white w-full max-w-md rounded-2xl shadow-xl p-6 space-y-4">
+    <h1 class="text-xl font-bold text-center">Gerador de Tag NFC</h1>
 
-<div class="max-w-xl mx-auto bg-white p-6 rounded-2xl shadow space-y-4">
+    <!-- BÁSICO -->
+    <input id="nome" class="input" placeholder="Nome">
+    <input id="empresa" class="input" placeholder="Empresa / Cargo">
+    <input id="foto" class="input" placeholder="URL da foto">
 
-<input id="nome" class="input" placeholder="Nome">
-<input id="empresa" class="input" placeholder="Empresa">
-<input id="foto" class="input" placeholder="URL da Foto">
+    <input id="whatsapp" class="input" placeholder="WhatsApp (5588...)">
+    <input id="email" class="input" placeholder="E-mail">
+    <input id="site" class="input" placeholder="Site ou Instagram">
 
-<input id="whatsapp" class="input" placeholder="WhatsApp (5588...)">
-<input id="email" class="input" placeholder="E-mail">
-<input id="site" class="input" placeholder="Site / Instagram">
+    <input id="pix" class="input" placeholder="Chave PIX">
 
-<input id="pix" class="input" placeholder="Chave PIX">
+    <!-- WIFI -->
+    <h2 class="font-semibold pt-2">Wi-Fi</h2>
+    <input id="wifi_ssid" class="input" placeholder="Nome da rede">
+    <input id="wifi_senha" class="input" placeholder="Senha">
+    <select id="wifi_tipo" class="input">
+      <option value="WPA">WPA/WPA2</option>
+      <option value="nopass">Aberta (sem senha)</option>
+    </select>
 
-<hr>
+    <!-- GOOGLE -->
+    <h2 class="font-semibold pt-2">Avaliações Google</h2>
+    <input id="google" class="input" placeholder="Link direto de avaliação">
 
-<h2 class="font-bold">Wi-Fi</h2>
-<input id="ssid" class="input" placeholder="Nome do Wi-Fi">
-<input id="senha" class="input" placeholder="Senha">
-<select id="tipo" class="input">
-  <option value="WPA">WPA/WPA2</option>
-  <option value="nopass">Sem senha</option>
-</select>
+    <!-- GALERIA -->
+    <h2 class="font-semibold pt-2">Galeria (1 URL por linha)</h2>
+    <textarea id="galeria" class="input" rows="3"></textarea>
 
-<hr>
+    <!-- CARDÁPIO -->
+    <h2 class="font-semibold pt-2">Cardápio (Produto - Preço)</h2>
+    <textarea id="cardapio" class="input" rows="3"></textarea>
 
-<h2 class="font-bold">Google Avaliações</h2>
-<input id="google" class="input" placeholder="Link Google">
+    <!-- BOTÃO -->
+    <button onclick="gerar()"
+      class="w-full bg-black text-white py-3 rounded-xl font-semibold">
+      GERAR data.js
+    </button>
+  </div>
 
-<hr>
+  <script>
+    function gerar() {
 
-<h2 class="font-bold">Galeria (URLs separadas por vírgula)</h2>
-<textarea id="galeria" class="input" rows="3"></textarea>
+      const data = {
+        nome: nome.value,
+        empresa: empresa.value,
+        foto: foto.value,
 
-<button onclick="gerar()"
-class="w-full bg-black text-white py-3 rounded-xl font-bold">
-GERAR index.html
-</button>
+        whatsapp: whatsapp.value,
+        email: email.value,
+        site: site.value,
+        pix: pix.value,
 
-</div>
+        wifi: {
+          ssid: wifi_ssid.value,
+          senha: wifi_senha.value,
+          tipo: wifi_tipo.value
+        },
 
-<script>
-function gerar() {
+        avaliacoes: {
+          google: google.value
+        },
 
-  const v = id => document.getElementById(id).value || "";
+        galeria: galeria.value
+          .split('\n')
+          .map(l => l.trim())
+          .filter(Boolean),
 
-  const galeriaHTML = v("galeria")
-    .split(",")
-    .map(url => url.trim())
-    .filter(Boolean)
-    .map(url => `<img src="${url}" class="rounded-xl mb-2">`)
-    .join("");
+        cardapio: {
+          itens: cardapio.value
+            .split('\n')
+            .map(l => {
+              const p = l.split('-');
+              return { nome: p[0]?.trim(), preco: p[1]?.trim() || "" };
+            })
+        }
+      };
 
-  const html = `
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<title>Tag NFC</title>
-<script src="https://cdn.tailwindcss.com"></script>
-</head>
+      const conteudo =
+`const data = ${JSON.stringify(data, null, 2)};`;
 
-<body class="bg-neutral-100 min-h-screen flex items-center justify-center p-4">
+      const blob = new Blob([conteudo], { type: 'application/javascript' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'data.js';
+      a.click();
+    }
+  </script>
 
-<div class="bg-white max-w-md w-full rounded-3xl shadow-2xl p-6 space-y-4 text-center">
-
-<img src="${v("foto")}" class="w-28 h-28 rounded-full mx-auto">
-
-<h1 class="text-xl font-bold">${v("nome")}</h1>
-<p class="text-neutral-500">${v("empresa")}</p>
-
-${v("whatsapp") ? `<a href="https://wa.me/${v("whatsapp")}" class="btn bg-green-500">WhatsApp</a>` : ""}
-${v("email") ? `<a href="mailto:${v("email")}" class="btn bg-blue-500">E-mail</a>` : ""}
-${v("site") ? `<a href="${v("site")}" class="btn bg-indigo-600">Site</a>` : ""}
-
-${v("pix") ? `<button onclick="navigator.clipboard.writeText('${v("pix")}')" class="btn bg-purple-600">Copiar PIX</button>` : ""}
-
-${v("ssid") ? `
-<hr>
-<h2 class="font-bold">Wi-Fi</h2>
-<p>${v("ssid")}</p>
-<p>${v("senha")}</p>` : ""}
-
-${v("google") ? `
-<hr>
-<a href="${v("google")}" target="_blank"
-class="btn bg-yellow-400 text-black">
-Avaliar no Google
-</a>` : ""}
-
-${galeriaHTML ? `<hr>${galeriaHTML}` : ""}
-
-</div>
-
-<style>
-.btn{
-display:block;
-color:white;
-padding:12px;
-border-radius:14px;
-margin-bottom:10px;
-font-weight:600;
-}
-</style>
-
-</body>
-</html>
-`;
-
-  const blob = new Blob([html], { type: "text/html" });
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = "index.html";
-  a.click();
-}
-</script>
-
-<style>
-.input{
-width:100%;
-padding:12px;
-border-radius:12px;
-border:1px solid #ddd;
-}
-</style>
+  <style>
+    .input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #ddd;
+    }
+  </style>
 
 </body>
 </html>
