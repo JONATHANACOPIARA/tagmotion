@@ -2,144 +2,96 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+<title>Tag Motion — Admin</title>
 <meta name="viewport" content="width=device-width">
-<title>Tag Motion</title>
-
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="./data.js" defer></script>
 </head>
 
-<body class="bg-neutral-100 min-h-screen flex justify-center p-4">
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
 
-<div class="bg-white max-w-md w-full rounded-3xl shadow-xl overflow-hidden">
+<div class="bg-white w-full max-w-md rounded-2xl shadow-xl p-6 space-y-6">
 
-<!-- MENU -->
-<div class="flex text-sm font-medium bg-neutral-50 border-b">
-  <button class="flex-1 py-3" onclick="show('cartao')">Cartão</button>
-  <button class="flex-1 py-3" onclick="show('cardapio')">Cardápio</button>
-  <button class="flex-1 py-3" onclick="show('galeria')">Galeria</button>
-</div>
+<h1 class="text-xl font-bold text-center">Tag Motion — Gerador</h1>
 
-<!-- CARTÃO -->
-<div id="cartao" class="p-6 space-y-5 text-center">
+<input id="nome" class="input" placeholder="Nome / Empresa">
+<input id="empresa" class="input" placeholder="Descrição / Cargo">
+<input id="foto" class="input" placeholder="URL da foto">
 
-<img id="foto" class="w-28 h-28 rounded-full mx-auto object-cover shadow">
+<input id="whatsapp" class="input" placeholder="WhatsApp (5588...)">
+<input id="email" class="input" placeholder="Email">
+<input id="site" class="input" placeholder="Site / Instagram">
 
-<h1 id="nome" class="text-xl font-bold"></h1>
-<p id="empresa" class="text-neutral-500"></p>
+<input id="pix" class="input" placeholder="Chave PIX">
 
-<a id="whatsapp" class="block bg-green-500 text-white py-3 rounded-xl">WhatsApp</a>
-<a id="site" class="block bg-indigo-600 text-white py-3 rounded-xl">Site</a>
+<hr>
 
-<button id="pix" class="w-full bg-purple-600 text-white py-3 rounded-xl">
-Copiar PIX
+<h2 class="font-semibold">Wi-Fi</h2>
+<input id="ssid" class="input" placeholder="Nome da rede">
+<input id="senha" class="input" placeholder="Senha">
+<select id="tipo" class="input">
+  <option value="WPA">WPA</option>
+  <option value="WEP">WEP</option>
+</select>
+
+<hr>
+
+<h2 class="font-semibold">Google Avaliações</h2>
+<input id="google" class="input" placeholder="Link para avaliação">
+
+<button onclick="gerar()"
+class="w-full bg-black text-white py-3 rounded-xl font-semibold">
+GERAR data.js
 </button>
 
-<button id="wifiBtn"
-class="w-full bg-neutral-900 text-white py-3 rounded-xl hidden">
-Wi-Fi
-</button>
-
-<a id="google"
-class="block bg-yellow-400 text-black py-3 rounded-xl font-semibold hidden">
-Avaliar no Google
-</a>
-
-</div>
-
-<!-- CARDÁPIO -->
-<div id="cardapio" class="p-6 hidden"></div>
-
-<!-- GALERIA -->
-<div id="galeria" class="p-6 hidden grid grid-cols-2 gap-3"></div>
-
-</div>
-
-<!-- MODAL WIFI -->
-<div id="wifiModal"
-class="fixed inset-0 bg-black/70 hidden items-center justify-center">
-<div class="bg-white p-6 rounded-2xl text-center space-y-3">
-<h2 class="font-bold">Wi-Fi</h2>
-<img id="wifiQR" class="mx-auto w-48 h-48">
-<p id="wifiNome" class="text-sm text-gray-500"></p>
-<button onclick="closeWifi()" class="bg-black text-white px-4 py-2 rounded-xl">
-Fechar
-</button>
-</div>
 </div>
 
 <script>
-function show(id){
-['cartao','cardapio','galeria'].forEach(s =>
-document.getElementById(s).classList.add('hidden'));
-document.getElementById(id).classList.remove('hidden');
-}
+function gerar(){
 
-function openWifi(){
-wifiModal.classList.remove('hidden');
-wifiModal.classList.add('flex');
-}
+const data = {
+  nome: nome.value,
+  empresa: empresa.value,
+  foto: foto.value,
+  whatsapp: whatsapp.value,
+  email: email.value,
+  site: site.value,
+  pix: pix.value,
 
-function closeWifi(){
-wifiModal.classList.add('hidden');
-wifiModal.classList.remove('flex');
-}
+  wifi: {
+    ssid: ssid.value,
+    senha: senha.value,
+    tipo: tipo.value
+  },
 
-document.addEventListener('DOMContentLoaded', () => {
+  cardapio: {
+    estabelecimento: "",
+    imagem: "",
+    itens: []
+  },
 
-if (!window.data) {
-alert('Erro ao carregar data.js');
-return;
-}
-
-foto.src = data.foto;
-nome.textContent = data.nome;
-empresa.textContent = data.empresa;
-
-whatsapp.href = 'https://wa.me/' + data.whatsapp;
-site.href = data.site;
-
-pix.onclick = () => {
-navigator.clipboard.writeText(data.pix);
-pix.textContent = 'PIX copiado ✔';
-setTimeout(()=>pix.textContent='Copiar PIX',2000);
+  avaliacoes: {
+    google: google.value
+  }
 };
 
-if (data.wifi?.ssid){
-wifiBtn.classList.remove('hidden');
-const txt = `WIFI:T:${data.wifi.tipo};S:${data.wifi.ssid};P:${data.wifi.senha};;`;
-wifiQR.src =
-`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(txt)}`;
-wifiNome.textContent = data.wifi.ssid;
-wifiBtn.onclick = openWifi;
-}
+const conteudo = `const data = ${JSON.stringify(data, null, 2)};`;
 
-if (data.avaliacoes?.google){
-google.href = data.avaliacoes.google;
-google.target = '_blank';
-google.classList.remove('hidden');
+const blob = new Blob([conteudo], { type: "application/javascript" });
+const link = document.createElement("a");
+link.href = URL.createObjectURL(blob);
+link.download = "data.js";
+link.click();
 }
-
-if (data.cardapio){
-cardapio.innerHTML = `<h2 class="font-bold text-lg mb-3">${data.cardapio.titulo}</h2>`;
-data.cardapio.itens.forEach(i=>{
-cardapio.innerHTML += `
-<div class="flex justify-between border-b py-2">
-<span>${i.nome}</span>
-<strong>${i.preco}</strong>
-</div>`;
-});
-}
-
-if (data.galeria){
-data.galeria.forEach(img=>{
-galeria.innerHTML += `<img src="${img}" class="rounded-xl">`;
-});
-}
-
-show('cartao');
-});
 </script>
+
+<style>
+.input{
+width:100%;
+padding:12px;
+border-radius:12px;
+border:1px solid #ddd;
+}
+</style>
 
 </body>
 </html>
