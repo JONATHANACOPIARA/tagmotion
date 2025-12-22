@@ -2,48 +2,42 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Tag Motion — Gerador</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tag Motion – Gerador</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-neutral-100 min-h-screen flex items-center justify-center p-4">
+<body class="bg-gray-100 p-4 flex justify-center">
 
-<div class="bg-white max-w-lg w-full rounded-2xl shadow-xl p-6 space-y-4">
+<div class="bg-white max-w-md w-full rounded-2xl shadow-xl p-6 space-y-4">
 
 <h1 class="text-xl font-bold text-center">Gerador de Tag NFC</h1>
 
-<input id="nome" class="input" placeholder="Nome / Empresa">
+<input id="nome" class="input" placeholder="Nome">
+<input id="empresa" class="input" placeholder="Empresa / Cargo">
 <input id="foto" class="input" placeholder="URL da foto">
-<input id="whatsapp" class="input" placeholder="WhatsApp (5588...)">
+
+<input id="whatsapp" class="input" placeholder="WhatsApp (ex: 558899999999)">
 <input id="site" class="input" placeholder="Site ou Instagram">
 <input id="pix" class="input" placeholder="Chave PIX">
 
-<hr>
-
-<h2 class="font-semibold">Wi-Fi</h2>
+<h2 class="font-semibold pt-4">Wi-Fi</h2>
 <input id="ssid" class="input" placeholder="Nome da rede">
-<input id="senha" class="input" placeholder="Senha">
+<input id="senha" class="input" placeholder="Senha do Wi-Fi">
+<select id="tipo" class="input">
+  <option value="WPA">WPA/WPA2</option>
+  <option value="WEP">WEP</option>
+</select>
 
-<hr>
-
-<h2 class="font-semibold">Avaliações Google</h2>
-<input id="google" class="input" placeholder="Link direto para avaliação">
-
-<hr>
-
-<h2 class="font-semibold">Cardápio</h2>
+<h2 class="font-semibold pt-4">Cardápio</h2>
 <textarea id="cardapio" class="input" rows="4"
-placeholder="Produto - R$ 10,00"></textarea>
+placeholder="Produto - Preço (um por linha)"></textarea>
 
-<hr>
-
-<h2 class="font-semibold">Galeria (1 link por linha)</h2>
-<textarea id="galeria" class="input" rows="3"
-placeholder="https://imagem.jpg"></textarea>
+<h2 class="font-semibold pt-4">Avaliações Google</h2>
+<input id="google" class="input" placeholder="Link de avaliação Google">
 
 <button onclick="gerar()"
-class="w-full bg-black text-white py-3 rounded-xl font-bold">
+class="w-full bg-black text-white py-3 rounded-xl font-semibold">
 GERAR index.html
 </button>
 
@@ -52,31 +46,21 @@ GERAR index.html
 <script>
 function gerar(){
 
-const nome = document.getElementById('nome').value;
-const foto = document.getElementById('foto').value;
-const whatsapp = document.getElementById('whatsapp').value;
-const site = document.getElementById('site').value;
-const pix = document.getElementById('pix').value;
-const ssid = document.getElementById('ssid').value;
-const senha = document.getElementById('senha').value;
-const google = document.getElementById('google').value;
+const nome = nomeInput.value || "";
+const empresa = empresaInput.value || "";
+const foto = fotoInput.value || "";
+const whatsapp = whatsappInput.value || "";
+const site = siteInput.value || "";
+const pix = pixInput.value || "";
 
-const cardapio = document.getElementById('cardapio').value
-.split('\n')
-.filter(l => l.trim())
-.map(l => {
-  const p = l.split('-');
-  return `<div class="flex justify-between border-b py-2">
-    <span>${p[0] || ''}</span>
-    <strong>${p[1] || ''}</strong>
-  </div>`;
-}).join('');
+const wifi = ssidInput.value
+? `WIFI:T:${tipoInput.value};S:${ssidInput.value};P:${senhaInput.value};;`
+: "";
 
-const galeria = document.getElementById('galeria').value
-.split('\n')
-.filter(i => i.trim())
-.map(i => `<img src="${i}" class="rounded-xl">`)
-.join('');
+const itens = cardapioInput.value.split("\n").map(l => {
+  const p = l.split("-");
+  return `<div>${p[0] || ""} <strong>${p[1] || ""}</strong></div>`;
+}).join("");
 
 const html = `
 <!DOCTYPE html>
@@ -87,64 +71,53 @@ const html = `
 <title>${nome}</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
-
-<body class="bg-neutral-100 flex justify-center p-4">
-
-<div class="bg-white max-w-md w-full rounded-2xl shadow-xl p-6 space-y-5">
+<body class="bg-gray-100 flex justify-center p-4">
+<div class="bg-white max-w-md w-full rounded-2xl p-6 text-center space-y-4">
 
 <img src="${foto}" class="w-28 h-28 rounded-full mx-auto object-cover">
 
-<h1 class="text-xl font-bold text-center">${nome}</h1>
+<h1 class="text-xl font-bold">${nome}</h1>
+<p class="text-gray-500">${empresa}</p>
 
-<a href="https://wa.me/${whatsapp}" class="btn bg-green-500">WhatsApp</a>
-<a href="${site}" target="_blank" class="btn bg-indigo-600">Site</a>
+<a href="https://wa.me/${whatsapp}" class="block bg-green-500 text-white py-3 rounded-xl">WhatsApp</a>
+<a href="${site}" class="block bg-indigo-600 text-white py-3 rounded-xl">Site</a>
 
-<button onclick="navigator.clipboard.writeText('${pix}')"
-class="btn bg-purple-600">Copiar PIX</button>
+<button onclick="navigator.clipboard.writeText('${pix}')" class="w-full bg-purple-600 text-white py-3 rounded-xl">
+Copiar PIX
+</button>
 
-<div class="border-t pt-4">
-<h2 class="font-bold mb-2">Wi-Fi</h2>
-<img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=WIFI:T:WPA;S:${ssid};P:${senha};;">
-</div>
+${wifi ? `<img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(wifi)}" class="mx-auto">` : ""}
 
-<div class="border-t pt-4">
-<h2 class="font-bold mb-2">Cardápio</h2>
-${cardapio}
-</div>
+<div class="pt-4">${itens}</div>
 
-<a href="${google}" target="_blank"
-class="btn bg-yellow-400 text-black">
+<a href="${googleInput.value}" target="_blank"
+class="block bg-yellow-400 py-3 rounded-xl font-semibold">
 Avaliar no Google
 </a>
 
-<div class="grid grid-cols-2 gap-2 border-t pt-4">
-${galeria}
 </div>
-
-</div>
-
-<style>
-.btn{
-display:block;
-text-align:center;
-padding:12px;
-border-radius:12px;
-color:white;
-font-weight:bold;
-margin-bottom:10px;
-}
-</style>
-
 </body>
 </html>
 `;
 
-const blob = new Blob([html], { type: 'text/html' });
-const a = document.createElement('a');
+const blob = new Blob([html], {type: "text/html"});
+const a = document.createElement("a");
 a.href = URL.createObjectURL(blob);
-a.download = 'index.html';
+a.download = "index.html";
 a.click();
 }
+
+const nomeInput = document.getElementById("nome");
+const empresaInput = document.getElementById("empresa");
+const fotoInput = document.getElementById("foto");
+const whatsappInput = document.getElementById("whatsapp");
+const siteInput = document.getElementById("site");
+const pixInput = document.getElementById("pix");
+const ssidInput = document.getElementById("ssid");
+const senhaInput = document.getElementById("senha");
+const tipoInput = document.getElementById("tipo");
+const cardapioInput = document.getElementById("cardapio");
+const googleInput = document.getElementById("google");
 </script>
 
 <style>
