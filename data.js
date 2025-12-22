@@ -1,30 +1,25 @@
 const data = {
-  nome: "Empresa Teste",
-  empresa: "Tag Motion NFC",
-  foto: "https://via.placeholder.com/300",
-
-  whatsapp: "5588999999999",
-  email: "contato@empresa.com",
-  site: "https://instagram.com",
-
-  pix: "123e4567-e89b-12d3-a456-426614174000",
-
-  wifi: {
-    tipo: "WPA",
-    ssid: "WiFi Empresa",
-    senha: "12345678"
+  "nome": "Jonathan Guilherme Oliveira",
+  "empresa": "",
+  "foto": "",
+  "whatsapp": "",
+  "email": "criativaaudiovisual@gmail.com",
+  "site": "",
+  "pix": "",
+  "wifi": {
+    "ssid": "",
+    "senha": "",
+    "tipo": "WPA"
   },
-
-  cardapio: {
-    estabelecimento: "Cardápio Digital",
-    imagem: "https://via.placeholder.com/600x400",
-    itens: [
-      { nome: "Produto 1", preco: "R$ 10,00" },
-      { nome: "Produto 2", preco: "R$ 20,00" }
-    ]
+  "cardapio": {
+    "estabelecimento": "",
+    "imagem": "",
+    "itens": []
   },
-
-  avaliacoes: {
-    google: "https://g.page/r/CbAzn_5LkDqLEBM/review"
+  "galeria": [
+    "https://i.imgur.com/7noZxtR.png"
+  ],
+  "avaliacoes": {
+    "google": " https://g.page/r/CbAzn_5LkDqLEBM/review"
   }
 };
