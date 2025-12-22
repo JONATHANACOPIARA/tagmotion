@@ -2,26 +2,26 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Tag Motion — Gerador NFC</title>
+<title>Gerador de Tag NFC</title>
 <meta name="viewport" content="width=device-width">
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-gray-100 min-h-screen flex justify-center p-4">
 
-<div class="bg-white w-full max-w-md rounded-2xl shadow-xl p-6 space-y-4">
+<div class="bg-white max-w-md w-full rounded-2xl shadow-xl p-6 space-y-4">
 
 <h1 class="text-xl font-bold text-center">Gerador de Tag NFC</h1>
 
 <input id="nome" class="input" placeholder="Nome">
 <input id="empresa" class="input" placeholder="Empresa / Cargo">
 <input id="foto" class="input" placeholder="URL da Foto">
-<input id="whatsapp" class="input" placeholder="WhatsApp (ex: 5588999999999)">
+<input id="whatsapp" class="input" placeholder="WhatsApp (5588999999999)">
 <input id="site" class="input" placeholder="Site ou Instagram">
 <input id="pix" class="input" placeholder="Chave PIX">
 
 <h2 class="font-semibold pt-4">Wi-Fi</h2>
-<input id="ssid" class="input" placeholder="Nome da Rede">
+<input id="ssid" class="input" placeholder="Nome da rede">
 <input id="senha" class="input" placeholder="Senha">
 <select id="tipo" class="input">
   <option value="WPA">WPA/WPA2</option>
@@ -33,42 +33,47 @@
 placeholder="Produto - Preço (1 por linha)"></textarea>
 
 <h2 class="font-semibold pt-4">Avaliações Google</h2>
-<input id="google" class="input" placeholder="Link de avaliação Google">
+<input id="google" class="input" placeholder="Link de avaliação">
 
 <button onclick="gerar()"
 class="w-full bg-black text-white py-3 rounded-xl font-semibold">
-GERAR TAG
+GERAR index.html
 </button>
-
-<div id="downloadArea" class="pt-4 hidden text-center"></div>
 
 </div>
 
 <script>
 function gerar(){
 
-const nome = nomeInput.value || "";
-const empresa = empresaInput.value || "";
-const foto = fotoInput.value || "";
-const whatsapp = whatsappInput.value || "";
-const site = siteInput.value || "";
-const pix = pixInput.value || "";
-const google = googleInput.value || "";
+const nome = document.getElementById('nome').value;
+const empresa = document.getElementById('empresa').value;
+const foto = document.getElementById('foto').value;
+const whatsapp = document.getElementById('whatsapp').value;
+const site = document.getElementById('site').value;
+const pix = document.getElementById('pix').value;
+const ssid = document.getElementById('ssid').value;
+const senha = document.getElementById('senha').value;
+const tipo = document.getElementById('tipo').value;
+const google = document.getElementById('google').value;
 
-const wifi = ssidInput.value
-? `WIFI:T:${tipoInput.value};S:${ssidInput.value};P:${senhaInput.value};;`
-: "";
-
-const itens = cardapioInput.value.split("\n").map(l => {
-  const p = l.split("-");
+const itens = document.getElementById('cardapio').value
+.split('\n')
+.map(l => {
+  const p = l.split('-');
   return `<div class="flex justify-between border-b py-1">
-    <span>${p[0] || ""}</span>
-    <strong>${p[1] || ""}</strong>
+    <span>${p[0] || ''}</span>
+    <strong>${p[1] || ''}</strong>
   </div>`;
-}).join("");
+}).join('');
 
-const html = `
-<!DOCTYPE html>
+const wifiQR = ssid
+? `<img class="mx-auto"
+src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(
+`WIFI:T:${tipo};S:${ssid};P:${senha};;`
+)}">`
+: '';
+
+const html = `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -77,6 +82,7 @@ const html = `
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 flex justify-center p-4">
+
 <div class="bg-white max-w-md w-full rounded-2xl p-6 space-y-4 text-center">
 
 <img src="${foto}" class="w-28 h-28 rounded-full mx-auto object-cover">
@@ -84,51 +90,38 @@ const html = `
 <h1 class="text-xl font-bold">${nome}</h1>
 <p class="text-gray-500">${empresa}</p>
 
-<a href="https://wa.me/${whatsapp}" class="block bg-green-500 text-white py-3 rounded-xl">WhatsApp</a>
-<a href="${site}" class="block bg-indigo-600 text-white py-3 rounded-xl">Site</a>
+<a href="https://wa.me/${whatsapp}"
+class="block bg-green-500 text-white py-3 rounded-xl">WhatsApp</a>
+
+<a href="${site}"
+class="block bg-indigo-600 text-white py-3 rounded-xl">Site</a>
 
 <button onclick="navigator.clipboard.writeText('${pix}')"
 class="w-full bg-purple-600 text-white py-3 rounded-xl">
 Copiar PIX
 </button>
 
-${wifi ? `<img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(wifi)}" class="mx-auto">` : ""}
+${wifiQR}
 
 <div class="pt-4">${itens}</div>
 
 ${google ? `<a href="${google}" target="_blank"
 class="block bg-yellow-400 py-3 rounded-xl font-semibold">
 Avaliar no Google
-</a>` : ""}
+</a>` : ''}
 
 </div>
 </body>
-</html>
-`;
+</html>`;
 
-const blob = new Blob([html], { type: "text/html" });
-const url = URL.createObjectURL(blob);
-
-downloadArea.innerHTML = `
-<a href="${url}" download="index.html"
-class="inline-block bg-green-600 text-white px-6 py-3 rounded-xl font-semibold">
-⬇ Baixar index.html
-</a>`;
-downloadArea.classList.remove("hidden");
+const blob = new Blob([html], { type: 'text/html' });
+const a = document.createElement('a');
+a.href = URL.createObjectURL(blob);
+a.download = 'index.html';
+document.body.appendChild(a);
+a.click();
+document.body.removeChild(a);
 }
-
-const nomeInput = document.getElementById("nome");
-const empresaInput = document.getElementById("empresa");
-const fotoInput = document.getElementById("foto");
-const whatsappInput = document.getElementById("whatsapp");
-const siteInput = document.getElementById("site");
-const pixInput = document.getElementById("pix");
-const ssidInput = document.getElementById("ssid");
-const senhaInput = document.getElementById("senha");
-const tipoInput = document.getElementById("tipo");
-const cardapioInput = document.getElementById("cardapio");
-const googleInput = document.getElementById("google");
-const downloadArea = document.getElementById("downloadArea");
 </script>
 
 <style>
