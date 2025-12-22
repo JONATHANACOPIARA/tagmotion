@@ -2,138 +2,108 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width">
   <title>Tag Motion</title>
-
+  <meta name="viewport" content="width=device-width">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="./data.js" defer></script>
 </head>
 
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+<body class="bg-neutral-100 min-h-screen flex items-center justify-center p-4">
 
-  <div class="bg-white max-w-md w-full rounded-2xl shadow-xl overflow-hidden">
+<div class="bg-white max-w-md w-full rounded-3xl shadow-xl overflow-hidden">
 
-    <!-- MENU -->
-    <div class="flex border-b text-center font-semibold">
-      <button class="flex-1 py-3" onclick="show('cartao')">📇 Cartão</button>
-      <button class="flex-1 py-3" onclick="show('cardapio')">🍕 Cardápio</button>
-      <button class="flex-1 py-3" onclick="show('avaliacoes')">⭐ Avaliações</button>
-    </div>
-
-    <!-- CARTÃO -->
-    <div id="cartao" class="p-6 text-center space-y-4">
-
-      <img id="foto" class="w-28 h-28 rounded-full mx-auto object-cover">
-
-      <div>
-        <h1 id="nome" class="text-2xl font-bold"></h1>
-        <p id="empresa" class="text-gray-500"></p>
-      </div>
-
-      <a id="whatsapp" class="block bg-green-500 text-white py-3 rounded-xl">WhatsApp</a>
-      <a id="email" class="block bg-blue-500 text-white py-3 rounded-xl">Email</a>
-      <a id="site" class="block bg-indigo-600 text-white py-3 rounded-xl">Site</a>
-
-      <button id="pix" class="block w-full bg-purple-500 text-white py-3 rounded-xl">
-        Copiar PIX
-      </button>
-
-      <button id="wifiBtn"
-        class="block w-full bg-gray-800 text-white py-3 rounded-xl hidden">
-        📶 Wi-Fi
-      </button>
-    </div>
-
-    <!-- CARDÁPIO -->
-    <div id="cardapio" class="p-6 hidden"></div>
-
-    <!-- AVALIAÇÕES -->
-    <div id="avaliacoes" class="p-6 hidden"></div>
+  <!-- MENU -->
+  <div class="flex text-center text-sm font-medium border-b">
+    <button class="flex-1 py-3" onclick="show('cartao')">Cartão</button>
+    <button class="flex-1 py-3" onclick="show('cardapio')">Cardápio</button>
+    <button class="flex-1 py-3" onclick="show('galeria')">Galeria</button>
+    <button class="flex-1 py-3" onclick="show('avaliacoes')">Avaliações</button>
   </div>
 
-  <!-- MODAL WIFI -->
-  <div id="wifiModal"
-    class="fixed inset-0 bg-black/60 hidden items-center justify-center">
+  <!-- CARTÃO -->
+  <div id="cartao" class="p-6 text-center space-y-4">
+    <img id="foto" class="w-28 h-28 rounded-full mx-auto object-cover">
+    <h1 id="nome" class="text-xl font-bold"></h1>
+    <p id="empresa" class="text-gray-500"></p>
 
-    <div class="bg-white p-6 rounded-xl text-center w-72">
-      <h2 class="font-bold mb-3">Wi-Fi</h2>
-      <img id="wifiQR" class="mx-auto mb-3">
-      <p id="wifiNome" class="text-sm text-gray-500 mb-3"></p>
-      <button onclick="closeWifi()" class="bg-black text-white px-4 py-2 rounded">
-        Fechar
-      </button>
-    </div>
+    <a id="whatsapp" class="block bg-green-500 text-white py-3 rounded-xl">WhatsApp</a>
+    <a id="email" class="block bg-blue-500 text-white py-3 rounded-xl">Email</a>
+    <a id="site" class="block bg-indigo-600 text-white py-3 rounded-xl">Site</a>
+
+    <button id="pix" class="w-full bg-purple-600 text-white py-3 rounded-xl">
+      Copiar PIX
+    </button>
   </div>
 
-  <script>
-    function show(id){
-      ['cartao','cardapio','avaliacoes'].forEach(s =>
-        document.getElementById(s).classList.add('hidden')
-      );
-      document.getElementById(id).classList.remove('hidden');
-    }
+  <!-- CARDÁPIO -->
+  <div id="cardapio" class="p-6 hidden"></div>
 
-    function closeWifi(){
-      wifiModal.classList.add('hidden');
-      wifiModal.classList.remove('flex');
-    }
+  <!-- GALERIA -->
+  <div id="galeria" class="p-4 hidden grid grid-cols-2 gap-3"></div>
 
-    document.addEventListener('DOMContentLoaded', () => {
+  <!-- AVALIAÇÕES -->
+  <div id="avaliacoes" class="p-6 hidden"></div>
 
-      if (!window.data) {
-        alert('Erro ao carregar data.js');
-        return;
-      }
+</div>
 
-      foto.src = data.foto || '';
-      nome.innerText = data.nome || '';
-      empresa.innerText = data.empresa || '';
+<script>
+function show(id){
+  ['cartao','cardapio','galeria','avaliacoes']
+  .forEach(s=>document.getElementById(s).classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+}
 
-      if (data.whatsapp) whatsapp.href = 'https://wa.me/' + data.whatsapp;
-      if (data.email) email.href = 'mailto:' + data.email;
-      if (data.site) site.href = data.site;
+document.addEventListener('DOMContentLoaded', ()=>{
 
-      pix.onclick = () => {
-        navigator.clipboard.writeText(data.pix);
-        alert('PIX copiado!');
-      };
+  if(!window.data){
+    alert('Erro ao carregar dados');
+    return;
+  }
 
-      if (data.wifi?.ssid) {
-        wifiBtn.classList.remove('hidden');
-        const txt = `WIFI:T:${data.wifi.tipo};S:${data.wifi.ssid};P:${data.wifi.senha};;`;
-        wifiQR.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(txt)}`;
-        wifiNome.innerText = data.wifi.ssid;
-        wifiBtn.onclick = () => {
-          wifiModal.classList.remove('hidden');
-          wifiModal.classList.add('flex');
-        };
-      }
+  foto.src = data.foto;
+  nome.textContent = data.nome;
+  empresa.textContent = data.empresa;
+  whatsapp.href = 'https://wa.me/' + data.whatsapp;
+  email.href = 'mailto:' + data.email;
+  site.href = data.site;
 
-      if (data.cardapio) {
-        cardapio.innerHTML = `
-          <img src="${data.cardapio.imagem}" class="rounded mb-3">
-          <h2 class="font-bold mb-2">${data.cardapio.estabelecimento}</h2>
-        `;
-        data.cardapio.itens.forEach(i => {
-          cardapio.innerHTML += `
-            <div class="flex justify-between border-b py-2">
-              <span>${i.nome}</span>
-              <strong>${i.preco}</strong>
-            </div>`;
-        });
-      }
+  pix.onclick = ()=>{
+    navigator.clipboard.writeText(data.pix);
+    pix.textContent = 'PIX copiado ✔';
+    setTimeout(()=>pix.textContent='Copiar PIX',2000);
+  };
 
-      if (data.avaliacoes?.google) {
-        avaliacoes.innerHTML = `
-          <a href="${data.avaliacoes.google}" target="_blank"
-            class="block bg-yellow-400 py-4 rounded-xl text-center font-bold">
-            Avaliar no Google
-          </a>`;
-      }
-
-      show('cartao');
+  // CARDÁPIO
+  if(data.cardapio){
+    const c = cardapio;
+    if(data.cardapio.imagem)
+      c.innerHTML += `<img src="${data.cardapio.imagem}" class="rounded-xl mb-4">`;
+    c.innerHTML += `<h2 class="font-bold mb-2">${data.cardapio.estabelecimento}</h2>`;
+    data.cardapio.itens.forEach(i=>{
+      c.innerHTML += `<div class="flex justify-between border-b py-2">
+        <span>${i.nome}</span><strong>${i.preco}</strong></div>`;
     });
-  </script>
+  }
+
+  // GALERIA
+  if(Array.isArray(data.galeria)){
+    data.galeria.forEach(img=>{
+      galeria.innerHTML += `<img src="${img}" class="rounded-xl object-cover">`;
+    });
+  }
+
+  // AVALIAÇÕES
+  if(data.avaliacoes?.google){
+    avaliacoes.innerHTML =
+      `<a href="${data.avaliacoes.google}" target="_blank"
+        class="block bg-yellow-400 text-black py-4 rounded-xl text-center font-bold">
+        Avaliar no Google
+      </a>`;
+  }
+
+  show('cartao');
+});
+</script>
 
 </body>
 </html>
