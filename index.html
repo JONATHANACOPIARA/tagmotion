@@ -2,46 +2,46 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tag Motion NFC</title>
+  <meta name="viewport" content="width=device-width">
+  <title>Tag Motion</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="./data.js?v=1" defer></script>
+  <script src="./data.js" defer></script>
 </head>
 
-<body class="bg-neutral-100 min-h-screen flex items-center justify-center p-4">
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
 
-  <div class="bg-white max-w-md w-full rounded-3xl shadow-xl overflow-hidden">
+  <div class="bg-white max-w-md w-full rounded-2xl shadow-xl overflow-hidden">
 
     <!-- MENU -->
-    <div class="flex text-center text-sm font-semibold border-b">
-      <button class="flex-1 py-3" onclick="show('cartao')">Cartão</button>
-      <button class="flex-1 py-3" onclick="show('cardapio')">Cardápio</button>
-      <button class="flex-1 py-3" onclick="show('avaliacoes')">Avaliações</button>
+    <div class="flex border-b text-center font-semibold">
+      <button class="flex-1 py-3" onclick="show('cartao')">📇 Cartão</button>
+      <button class="flex-1 py-3" onclick="show('cardapio')">🍕 Cardápio</button>
+      <button class="flex-1 py-3" onclick="show('avaliacoes')">⭐ Avaliações</button>
     </div>
 
     <!-- CARTÃO -->
     <div id="cartao" class="p-6 text-center space-y-4">
 
-      <img id="foto" class="w-28 h-28 rounded-full mx-auto object-cover shadow">
+      <img id="foto" class="w-28 h-28 rounded-full mx-auto object-cover">
 
       <div>
         <h1 id="nome" class="text-2xl font-bold"></h1>
-        <p id="empresa" class="text-neutral-500"></p>
+        <p id="empresa" class="text-gray-500"></p>
       </div>
 
-      <a id="whatsapp" class="block bg-green-500 text-white py-3 rounded-xl font-semibold">WhatsApp</a>
-      <a id="email" class="block bg-blue-500 text-white py-3 rounded-xl font-semibold">E-mail</a>
-      <a id="site" class="block bg-indigo-600 text-white py-3 rounded-xl font-semibold">Site</a>
+      <a id="whatsapp" class="block bg-green-500 text-white py-3 rounded-xl">WhatsApp</a>
+      <a id="email" class="block bg-blue-500 text-white py-3 rounded-xl">Email</a>
+      <a id="site" class="block bg-indigo-600 text-white py-3 rounded-xl">Site</a>
 
-      <button id="pix" class="w-full bg-purple-600 text-white py-3 rounded-xl font-semibold">
+      <button id="pix" class="block w-full bg-purple-500 text-white py-3 rounded-xl">
         Copiar PIX
       </button>
 
-      <button id="wifiBtn" class="w-full bg-neutral-900 text-white py-3 rounded-xl font-semibold hidden">
-        Conectar ao Wi-Fi
+      <button id="wifiBtn"
+        class="block w-full bg-gray-800 text-white py-3 rounded-xl hidden">
+        📶 Wi-Fi
       </button>
-
     </div>
 
     <!-- CARDÁPIO -->
@@ -49,30 +49,28 @@
 
     <!-- AVALIAÇÕES -->
     <div id="avaliacoes" class="p-6 hidden"></div>
-
   </div>
 
   <!-- MODAL WIFI -->
-  <div id="wifiModal" class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50">
-    <div class="bg-white p-6 rounded-2xl text-center">
+  <div id="wifiModal"
+    class="fixed inset-0 bg-black/60 hidden items-center justify-center">
+
+    <div class="bg-white p-6 rounded-xl text-center w-72">
       <h2 class="font-bold mb-3">Wi-Fi</h2>
-      <img id="wifiQR" class="mx-auto mb-3 w-48 h-48">
-      <p id="wifiNome" class="text-sm text-gray-600"></p>
-      <button onclick="closeWifi()" class="mt-3 bg-black text-white px-4 py-2 rounded-xl">Fechar</button>
+      <img id="wifiQR" class="mx-auto mb-3">
+      <p id="wifiNome" class="text-sm text-gray-500 mb-3"></p>
+      <button onclick="closeWifi()" class="bg-black text-white px-4 py-2 rounded">
+        Fechar
+      </button>
     </div>
   </div>
 
   <script>
-    function show(id) {
+    function show(id){
       ['cartao','cardapio','avaliacoes'].forEach(s =>
         document.getElementById(s).classList.add('hidden')
       );
       document.getElementById(id).classList.remove('hidden');
-    }
-
-    function openWifi(){
-      wifiModal.classList.remove('hidden');
-      wifiModal.classList.add('flex');
     }
 
     function closeWifi(){
@@ -82,38 +80,40 @@
 
     document.addEventListener('DOMContentLoaded', () => {
 
-      if (typeof data === 'undefined') {
+      if (!window.data) {
         alert('Erro ao carregar data.js');
         return;
       }
 
       foto.src = data.foto || '';
-      nome.textContent = data.nome || '';
-      empresa.textContent = data.empresa || '';
+      nome.innerText = data.nome || '';
+      empresa.innerText = data.empresa || '';
 
       if (data.whatsapp) whatsapp.href = 'https://wa.me/' + data.whatsapp;
       if (data.email) email.href = 'mailto:' + data.email;
       if (data.site) site.href = data.site;
 
-      if (data.pix) {
-        pix.onclick = () => {
-          navigator.clipboard.writeText(data.pix);
-          pix.textContent = 'PIX copiado ✔';
-          setTimeout(() => pix.textContent = 'Copiar PIX', 2000);
-        };
-      }
+      pix.onclick = () => {
+        navigator.clipboard.writeText(data.pix);
+        alert('PIX copiado!');
+      };
 
       if (data.wifi?.ssid) {
         wifiBtn.classList.remove('hidden');
         const txt = `WIFI:T:${data.wifi.tipo};S:${data.wifi.ssid};P:${data.wifi.senha};;`;
-        wifiQR.src =
-          `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(txt)}`;
-        wifiNome.textContent = data.wifi.ssid;
-        wifiBtn.onclick = openWifi;
+        wifiQR.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(txt)}`;
+        wifiNome.innerText = data.wifi.ssid;
+        wifiBtn.onclick = () => {
+          wifiModal.classList.remove('hidden');
+          wifiModal.classList.add('flex');
+        };
       }
 
-      if (data.cardapio?.itens) {
-        cardapio.innerHTML = `<h2 class="font-bold text-xl mb-3">${data.cardapio.estabelecimento || 'Cardápio'}</h2>`;
+      if (data.cardapio) {
+        cardapio.innerHTML = `
+          <img src="${data.cardapio.imagem}" class="rounded mb-3">
+          <h2 class="font-bold mb-2">${data.cardapio.estabelecimento}</h2>
+        `;
         data.cardapio.itens.forEach(i => {
           cardapio.innerHTML += `
             <div class="flex justify-between border-b py-2">
@@ -126,7 +126,7 @@
       if (data.avaliacoes?.google) {
         avaliacoes.innerHTML = `
           <a href="${data.avaliacoes.google}" target="_blank"
-            class="block bg-yellow-400 text-black py-4 rounded-xl text-center font-semibold">
+            class="block bg-yellow-400 py-4 rounded-xl text-center font-bold">
             Avaliar no Google
           </a>`;
       }
