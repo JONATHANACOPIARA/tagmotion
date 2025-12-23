@@ -1,46 +1,31 @@
 const data = {
-  nome: "Empresa Teste",
-  empresa: "Tag Motion NFC",
-
-  foto: "https://via.placeholder.com/300",
-
-  whatsapp: "5588999999999",
-  email: "contato@empresa.com",
-  site: "https://instagram.com",
-
-  pix: "123e4567-e89b-12d3-a456-426614174000",
-
-  wifi: {
-    tipo: "WPA",
-    ssid: "WiFi Empresa",
-    senha: "12345678"
+  "nome": "Jonathan Guilherme",
+  "empresa": "SEO da Empresa",
+  "foto": "https://i.imgur.com/e1g5ycm.jpeg",
+  "whatsapp": "5588997842847",
+  "email": "studiojonathanguilherme@gmail.com",
+  "site": "https://www.instagram.com/jonathanguilhermejg",
+  "pix": "88997842847",
+  "wifi": {
+    "ssid": "brisa-1768521",
+    "senha": "q79ugxxy",
+    "tipo": "WPA"
   },
-
-  cardapio: {
-    estabelecimento: "Cardápio",
-    imagem: "https://via.placeholder.com/600x400",
-    itens: [
-      { nome: "Produto 1", preco: "R$ 10,00" },
-      { nome: "Produto 2", preco: "R$ 20,00" }
-    ]
+  "avaliacoes": {
+    "google": "https://g.page/r/CbAzn_5LkDqLEBM/review"
   },
-
-  avaliacoes: {
-    google: "https://g.page/r/CbAzn_5LkDqLEBM/review"
-  },
-
-  galeria: [
+  "galeria": [
     {
-      imagem: "https://via.placeholder.com/600",
-      texto: "Fachada da loja"
+      "img": "https://i.imgur.com/umvNas6.jpeg   Studio JG -  Gravações de Comerciais e Jingles",
+      "texto": ""
     },
     {
-      imagem: "https://via.placeholder.com/600",
-      texto: "Interior"
+      "img": "https://i.imgur.com/7noZxtR.png   Tag Motion - Cartões NFC",
+      "texto": ""
     },
     {
-      imagem: "https://via.placeholder.com/600",
-      texto: "Produtos"
+      "img": "https://i.imgur.com/e1g5ycm.jpeg",
+      "texto": ""
     }
   ]
 };
