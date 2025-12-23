@@ -36,7 +36,7 @@ placeholder="Produto - Preço (1 por linha)"></textarea>
 <hr>
 
 <h2 class="font-semibold">⭐ Avaliações Google</h2>
-<input id="google" class="input" placeholder="Link para avaliar no Google">
+<input id="google" class="input" placeholder="Link de avaliação Google">
 
 <hr>
 
@@ -48,37 +48,27 @@ class="w-full bg-black text-white py-3 rounded-2xl font-semibold">
 GERAR INDEX.HTML
 </button>
 
+<!-- LINK VISÍVEL -->
+<a id="download"
+class="hidden mt-4 block text-center bg-green-600 text-white py-3 rounded-2xl font-semibold"
+download="index.html">
+⬇️ Baixar index.html
+</a>
+
 </div>
 
 <script>
 function gerar(){
 
-  const nome = document.getElementById('nome').value;
-  const empresa = document.getElementById('empresa').value;
-  const foto = document.getElementById('foto').value;
-  const whatsapp = document.getElementById('whatsapp').value;
-  const email = document.getElementById('email').value;
-  const site = document.getElementById('site').value;
-  const pix = document.getElementById('pix').value;
-  const ssid = document.getElementById('ssid').value;
-  const senha = document.getElementById('senha').value;
-  const google = document.getElementById('google').value;
+  const g = id => document.getElementById(id).value;
 
-  const cardapioHTML = document.getElementById('cardapio').value
-    .split('\n')
-    .filter(l => l.trim())
-    .map(l => {
-      const [n,p] = l.split('-');
-      return `<div class="flex justify-between border-b py-2">
-        <span>${n||''}</span><strong>${p||''}</strong>
-      </div>`;
-    }).join('');
+  const cardapio = g('cardapio').split('\n').filter(l=>l).map(l=>{
+    const [n,p]=l.split('-');
+    return `<div class="flex justify-between border-b py-2"><span>${n||''}</span><strong>${p||''}</strong></div>`;
+  }).join('');
 
-  const galeriaHTML = document.getElementById('galeria').value
-    .split('\n')
-    .filter(l => l.trim())
-    .map(url => `<img src="${url}" class="rounded-xl w-full object-cover">`)
-    .join('');
+  const galeria = g('galeria').split('\n').filter(l=>l)
+    .map(u=>`<img src="${u}" class="rounded-xl w-full object-cover">`).join('');
 
 const html = `<!DOCTYPE html>
 <html lang="pt-BR">
@@ -100,26 +90,21 @@ const html = `<!DOCTYPE html>
 </div>
 
 <div id="c" class="p-6 text-center space-y-3">
-<img src="${foto}" class="w-28 h-28 rounded-full mx-auto">
-<h1 class="text-xl font-bold">${nome}</h1>
-<p>${empresa}</p>
-<a href="https://wa.me/${whatsapp}" class="block bg-green-500 text-white py-3 rounded-xl">WhatsApp</a>
-<a href="mailto:${email}" class="block bg-blue-500 text-white py-3 rounded-xl">Email</a>
-<a href="${site}" class="block bg-indigo-600 text-white py-3 rounded-xl">Site</a>
-<button onclick="navigator.clipboard.writeText('${pix}');alert('PIX copiado')"
-class="w-full bg-purple-600 text-white py-3 rounded-xl">Copiar PIX</button>
-<button onclick="alert('Wi-Fi: ${ssid}\\nSenha: ${senha}')"
-class="w-full bg-black text-white py-3 rounded-xl">Wi-Fi</button>
+<img src="${g('foto')}" class="w-28 h-28 rounded-full mx-auto">
+<h1 class="text-xl font-bold">${g('nome')}</h1>
+<p>${g('empresa')}</p>
+<a href="https://wa.me/${g('whatsapp')}" class="block bg-green-500 text-white py-3 rounded-xl">WhatsApp</a>
+<a href="mailto:${g('email')}" class="block bg-blue-500 text-white py-3 rounded-xl">Email</a>
+<a href="${g('site')}" class="block bg-indigo-600 text-white py-3 rounded-xl">Site</a>
+<button onclick="navigator.clipboard.writeText('${g('pix')}');alert('PIX copiado')" class="w-full bg-purple-600 text-white py-3 rounded-xl">Copiar PIX</button>
+<button onclick="alert('Wi-Fi: ${g('ssid')} | Senha: ${g('senha')}')" class="w-full bg-black text-white py-3 rounded-xl">Wi-Fi</button>
 </div>
 
-<div id="m" class="p-6 hidden">${cardapioHTML}</div>
+<div id="m" class="p-6 hidden">${cardapio}</div>
 <div id="a" class="p-6 hidden">
-<a href="${google}" target="_blank"
-class="block bg-yellow-400 py-4 rounded-xl text-center font-semibold">
-Avaliar no Google
-</a>
+<a href="${g('google')}" target="_blank" class="block bg-yellow-400 py-4 rounded-xl text-center font-semibold">Avaliar no Google</a>
 </div>
-<div id="g" class="p-6 grid grid-cols-2 gap-3 hidden">${galeriaHTML}</div>
+<div id="g" class="p-6 grid grid-cols-2 gap-3 hidden">${galeria}</div>
 
 </div>
 
@@ -135,10 +120,11 @@ show('c');
 </html>`;
 
   const blob = new Blob([html], {type:'text/html'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'index.html';
-  a.click();
+  const url = URL.createObjectURL(blob);
+
+  const link = document.getElementById('download');
+  link.href = url;
+  link.classList.remove('hidden');
 }
 </script>
 
