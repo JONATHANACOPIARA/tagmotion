@@ -1,98 +1,46 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<title>Tag Motion</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="./data-001.js" defer></script>
+<title>CEO da Empresa</title>
+<style>
+body{font-family:Arial;background:#f3f4f6;padding:20px}
+.card{max-width:400px;margin:auto;background:#fff;padding:20px;border-radius:20px}
+img{max-width:100%}
+button,a{display:block;text-align:center;margin:8px 0;padding:12px;border-radius:12px;color:#fff;text-decoration:none}
+.green{background:#22c55e}
+.blue{background:#3b82f6}
+.indigo{background:#6366f1}
+.purple{background:#9333ea}
+.black{background:#000}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+</style>
 </head>
+<body>
 
-<body class="bg-neutral-100 min-h-screen flex justify-center p-4">
+<div class="card">
+<img src="https://i.imgur.com/e1g5ycm.jpeg" style="border-radius:50%;width:120px;margin:auto;display:block">
+<h2 style="text-align:center">Jonathan Guilherme</h2>
+<p style="text-align:center;color:#666">CEO da Empresa</p>
 
-<div class="bg-white max-w-md w-full rounded-3xl shadow-xl overflow-hidden">
+<a class="green" href="https://wa.me/5588997842847">WhatsApp</a>
+<a class="blue" href="mailto:studiojonathanguilherme@gmail.com">E-mail</a>
+<a class="indigo" href="https://www.instagram.com/jonathanguilhermejg">Site / Instagram</a>
 
-<div class="flex text-sm text-center border-b">
-<button class="flex-1 py-3" onclick="show('cartao')">Cartão</button>
-<button class="flex-1 py-3" onclick="show('cardapio')">Cardápio</button>
-<button class="flex-1 py-3" onclick="show('galeria')">Fotos</button>
-<button class="flex-1 py-3" onclick="show('avaliacoes')">Avaliações</button>
-</div>
+<button class="purple" onclick="navigator.clipboard.writeText('88997842847')">Copiar PIX</button>
 
-<div id="cartao" class="p-6 text-center space-y-4">
-<img id="foto" class="w-28 h-28 mx-auto rounded-full object-cover">
-<h1 id="nome" class="text-xl font-bold"></h1>
-<p id="empresa" class="text-neutral-500"></p>
+<button class="black" onclick="navigator.clipboard.writeText('WiFi: brisa-1768521 | Senha: q79ugxxy')">Copiar Wi-Fi</button>
 
-<a id="whatsapp" class="block bg-green-500 text-white py-3 rounded-xl">WhatsApp</a>
-<a id="site" class="block bg-indigo-600 text-white py-3 rounded-xl">Site</a>
+<h3>Cardápio</h3>
+<div>Spot Comercial Padrão    - R$ 50,00</div><div>Spot Comercial Produzido - R$ 70,00</div><div>Spot Comercial Padrão - R$ 50,00</div><div>Spot Comercial Padrão - R$ 50,00</div><div>Jingle para Empresas - R$ 250,00</div>
 
-<button id="pix" class="w-full bg-purple-600 text-white py-3 rounded-xl">
-Copiar PIX
-</button>
+<a class="black" href="https://g.page/r/CbAzn_5LkDqLEBM/review">Avaliar no Google</a>
 
-<button id="wifiBtn" class="w-full bg-black text-white py-3 rounded-xl hidden">
-Wi-Fi
-</button>
-</div>
-
-<div id="cardapio" class="p-6 hidden"></div>
-<div id="galeria" class="p-6 hidden grid grid-cols-2 gap-3"></div>
-<div id="avaliacoes" class="p-6 hidden"></div>
+<h3>Galeria</h3>
+<div class="grid"><img src="https://i.imgur.com/umvNas6.jpeg" style="width:100%;border-radius:12px"><img src="https://i.imgur.com/7noZxtR.png" style="width:100%;border-radius:12px"></div>
 
 </div>
-
-<script>
-function show(id){
-['cartao','cardapio','galeria','avaliacoes'].forEach(s=>{
-document.getElementById(s).classList.add('hidden')
-});
-document.getElementById(id).classList.remove('hidden');
-}
-
-document.addEventListener('DOMContentLoaded',()=>{
-if(!window.data){ alert('Erro ao carregar data.js'); return;}
-
-foto.src=data.foto;
-nome.textContent=data.nome;
-empresa.textContent=data.empresa;
-
-whatsapp.href='https://wa.me/'+data.whatsapp;
-site.href=data.site;
-
-pix.onclick=()=>{
-navigator.clipboard.writeText(data.pix);
-pix.textContent='PIX copiado ✔';
-};
-
-if(data.cardapio?.itens){
-cardapio.innerHTML='';
-data.cardapio.itens.forEach(i=>{
-cardapio.innerHTML+=`
-<div class="flex justify-between border-b py-2">
-<span>${i.nome}</span><strong>${i.preco}</strong>
-</div>`;
-});
-}
-
-if(data.galeria){
-galeria.innerHTML='';
-data.galeria.forEach(f=>{
-galeria.innerHTML+=`<img src="${f}" class="rounded-xl">`;
-});
-}
-
-if(data.avaliacoes?.google){
-avaliacoes.innerHTML=`
-<a href="${data.avaliacoes.google}" target="_blank"
-class="block bg-yellow-400 py-4 rounded-xl text-center font-bold">
-Avaliar no Google
-</a>`;
-}
-
-show('cartao');
-});
-</script>
-
 </body>
 </html>
