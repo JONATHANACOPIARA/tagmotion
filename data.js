@@ -16,15 +16,19 @@ const data = {
   },
   "galeria": [
     {
-      "img": "https://i.imgur.com/umvNas6.jpeg   Studio JG -  Gravações de Comerciais e Jingles",
+      "img": "https://i.imgur.com/umvNas6.jpeg",
       "texto": ""
     },
     {
-      "img": "https://i.imgur.com/7noZxtR.png   Tag Motion - Cartões NFC",
+      "img": "Studio JG -  Gravações de Comerciais e Jingles",
       "texto": ""
     },
     {
-      "img": "https://i.imgur.com/e1g5ycm.jpeg",
+      "img": "https://i.imgur.com/7noZxtR.png",
+      "texto": ""
+    },
+    {
+      "img": "Tag Motion - Cartões NFC",
       "texto": ""
     }
   ]
