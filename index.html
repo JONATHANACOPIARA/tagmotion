@@ -6,9 +6,7 @@
   <title>Tag Motion</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- ✅ CAMINHO ABSOLUTO CORRETO PARA GITHUB PAGES -->
-  <script src="/tagmotion/data.js" defer></script>
+  <script src="./data.js" defer></script>
 </head>
 
 <body class="bg-neutral-100 min-h-screen flex items-center justify-center p-4">
@@ -17,9 +15,10 @@
 
     <!-- MENU -->
     <div class="flex text-center text-sm font-medium bg-neutral-50 border-b">
-      <button class="flex-1 py-3 hover:bg-neutral-100" onclick="show('cartao')">Cartão</button>
-      <button class="flex-1 py-3 hover:bg-neutral-100" onclick="show('cardapio')">Cardápio</button>
-      <button class="flex-1 py-3 hover:bg-neutral-100" onclick="show('avaliacoes')">Avaliações</button>
+      <button class="flex-1 py-3" onclick="show('cartao')">Cartão</button>
+      <button class="flex-1 py-3" onclick="show('galeria')">Fotos</button>
+      <button class="flex-1 py-3" onclick="show('cardapio')">Cardápio</button>
+      <button class="flex-1 py-3" onclick="show('avaliacoes')">Avaliações</button>
     </div>
 
     <!-- CARTÃO -->
@@ -28,40 +27,31 @@
       <img id="foto" class="w-28 h-28 rounded-full mx-auto object-cover shadow-lg">
 
       <div>
-        <h1 id="nome" class="text-2xl font-bold text-neutral-900"></h1>
+        <h1 id="nome" class="text-2xl font-bold"></h1>
         <p id="empresa" class="text-neutral-500"></p>
       </div>
 
       <div class="space-y-3">
-        <a id="whatsapp" target="_blank"
-          class="block bg-green-500 text-white py-3 rounded-2xl font-semibold">
-          Falar no WhatsApp
-        </a>
-
-        <a id="email"
-          class="block bg-blue-500 text-white py-3 rounded-2xl font-semibold">
-          Enviar E-mail
-        </a>
-
-        <a id="site" target="_blank"
-          class="block bg-indigo-600 text-white py-3 rounded-2xl font-semibold">
-          Visitar Site
-        </a>
+        <a id="whatsapp" class="block bg-green-500 text-white py-3 rounded-2xl font-semibold">WhatsApp</a>
+        <a id="email" class="block bg-blue-500 text-white py-3 rounded-2xl font-semibold">Email</a>
+        <a id="site" class="block bg-indigo-600 text-white py-3 rounded-2xl font-semibold">Site</a>
       </div>
 
-      <div class="pt-5 border-t space-y-2">
-        <button id="pix"
-          class="w-full bg-purple-600 text-white py-3 rounded-2xl font-semibold">
-          Copiar chave PIX
-        </button>
-        <p class="text-xs text-neutral-400">Pagamento via app do banco</p>
-      </div>
+      <button id="pix" class="w-full bg-purple-600 text-white py-3 rounded-2xl font-semibold">
+        Copiar chave PIX
+      </button>
 
       <button id="wifiBtn"
         class="w-full bg-neutral-900 text-white py-3 rounded-2xl font-semibold hidden">
         Conectar ao Wi-Fi
       </button>
 
+    </div>
+
+    <!-- GALERIA -->
+    <div id="galeria" class="p-6 hidden">
+      <h2 class="font-bold text-xl mb-4">Galeria</h2>
+      <div id="galeriaGrid" class="grid grid-cols-2 gap-3"></div>
     </div>
 
     <!-- CARDÁPIO -->
@@ -72,15 +62,14 @@
 
   </div>
 
-  <!-- MODAL WI-FI -->
+  <!-- MODAL WIFI -->
   <div id="wifiModal"
     class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50">
     <div class="bg-white rounded-3xl p-6 w-80 text-center space-y-4">
       <h2 class="text-lg font-bold">Wi-Fi</h2>
       <img id="wifiQR" class="mx-auto w-48 h-48">
       <p id="wifiNome" class="text-sm text-neutral-500"></p>
-      <button onclick="closeWifi()"
-        class="w-full bg-neutral-900 text-white py-2 rounded-xl">
+      <button onclick="closeWifi()" class="w-full bg-neutral-900 text-white py-2 rounded-xl">
         Fechar
       </button>
     </div>
@@ -88,7 +77,7 @@
 
   <script>
     function show(id){
-      ['cartao','cardapio','avaliacoes'].forEach(s =>
+      ['cartao','galeria','cardapio','avaliacoes'].forEach(s =>
         document.getElementById(s).classList.add('hidden')
       );
       document.getElementById(id).classList.remove('hidden');
@@ -106,9 +95,8 @@
 
     document.addEventListener('DOMContentLoaded', () => {
 
-      if (typeof data === 'undefined') {
-        document.body.innerHTML =
-          '<div style="font-family:sans-serif;padding:40px;text-align:center">Erro ao carregar data.js</div>';
+      if (!window.data) {
+        alert('Erro ao carregar data.js');
         return;
       }
 
@@ -116,14 +104,9 @@
       nome.textContent = data.nome || '';
       empresa.textContent = data.empresa || '';
 
-      if (data.whatsapp)
-        whatsapp.href = 'https://wa.me/' + data.whatsapp;
-
-      if (data.email)
-        email.href = 'mailto:' + data.email;
-
-      if (data.site)
-        site.href = data.site;
+      if (data.whatsapp) whatsapp.href = 'https://wa.me/' + data.whatsapp;
+      if (data.email) email.href = 'mailto:' + data.email;
+      if (data.site) site.href = data.site;
 
       if (data.pix) {
         pix.onclick = () => {
@@ -142,14 +125,28 @@
         wifiBtn.onclick = openWifi;
       }
 
+      // GALERIA
+      if (Array.isArray(data.galeria) && data.galeria.length) {
+        const g = document.getElementById('galeriaGrid');
+        data.galeria.forEach(f => {
+          g.innerHTML += `
+            <div>
+              <img src="${f.url}" class="rounded-xl mb-1 object-cover">
+              ${f.legenda ? `<p class="text-xs text-neutral-500">${f.legenda}</p>` : ''}
+            </div>`;
+        });
+      }
+
+      // CARDÁPIO
       if (data.cardapio) {
-        cardapio.innerHTML = '';
+        const c = cardapio;
+        c.innerHTML = '';
         if (data.cardapio.imagem)
-          cardapio.innerHTML += `<img src="${data.cardapio.imagem}" class="rounded-2xl mb-4">`;
+          c.innerHTML += `<img src="${data.cardapio.imagem}" class="rounded-2xl mb-4">`;
         if (data.cardapio.estabelecimento)
-          cardapio.innerHTML += `<h2 class="font-bold text-xl mb-3">${data.cardapio.estabelecimento}</h2>`;
+          c.innerHTML += `<h2 class="font-bold text-xl mb-3">${data.cardapio.estabelecimento}</h2>`;
         data.cardapio.itens?.forEach(i => {
-          cardapio.innerHTML += `
+          c.innerHTML += `
             <div class="flex justify-between py-2 border-b text-sm">
               <span>${i.nome}</span>
               <strong>${i.preco}</strong>
@@ -157,6 +154,7 @@
         });
       }
 
+      // AVALIAÇÕES
       if (data.avaliacoes?.google) {
         avaliacoes.innerHTML = `
           <a href="${data.avaliacoes.google}" target="_blank"
