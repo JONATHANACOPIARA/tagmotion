@@ -1,53 +1,48 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width">
-  <title>Tag Motion</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tag Motion NFC</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- CAMINHO RELATIVO CORRETO -->
   <script src="./data.js" defer></script>
 </head>
 
 <body class="bg-neutral-100 min-h-screen flex items-center justify-center p-4">
 
-<div class="bg-white max-w-md w-full rounded-3xl shadow-2xl overflow-hidden">
+<div class="bg-white max-w-md w-full rounded-3xl shadow-xl overflow-hidden">
 
   <!-- MENU -->
-  <div class="flex text-center text-sm font-medium bg-neutral-50 border-b">
+  <div class="flex text-sm font-semibold bg-neutral-50 border-b">
     <button class="flex-1 py-3" onclick="show('cartao')">Cartão</button>
     <button class="flex-1 py-3" onclick="show('cardapio')">Cardápio</button>
-    <button class="flex-1 py-3" onclick="show('galeria')">Galeria</button>
     <button class="flex-1 py-3" onclick="show('avaliacoes')">Avaliações</button>
   </div>
 
   <!-- CARTÃO -->
-  <div id="cartao" class="p-6 text-center space-y-5">
-    <img id="foto" class="w-28 h-28 rounded-full mx-auto object-cover shadow-lg">
+  <div id="cartao" class="p-6 text-center space-y-4">
+    <img id="foto" class="w-28 h-28 mx-auto rounded-full object-cover shadow">
+    <h1 id="nome" class="text-xl font-bold"></h1>
+    <p id="empresa" class="text-sm text-gray-500"></p>
 
-    <div>
-      <h1 id="nome" class="text-2xl font-bold"></h1>
-      <p id="empresa" class="text-neutral-500"></p>
-    </div>
+    <a id="whatsapp" class="block bg-green-500 text-white py-3 rounded-xl">WhatsApp</a>
+    <a id="email" class="block bg-blue-500 text-white py-3 rounded-xl">E-mail</a>
+    <a id="site" class="block bg-indigo-600 text-white py-3 rounded-xl">Site</a>
 
-    <a id="whatsapp" class="block bg-green-500 text-white py-3 rounded-2xl font-semibold">WhatsApp</a>
-    <a id="email" class="block bg-blue-500 text-white py-3 rounded-2xl font-semibold">Email</a>
-    <a id="site" class="block bg-indigo-600 text-white py-3 rounded-2xl font-semibold">Site</a>
-
-    <button id="pix" class="w-full bg-purple-600 text-white py-3 rounded-2xl font-semibold">
+    <button id="pix" class="w-full bg-purple-600 text-white py-3 rounded-xl">
       Copiar PIX
     </button>
 
-    <button id="wifiBtn" class="w-full bg-neutral-900 text-white py-3 rounded-2xl font-semibold hidden">
-      Conectar ao Wi-Fi
+    <button id="wifiBtn" class="w-full bg-black text-white py-3 rounded-xl hidden">
+      Wi-Fi
     </button>
   </div>
 
   <!-- CARDÁPIO -->
   <div id="cardapio" class="p-6 hidden"></div>
-
-  <!-- GALERIA -->
-  <div id="galeria" class="p-6 hidden grid grid-cols-2 gap-3"></div>
 
   <!-- AVALIAÇÕES -->
   <div id="avaliacoes" class="p-6 hidden"></div>
@@ -55,18 +50,19 @@
 </div>
 
 <!-- MODAL WIFI -->
-<div id="wifiModal" class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50">
-  <div class="bg-white rounded-3xl p-6 w-80 text-center space-y-4">
-    <h2 class="font-bold">Wi-Fi</h2>
-    <img id="wifiQR" class="mx-auto w-48 h-48">
-    <p id="wifiNome" class="text-sm text-neutral-500"></p>
-    <button onclick="closeWifi()" class="w-full bg-neutral-900 text-white py-2 rounded-xl">Fechar</button>
+<div id="wifiModal" class="fixed inset-0 bg-black/70 hidden items-center justify-center">
+  <div class="bg-white p-6 rounded-2xl text-center">
+    <img id="wifiQR" class="w-48 mx-auto mb-3">
+    <p id="wifiNome"></p>
+    <button onclick="closeWifi()" class="mt-4 bg-black text-white px-4 py-2 rounded">
+      Fechar
+    </button>
   </div>
 </div>
 
 <script>
 function show(id){
-  ['cartao','cardapio','galeria','avaliacoes'].forEach(s =>
+  ['cartao','cardapio','avaliacoes'].forEach(s =>
     document.getElementById(s).classList.add('hidden')
   );
   document.getElementById(id).classList.remove('hidden');
@@ -84,7 +80,7 @@ function closeWifi(){
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  if (!window.data) {
+  if (typeof data === 'undefined') {
     alert('Erro ao carregar dados');
     return;
   }
@@ -93,57 +89,42 @@ document.addEventListener('DOMContentLoaded', () => {
   nome.textContent = data.nome || '';
   empresa.textContent = data.empresa || '';
 
-  if (data.whatsapp) whatsapp.href = 'https://wa.me/' + data.whatsapp;
-  if (data.email) email.href = 'mailto:' + data.email;
-  if (data.site) site.href = data.site;
+  whatsapp.href = 'https://wa.me/' + data.whatsapp;
+  email.href = 'mailto:' + data.email;
+  site.href = data.site;
 
-  if (data.pix) {
-    pix.onclick = () => {
-      navigator.clipboard.writeText(data.pix);
-      pix.textContent = 'PIX copiado ✔';
-      setTimeout(()=>pix.textContent='Copiar PIX',2000);
-    };
-  }
+  pix.onclick = () => {
+    navigator.clipboard.writeText(data.pix);
+    pix.textContent = 'PIX copiado ✔';
+    setTimeout(()=>pix.textContent='Copiar PIX',2000);
+  };
 
   if (data.wifi?.ssid) {
     wifiBtn.classList.remove('hidden');
     const txt = `WIFI:T:${data.wifi.tipo};S:${data.wifi.ssid};P:${data.wifi.senha};;`;
-    wifiQR.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(txt)}`;
+    wifiQR.src =
+      'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' +
+      encodeURIComponent(txt);
     wifiNome.textContent = data.wifi.ssid;
     wifiBtn.onclick = openWifi;
   }
 
-  if (data.cardapio) {
-    cardapio.innerHTML = '';
-    if (data.cardapio.imagem)
-      cardapio.innerHTML += `<img src="${data.cardapio.imagem}" class="rounded-xl mb-4">`;
-    data.cardapio.itens?.forEach(i=>{
-      cardapio.innerHTML += `<div class="flex justify-between border-b py-2">
+  if (data.cardapio?.itens) {
+    cardapio.innerHTML = data.cardapio.itens.map(i =>
+      `<div class="flex justify-between border-b py-2">
         <span>${i.nome}</span><strong>${i.preco}</strong>
-      </div>`;
-    });
-  }
-
-  if (Array.isArray(data.galeria)) {
-    galeria.innerHTML = '';
-    data.galeria.forEach(f=>{
-      galeria.innerHTML += `
-        <div>
-          <img src="${f.imagem}" class="rounded-xl mb-1">
-          <p class="text-xs text-neutral-500">${f.texto||''}</p>
-        </div>`;
-    });
+      </div>`
+    ).join('');
   }
 
   if (data.avaliacoes?.google) {
     avaliacoes.innerHTML = `
       <a href="${data.avaliacoes.google}" target="_blank"
-        class="block bg-yellow-400 text-black py-4 rounded-2xl text-center font-semibold">
+      class="block bg-yellow-400 text-black py-4 rounded-xl text-center">
         Avaliar no Google
       </a>`;
   }
 
-  show('cartao');
 });
 </script>
 
