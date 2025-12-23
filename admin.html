@@ -1,45 +1,51 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>Tag Motion – Gerador</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <title>Admin • Tag Motion</title>
+  <meta name="viewport" content="width=device-width">
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-
 <body class="bg-neutral-100 p-6">
-<div class="max-w-xl mx-auto bg-white p-6 rounded-2xl shadow space-y-4">
 
-<h1 class="text-2xl font-bold text-center">Gerador Tag Motion</h1>
+<h1 class="text-2xl font-bold mb-6">Gerador de Tag Motion</h1>
+
+<div class="space-y-4 max-w-xl">
 
 <input id="nome" class="input" placeholder="Nome">
 <input id="empresa" class="input" placeholder="Empresa">
-<input id="foto" class="input" placeholder="URL da foto do cartão">
+<input id="foto" class="input" placeholder="URL da foto do perfil">
 
 <input id="whatsapp" class="input" placeholder="WhatsApp (5588...)">
-<input id="email" class="input" placeholder="E-mail">
-<input id="site" class="input" placeholder="Site / Instagram">
+<input id="email" class="input" placeholder="Email">
+<input id="site" class="input" placeholder="Site ou Instagram">
 
 <input id="pix" class="input" placeholder="Chave PIX">
 
 <h2 class="font-bold pt-4">Wi-Fi</h2>
-<input id="ssid" class="input" placeholder="Nome da rede">
-<input id="senha" class="input" placeholder="Senha">
-<select id="tipo" class="input">
-<option value="WPA">WPA/WPA2</option>
-<option value="nopass">Sem senha</option>
+<input id="wifi_ssid" class="input" placeholder="Nome da rede">
+<input id="wifi_senha" class="input" placeholder="Senha">
+<select id="wifi_tipo" class="input">
+  <option value="WPA">WPA/WPA2</option>
+  <option value="WEP">WEP</option>
+  <option value="nopass">Sem senha</option>
 </select>
 
-<h2 class="font-bold pt-4">Avaliações Google</h2>
-<input id="google" class="input" placeholder="Link de avaliações">
+<h2 class="font-bold pt-4">Cardápio</h2>
+<textarea id="cardapio" class="input" rows="4"
+placeholder="Ex:
+Café;R$ 5,00
+Sanduíche;R$ 12,00"></textarea>
 
 <h2 class="font-bold pt-4">Galeria de Fotos</h2>
-<textarea id="galeria" class="input h-32"
-placeholder="URL | texto opcional
-URL | texto opcional"></textarea>
+<textarea id="galeria" class="input" rows="4"
+placeholder="Uma URL por linha"></textarea>
+
+<h2 class="font-bold pt-4">Avaliações Google</h2>
+<input id="avaliacoes" class="input" placeholder="Link direto para avaliação">
 
 <button onclick="gerar()"
-class="w-full bg-black text-white py-3 rounded-xl font-bold">
+ class="w-full bg-black text-white py-3 rounded-xl font-bold">
 GERAR data.js
 </button>
 
@@ -47,11 +53,13 @@ GERAR data.js
 
 <script>
 function gerar() {
-  const galeriaRaw = galeria.value.split('\n').filter(l => l.trim());
-  const galeriaFinal = galeriaRaw.map(l => {
-    const p = l.split('|');
-    return { img: p[0].trim(), texto: (p[1] || '').trim() };
+
+  const itens = cardapio.value.split('\n').filter(l=>l).map(l=>{
+    const [nome,preco]=l.split(';');
+    return { nome, preco };
   });
+
+  const fotos = galeria.value.split('\n').filter(l=>l);
 
   const data = {
     nome: nome.value,
@@ -61,19 +69,30 @@ function gerar() {
     email: email.value,
     site: site.value,
     pix: pix.value,
+
     wifi: {
-      ssid: ssid.value,
-      senha: senha.value,
-      tipo: tipo.value
+      ssid: wifi_ssid.value,
+      senha: wifi_senha.value,
+      tipo: wifi_tipo.value
     },
+
+    cardapio: {
+      estabelecimento: empresa.value,
+      itens
+    },
+
+    galeria: fotos,
+
     avaliacoes: {
-      google: google.value
-    },
-    galeria: galeriaFinal
+      google: avaliacoes.value
+    }
   };
 
-  const conteudo = `const data = ${JSON.stringify(data, null, 2)};`;
-  const blob = new Blob([conteudo], { type: 'application/javascript' });
+  const blob = new Blob(
+    [`const data = ${JSON.stringify(data,null,2)};`],
+    {type:'application/javascript'}
+  );
+
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = 'data.js';
@@ -82,11 +101,11 @@ function gerar() {
 </script>
 
 <style>
-.input {
+.input{
   width:100%;
   padding:12px;
-  border:1px solid #ddd;
   border-radius:12px;
+  border:1px solid #ccc;
 }
 </style>
 
