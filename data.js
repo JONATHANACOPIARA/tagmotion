@@ -20,15 +20,7 @@ const data = {
       "texto": ""
     },
     {
-      "img": "Studio JG -  Gravações de Comerciais e Jingles",
-      "texto": ""
-    },
-    {
       "img": "https://i.imgur.com/7noZxtR.png",
-      "texto": ""
-    },
-    {
-      "img": "Tag Motion - Cartões NFC",
       "texto": ""
     }
   ]
