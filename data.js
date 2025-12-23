@@ -11,17 +11,31 @@ const data = {
     "senha": "q79ugxxy",
     "tipo": "WPA"
   },
-  "avaliacoes": {
-    "google": "https://g.page/r/CbAzn_5LkDqLEBM/review"
+  "cardapio": {
+    "estabelecimento": "SEO da Empresa",
+    "itens": [
+      {
+        "nome": "Spot Comercial Padrão    - R$ 50,00"
+      },
+      {
+        "nome": "Spot Comercial Produzido - R$ 70,00"
+      },
+      {
+        "nome": "Spot Comercial Padrão - R$ 50,00"
+      },
+      {
+        "nome": "Spot Comercial Padrão - R$ 50,00"
+      },
+      {
+        "nome": "Jingle para Empresas - R$ 250,00"
+      }
+    ]
   },
   "galeria": [
-    {
-      "img": "https://i.imgur.com/umvNas6.jpeg",
-      "texto": ""
-    },
-    {
-      "img": "https://i.imgur.com/7noZxtR.png",
-      "texto": ""
-    }
-  ]
+    "https://i.imgur.com/umvNas6.jpeg  ",
+    "https://i.imgur.com/7noZxtR.png   "
+  ],
+  "avaliacoes": {
+    "google": "https://g.page/r/CbAzn_5LkDqLEBM/review"
+  }
 };
