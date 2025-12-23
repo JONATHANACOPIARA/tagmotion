@@ -1,6 +1,6 @@
 const data = {
-  "nome": "Jonathan Guilherme Oliveira",
-  "empresa": "Studio JG",
+  "nome": "Jonathan Guilherme",
+  "empresa": "SEO da Empresa",
   "foto": "https://i.imgur.com/e1g5ycm.jpeg",
   "whatsapp": "5588997842847",
   "email": "studiojonathanguilherme@gmail.com",
@@ -16,7 +16,11 @@ const data = {
   },
   "galeria": [
     {
-      "img": "https://i.imgur.com/umvNas6.jpeg",
+      "img": "https://i.imgur.com/umvNas6.jpeg   Studio JG -  Gravações de Comerciais e Jingles",
+      "texto": ""
+    },
+    {
+      "img": "https://i.imgur.com/7noZxtR.png   Tag Motion - Cartões NFC",
       "texto": ""
     }
   ]
