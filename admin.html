@@ -2,14 +2,14 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Tag Motion — Gerador</title>
+<title>Tag Motion — Gerador Seguro</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-neutral-100 min-h-screen flex items-center justify-center p-4">
 
-<div class="bg-white max-w-lg w-full rounded-3xl shadow-xl p-6 space-y-6">
+<div class="bg-white max-w-xl w-full rounded-3xl shadow-xl p-6 space-y-6">
 
 <h1 class="text-2xl font-bold text-center">Gerador de Tag NFC</h1>
 
@@ -36,7 +36,7 @@ placeholder="Produto - Preço (1 por linha)"></textarea>
 <hr>
 
 <h2 class="font-semibold">⭐ Avaliações Google</h2>
-<input id="google" class="input" placeholder="Link de avaliação Google">
+<input id="google" class="input" placeholder="Link Google Avaliações">
 
 <hr>
 
@@ -48,27 +48,24 @@ class="w-full bg-black text-white py-3 rounded-2xl font-semibold">
 GERAR INDEX.HTML
 </button>
 
-<!-- LINK VISÍVEL -->
-<a id="download"
-class="hidden mt-4 block text-center bg-green-600 text-white py-3 rounded-2xl font-semibold"
-download="index.html">
-⬇️ Baixar index.html
-</a>
+<textarea id="resultado"
+class="w-full h-64 p-3 border rounded font-mono text-xs"
+placeholder="O index.html gerado aparecerá aqui"></textarea>
 
 </div>
 
 <script>
 function gerar(){
 
-  const g = id => document.getElementById(id).value;
+const v = id => document.getElementById(id).value;
 
-  const cardapio = g('cardapio').split('\n').filter(l=>l).map(l=>{
-    const [n,p]=l.split('-');
-    return `<div class="flex justify-between border-b py-2"><span>${n||''}</span><strong>${p||''}</strong></div>`;
-  }).join('');
+const cardapio = v('cardapio').split('\n').filter(l=>l).map(l=>{
+const [n,p]=l.split('-');
+return `<div class="flex justify-between border-b py-2"><span>${n||''}</span><strong>${p||''}</strong></div>`;
+}).join('');
 
-  const galeria = g('galeria').split('\n').filter(l=>l)
-    .map(u=>`<img src="${u}" class="rounded-xl w-full object-cover">`).join('');
+const galeria = v('galeria').split('\n').filter(l=>l)
+.map(u=>`<img src="${u}" class="rounded-xl w-full object-cover">`).join('');
 
 const html = `<!DOCTYPE html>
 <html lang="pt-BR">
@@ -90,19 +87,19 @@ const html = `<!DOCTYPE html>
 </div>
 
 <div id="c" class="p-6 text-center space-y-3">
-<img src="${g('foto')}" class="w-28 h-28 rounded-full mx-auto">
-<h1 class="text-xl font-bold">${g('nome')}</h1>
-<p>${g('empresa')}</p>
-<a href="https://wa.me/${g('whatsapp')}" class="block bg-green-500 text-white py-3 rounded-xl">WhatsApp</a>
-<a href="mailto:${g('email')}" class="block bg-blue-500 text-white py-3 rounded-xl">Email</a>
-<a href="${g('site')}" class="block bg-indigo-600 text-white py-3 rounded-xl">Site</a>
-<button onclick="navigator.clipboard.writeText('${g('pix')}');alert('PIX copiado')" class="w-full bg-purple-600 text-white py-3 rounded-xl">Copiar PIX</button>
-<button onclick="alert('Wi-Fi: ${g('ssid')} | Senha: ${g('senha')}')" class="w-full bg-black text-white py-3 rounded-xl">Wi-Fi</button>
+<img src="${v('foto')}" class="w-28 h-28 rounded-full mx-auto">
+<h1 class="text-xl font-bold">${v('nome')}</h1>
+<p>${v('empresa')}</p>
+<a href="https://wa.me/${v('whatsapp')}" class="block bg-green-500 text-white py-3 rounded-xl">WhatsApp</a>
+<a href="mailto:${v('email')}" class="block bg-blue-500 text-white py-3 rounded-xl">Email</a>
+<a href="${v('site')}" class="block bg-indigo-600 text-white py-3 rounded-xl">Site</a>
+<button onclick="navigator.clipboard.writeText('${v('pix')}');alert('PIX copiado')" class="w-full bg-purple-600 text-white py-3 rounded-xl">Copiar PIX</button>
+<button onclick="alert('Wi-Fi: ${v('ssid')} | Senha: ${v('senha')}')" class="w-full bg-black text-white py-3 rounded-xl">Wi-Fi</button>
 </div>
 
 <div id="m" class="p-6 hidden">${cardapio}</div>
 <div id="a" class="p-6 hidden">
-<a href="${g('google')}" target="_blank" class="block bg-yellow-400 py-4 rounded-xl text-center font-semibold">Avaliar no Google</a>
+<a href="${v('google')}" target="_blank" class="block bg-yellow-400 py-4 rounded-xl text-center font-semibold">Avaliar no Google</a>
 </div>
 <div id="g" class="p-6 grid grid-cols-2 gap-3 hidden">${galeria}</div>
 
@@ -119,12 +116,7 @@ show('c');
 </body>
 </html>`;
 
-  const blob = new Blob([html], {type:'text/html'});
-  const url = URL.createObjectURL(blob);
-
-  const link = document.getElementById('download');
-  link.href = url;
-  link.classList.remove('hidden');
+document.getElementById('resultado').value = html;
 }
 </script>
 
