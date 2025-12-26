@@ -2,126 +2,83 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gerador de Tag NFC</title>
+<title>Gerador de TAG NFC</title>
+<meta name="viewport" content="width=device-width">
 <style>
-body{font-family:Arial;background:#f3f4f6;padding:20px}
-.container{max-width:600px;margin:auto;background:#fff;padding:20px;border-radius:16px}
-h1{font-size:22px;margin-bottom:10px}
-input,textarea,select{width:100%;padding:10px;margin:6px 0;border-radius:10px;border:1px solid #ccc}
-button{width:100%;padding:14px;background:#000;color:#fff;border:none;border-radius:14px;font-size:16px;cursor:pointer}
-small{color:#666}
+body{font-family:Arial;background:#f3f3f3;padding:20px}
+input,textarea{width:100%;padding:10px;margin:6px 0}
+button{padding:14px;width:100%;font-size:16px;background:#000;color:#fff;border:none;border-radius:8px}
+h2{margin-top:30px}
 </style>
 </head>
 <body>
 
-<div class="container">
 <h1>Gerador de Página NFC</h1>
 
-<input id="nome" placeholder="Nome da Pessoa">
-<input id="empresa" placeholder="Nome da Empresa">
-<input id="foto" placeholder="URL da foto principal">
+<input id="nome" placeholder="Nome">
+<input id="empresa" placeholder="Empresa">
+<input id="foto" placeholder="URL da foto">
 
-<input id="whatsapp" placeholder="WhatsApp (5588999999999)">
+<input id="whatsapp" placeholder="WhatsApp (5588...)">
 <input id="email" placeholder="E-mail">
 <input id="site" placeholder="Site ou Instagram">
 
 <input id="pix" placeholder="Chave PIX">
 
-<h3>Wi-Fi</h3>
-<input id="wifi_nome" placeholder="Nome do Wi-Fi">
-<input id="wifi_senha" placeholder="Senha do Wi-Fi">
-<select id="wifi_tipo">
-<option value="WPA">WPA/WPA2</option>
-<option value="WEP">WEP</option>
-</select>
+<h2>Wi-Fi</h2>
+<input id="ssid" placeholder="Nome do Wi-Fi">
+<input id="senha" placeholder="Senha do Wi-Fi">
 
-<h3>Cardápio</h3>
-<textarea id="cardapio" placeholder="Exemplo:
-Produto 1 - R$ 10
-Produto 2 - R$ 20"></textarea>
+<h2>Avaliações Google</h2>
+<input id="google" placeholder="Link Google Avaliações">
 
-<h3>Avaliações Google</h3>
-<input id="google" placeholder="Link de avaliação Google">
+<h2>Galeria (1 URL por linha)</h2>
+<textarea id="galeria"></textarea>
 
-<h3>Galeria de Fotos</h3>
-<textarea id="galeria" placeholder="Cole UMA URL POR LINHA"></textarea>
-<small>Ex: https://site.com/foto1.jpg</small>
-
-<br><br>
 <button onclick="gerar()">GERAR index.html</button>
-</div>
 
 <script>
 function gerar(){
-const nome = document.getElementById('nome').value;
-const empresa = document.getElementById('empresa').value;
-const foto = document.getElementById('foto').value;
-const whatsapp = document.getElementById('whatsapp').value;
-const email = document.getElementById('email').value;
-const site = document.getElementById('site').value;
-const pix = document.getElementById('pix').value;
-const wifiNome = document.getElementById('wifi_nome').value;
-const wifiSenha = document.getElementById('wifi_senha').value;
-const wifiTipo = document.getElementById('wifi_tipo').value;
-const cardapioTexto = document.getElementById('cardapio').value;
-const google = document.getElementById('google').value;
-const galeria = document.getElementById('galeria').value.split('\n');
-
-let itens = '';
-cardapioTexto.split('\n').forEach(l=>{
-if(l.trim()) itens += `<div>${l}</div>`;
-});
-
-let fotos = '';
-galeria.forEach(f=>{
-if(f.trim()) fotos += `<img src="${f.trim()}" style="width:100%;border-radius:12px">`;
-});
+const galeria = document.getElementById('galeria').value
+.split('\n')
+.filter(x=>x.trim())
+.map(u=>`<img src="${u}" style="width:100%;border-radius:12px">`)
+.join('');
 
 const html = `
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<title>${empresa}</title>
+<title>TAG NFC</title>
 <style>
-body{font-family:Arial;background:#f3f4f6;padding:20px}
-.card{max-width:400px;margin:auto;background:#fff;padding:20px;border-radius:20px}
-img{max-width:100%}
-button,a{display:block;text-align:center;margin:8px 0;padding:12px;border-radius:12px;color:#fff;text-decoration:none}
-.green{background:#22c55e}
-.blue{background:#3b82f6}
-.indigo{background:#6366f1}
-.purple{background:#9333ea}
-.black{background:#000}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+body{font-family:Arial;background:#f5f5f5;padding:20px}
+.card{background:#fff;border-radius:16px;padding:20px}
+button,a{display:block;margin:10px 0;padding:14px;text-align:center;background:#000;color:#fff;border-radius:10px;text-decoration:none}
+.grid{display:grid;gap:10px}
 </style>
 </head>
 <body>
 
 <div class="card">
-<img src="${foto}" style="border-radius:50%;width:120px;margin:auto;display:block">
-<h2 style="text-align:center">${nome}</h2>
-<p style="text-align:center;color:#666">${empresa}</p>
+<img src="${foto.value}" style="width:120px;border-radius:50%">
+<h2>${nome.value}</h2>
+<p>${empresa.value}</p>
 
-<a class="green" href="https://wa.me/${whatsapp}">WhatsApp</a>
-<a class="blue" href="mailto:${email}">E-mail</a>
-<a class="indigo" href="${site}">Site / Instagram</a>
+<a href="https://wa.me/${whatsapp.value}">WhatsApp</a>
+<a href="mailto:${email.value}">Email</a>
+<a href="${site.value}" target="_blank">Site</a>
 
-<button class="purple" onclick="navigator.clipboard.writeText('${pix}')">Copiar PIX</button>
+<button onclick="navigator.clipboard.writeText('${pix.value}')">Copiar PIX</button>
 
-${wifiNome ? `<button class="black" onclick="navigator.clipboard.writeText('WiFi: ${wifiNome} | Senha: ${wifiSenha}')">Copiar Wi-Fi</button>`:''}
+<a href="${google.value}" target="_blank">Avaliar no Google</a>
 
-<h3>Cardápio</h3>
-${itens}
+<button onclick="alert('Wi-Fi: ${ssid.value}\\nSenha: ${senha.value}')">Wi-Fi</button>
 
-${google ? `<a class="black" href="${google}">Avaliar no Google</a>`:''}
-
-<h3>Galeria</h3>
-<div class="grid">${fotos}</div>
-
+<div class="grid">${galeria}</div>
 </div>
+
 </body>
 </html>
 `;
