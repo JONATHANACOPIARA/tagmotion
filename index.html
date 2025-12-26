@@ -1,46 +1,36 @@
 
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<title>CEO da Empresa</title>
+<title>TAG NFC</title>
 <style>
-body{font-family:Arial;background:#f3f4f6;padding:20px}
-.card{max-width:400px;margin:auto;background:#fff;padding:20px;border-radius:20px}
-img{max-width:100%}
-button,a{display:block;text-align:center;margin:8px 0;padding:12px;border-radius:12px;color:#fff;text-decoration:none}
-.green{background:#22c55e}
-.blue{background:#3b82f6}
-.indigo{background:#6366f1}
-.purple{background:#9333ea}
-.black{background:#000}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+body{font-family:Arial;background:#f5f5f5;padding:20px}
+.card{background:#fff;border-radius:16px;padding:20px}
+button,a{display:block;margin:10px 0;padding:14px;text-align:center;background:#000;color:#fff;border-radius:10px;text-decoration:none}
+.grid{display:grid;gap:10px}
 </style>
 </head>
 <body>
 
 <div class="card">
-<img src="https://i.imgur.com/e1g5ycm.jpeg" style="border-radius:50%;width:120px;margin:auto;display:block">
-<h2 style="text-align:center">Jonathan Guilherme</h2>
-<p style="text-align:center;color:#666">CEO da Empresa</p>
+<img src="https://i.imgur.com/e1g5ycm.jpeg" style="width:120px;border-radius:50%">
+<h2>Jonathan</h2>
+<p>Studio JG</p>
 
-<a class="green" href="https://wa.me/5588997842847">WhatsApp</a>
-<a class="blue" href="mailto:studiojonathanguilherme@gmail.com">E-mail</a>
-<a class="indigo" href="https://www.instagram.com/jonathanguilhermejg">Site / Instagram</a>
+<a href="https://wa.me/5588997842847">WhatsApp</a>
+<a href="mailto:studiojonathanguilherme@gmail.com">Email</a>
+<a href="https://www.instagram.com/jonathanguilhermejg" target="_blank">Site</a>
 
-<button class="purple" onclick="navigator.clipboard.writeText('88997842847')">Copiar PIX</button>
+<button onclick="navigator.clipboard.writeText('88997842847')">Copiar PIX</button>
 
-<button class="black" onclick="navigator.clipboard.writeText('WiFi: brisa-1768521 | Senha: q79ugxxy')">Copiar Wi-Fi</button>
+<a href="https://g.page/r/CbAzn_5LkDqLEBM/review" target="_blank">Avaliar no Google</a>
 
-<h3>Cardápio</h3>
-<div>Spot Comercial Padrão    - R$ 50,00</div><div>Spot Comercial Produzido - R$ 70,00</div><div>Spot Comercial Padrão - R$ 50,00</div><div>Spot Comercial Padrão - R$ 50,00</div><div>Jingle para Empresas - R$ 250,00</div>
+<button onclick="alert('Wi-Fi: \nSenha: q79ugxxy')">Wi-Fi</button>
 
-<a class="black" href="https://g.page/r/CbAzn_5LkDqLEBM/review">Avaliar no Google</a>
-
-<h3>Galeria</h3>
-<div class="grid"><img src="https://i.imgur.com/umvNas6.jpeg" style="width:100%;border-radius:12px"><img src="https://i.imgur.com/7noZxtR.png" style="width:100%;border-radius:12px"></div>
-
+<div class="grid"><img src="https://i.imgur.com/umvNas6.jpeg" style="width:100%;border-radius:12px"></div>
 </div>
+
 </body>
 </html>
