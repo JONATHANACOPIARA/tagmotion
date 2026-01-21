@@ -1,36 +1,19 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<title>TAG NFC</title>
-<style>
-body{font-family:Arial;background:#f5f5f5;padding:20px}
-.card{background:#fff;border-radius:16px;padding:20px}
-button,a{display:block;margin:10px 0;padding:14px;text-align:center;background:#000;color:#fff;border-radius:10px;text-decoration:none}
-.grid{display:grid;gap:10px}
-</style>
+  <meta charset="UTF-8">
+  <title>Tagmotion</title>
+  <script>
+    fetch("data.json")
+      .then(res => res.json())
+      .then(data => document.body.innerHTML = `
+        <h1>${data.nome}</h1>
+        <p>${data.profissao}</p>
+        <a href="https://wa.me/${data.contato.telefone}">WhatsApp</a>
+      `);
+  </script>
 </head>
 <body>
-
-<div class="card">
-<img src="https://i.imgur.com/e1g5ycm.jpeg" style="width:120px;border-radius:50%">
-<h2>Jonathan</h2>
-<p>Studio JG</p>
-
-<a href="https://wa.me/5588997842847">WhatsApp</a>
-<a href="mailto:studiojonathanguilherme@gmail.com">Email</a>
-<a href="https://www.instagram.com/jonathanguilhermejg" target="_blank">Site</a>
-
-<button onclick="navigator.clipboard.writeText('88997842847')">Copiar PIX</button>
-
-<a href="https://g.page/r/CbAzn_5LkDqLEBM/review" target="_blank">Avaliar no Google</a>
-
-<button onclick="alert('Wi-Fi: brisa final 21\nSenha: q79ugxxy')">Wi-Fi</button>
-
-<div class="grid"><img src="Spot Comercial Padrão - R$ 50,00" style="width:100%;border-radius:12px"><img src="Spot Comercial Produzido - R$ 70,00" style="width:100%;border-radius:12px"><img src="Spot Comercial Padrão - R$ 50,00" style="width:100%;border-radius:12px"><img src="Spot Comercial Padrão - R$ 50,00" style="width:100%;border-radius:12px"><img src="Jingle para Empresas - R$ 250,00" style="width:100%;border-radius:12px"><img src="https://i.imgur.com/umvNas6.jpeg" style="width:100%;border-radius:12px"><img src="https://i.imgur.com/7noZxtR.png" style="width:100%;border-radius:12px"></div>
-</div>
-
+Carregando...
 </body>
 </html>
